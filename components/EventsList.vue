@@ -51,8 +51,8 @@
           </td>
           <td>{{ event.event_code }}</td>
           <td>{{ event.event_name }}</td>
-          <td>{{ event.event_date }}</td>
-          <td>{{ event.last_updated }}</td>
+          <td>{{ event.event_start }}</td>
+          <td>{{ event.updated }}</td>
           <td>{{ event.client_status }}</td>
           <td>
             <a href="/create">
@@ -73,14 +73,14 @@ import axios from 'axios'
 
 export default {
   name: 'EventsList',
+  props: { events: Array, isRecent: Boolean },
   data() {
     return {
       currentSort: 'event_code',
       currentSortDir: 'asc',
       pageSize: 9,
       currentPage: 1,
-      search: '',
-      events: []
+      search: ''
     }
   },
   methods: {
@@ -109,17 +109,12 @@ export default {
           if (a[this.currentSort] > b[this.currentSort]) return 1 * modifier
           return 0
         })
-        .filter((row, index) => {
+        .filter((event, index) => {
           let start = (this.currentPage - 1) * this.pageSize
           let end = this.currentPage * this.pageSize
           if (index >= start && index < end) return true
         })
     }
-  },
-  mounted: function() {
-    axios
-      .get('https://intempio-api-v3.herokuapp.com/api/v3/list-event-admin')
-      .then(response => (this.events = [...response.data, ...response.data]))
   }
 }
 </script>
