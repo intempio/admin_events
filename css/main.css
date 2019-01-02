@@ -309,7 +309,7 @@ table.assignee td {
   width: 49.7%;
   display: inline-block;
   height: 250px;
-  overflow-y: scroll;
+  /*overflow-y: scroll; */
   padding: 0 0 10px;
 }
 table.assignee td div {
@@ -325,9 +325,10 @@ table.assignee .add_btn {
   width: 9%;
 }
 table.history {
-  height: 253px;
-  overflow-y: scroll;
-  display: block;
+  /* width: 100%; */
+  /*height: 253px;*/
+  /*overflow-y: scroll;*/
+  /* display: block; */
 }
 h2.colored {
   background: #f1f1f1;
@@ -395,11 +396,11 @@ h2.colored {
   height: 2.25em;
   margin-right: 1%;
 }
-.duration-offset-count-wrap {
-  /* width: 100%;
+/*.duration-offset-count-wrap {
+  width: 100%;
   display: flex;
-  flex-flow: row wrap; */
-}
+  flex-flow: row wrap;
+} */
 .fourth-row {
   width: 100%;
   display: flex;
@@ -420,6 +421,10 @@ h2.colored {
   width: 80px;
   font-size: 11px;
   padding: 9px 11px;
+}
+
+.history-wrap {
+  display: inline-block;
 }
 
 /*
@@ -622,6 +627,101 @@ input.filter-item.search-input {
   margin-right: 2px;
 }
 
+.history-popup {
+  display: none;
+  z-index: 1000;
+}
+
+/* MODAL component */
+[v-cloak] {
+  display: none;
+}
+
+.modal-mask {
+  position: fixed;
+  z-index: 9998;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: table;
+  transition: opacity 0.3s ease;
+}
+
+.modal-wrapper {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.modal-container {
+  width: 50%;
+  margin: 0px auto;
+  padding: 20px 20px 30px;
+  background-color: #fff;
+  border-radius: 2px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+  transition: all 0.3s ease;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+.modal-body {
+  margin: 20px 0;
+}
+
+.modal-footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+.modal-enter,
+.modal-leave {
+  opacity: 0;
+}
+
+.modal-enter .modal-container,
+.modal-leave .modal-container {
+  transform: scale(1.1);
+}
+
+.fixed_header {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+.fixed_header tbody {
+  display: block;
+  overflow: auto;
+  height: 200.4px;
+  width: 100%;
+}
+
+.fixed_header th,
+.fixed_header td {
+  text-align: center;
+  width: 300px;
+}
+
+.fixed_header thead tr {
+  display: block;
+  /*width: 100%;*/
+}
+
+.history-th-1 {
+  width: 35%;
+}
+
+.history-th-2 {
+  width: 31%;
+}
+
+.history-th-3 {
+  width: 31%;
+}
+
+/*END OF MODAL COMPONENT */
+
 /*-----------Media Queries Starts Here----------------*/
 /*
 @media screen and (max-width: 800px) {
@@ -682,7 +782,8 @@ input.filter-item.search-input {
     width: 100% !important;
   }
 */
-/*Sliding Sidebar*/ /*
+/*Sliding Sidebar*/
+/*
   label.menu-icon,
   .slideout-sidebar {
     display: block;

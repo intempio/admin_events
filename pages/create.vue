@@ -2,7 +2,8 @@
   <section class="content main">
     <div class="form-row first-row">
       <p class="event_code">
-        <strong>Event Code:</strong>100001
+        <strong>Event Code:</strong>
+        {{event.event_code}}
       </p>
       <label>
         <strong>Project:</strong>
@@ -15,47 +16,73 @@
       <label>
         <strong>Event Name:</strong>
       </label>
-      <input type="text" name="event_name" placeholder="Event Name" class="input">
+      <input
+        v-model="event.event_name"
+        type="text"
+        name="event_name"
+        placeholder="Event Name"
+        class="input"
+      >
     </div>
     <div class="form-row second-row">
-      <b-select placeholder="Client Status">
-        <option>Client urgent</option>
-        <option>Client request</option>
-        <option>Client update</option>
-        <option>In Process</option>
-        <option>Scheduled</option>
-        <option>Cancelled</option>
+      <b-select v-model="event.client_status" placeholder="Client Status">
+        <option value="urgent">Urgent</option>
+        <option value="request">Request</option>
+        <option value="update">Update</option>
+        <option value="scheduled">Scheduled</option>
+        <option value="cancel">Cancelled</option>
+      </b-select>
+      <div class="history-wrap">
+        <modal :client-status-hist="event.client_status_hist" ref="modal2">
+          <h2 slot="header" class="colored">Client status history</h2>
+          <tr slot="table-header">
+            <th>Person</th>
+            <th>Status</th>
+            <th>Last updated</th>
+            <th></th>
+          </tr>
+          <tbody slot="table-body">
+            <tr v-for="client in event.client_status_hist" v-bind:key="client.user_name">
+              <td>{{client.user_name}}</td>
+              <td>{{client.client_status}}</td>
+              <td>{{client.updated}}</td>
+            </tr>
+          </tbody>
+        </modal>
+        <button class="history" @click="openHistory">
+          <font-awesome-icon class="icon" icon="history"/>History
+        </button>
+      </div>
+      <!--<button class="history">
+        <font-awesome-icon class="icon" icon="history"/>History
+      </button>-->
+      <b-select v-model="event.operations_status" placeholder="Operations Status">
+        <option value="none">None</option>
+        <option value="ok">Content OK</option>
+        <option value="landing">Landing page OK</option>
+        <option value="ac">AC Room OK</option>
+        <option value="email">Email OK</option>
+        <option value="2dayqa">2 day QA OK</option>
+        <option value="dayofvent">Day of Event OK</option>
       </b-select>
       <button class="history">
         <font-awesome-icon class="icon" icon="history"/>History
       </button>
-      <b-select placeholder="Operations Status">
-        <option>None</option>
-        <option>Content OK</option>
-        <option>Landing page OK</option>
-        <option>AC Room OK</option>
-        <option>Email OK</option>
-        <option>2 day QA OK</option>
-        <option>Day of Event OK</option>
+      <b-select v-model="event.qa_status" placeholder="QA Status">
+        <option value="none">None</option>
+        <option value="week">Week QA OK</option>
+        <option value="weekissues">Week QA Issues</option>
+        <option value="report">Report QA OK</option>
       </b-select>
       <button class="history">
         <font-awesome-icon class="icon" icon="history"/>History
       </button>
-      <b-select placeholder="QA Status">
-        <option>None</option>
-        <option>Week QA OK</option>
-        <option>Week QA Issues</option>
-        <option>Report QA OK</option>
-      </b-select>
-      <button class="history">
-        <font-awesome-icon class="icon" icon="history"/>History
-      </button>
-      <b-select placeholder="Production Status">
-        <option>None</option>
-        <option>Sent</option>
-        <option>Question</option>
-        <option>Accepted</option>
-        <option>Denied</option>
+      <b-select v-model="event.production_status" placeholder="Production Status">
+        <option value="none">None</option>
+        <option value="sent">Sent</option>
+        <option value="question">Question</option>
+        <option value="accepted">Accepted</option>
+        <option value="denied">Denied</option>
         <option>Run Sheet OK</option>
         <option>Production Ready</option>
       </b-select>
@@ -69,7 +96,7 @@
           <vue-ctk-date-time-picker
             class="ctk-date-time-picker"
             label="Event Start"
-            v-model="value"
+            v-model="event.event_start"
             without-header
             :minute-interval="30"
           ></vue-ctk-date-time-picker>
@@ -87,28 +114,46 @@
         </b-select>
         <!--</div>-->
         <!--<div class="duration-offset-count-wrap">-->
-        <input type="text" name="duration" placeholder="Duration" class="input">
-        <input type="text" name="prod_offset" placeholder="ProducerOffset" class="input">
-        <input type="text" name="prod_count" placeholder="ProducerCount" class="input">
+        <input
+          v-model="event.duration_minutes"
+          type="text"
+          name="duration"
+          placeholder="Duration"
+          class="input"
+        >
+        <input
+          v-model="event.producer_offset_minutes"
+          type="text"
+          name="prod_offset"
+          placeholder="Producer offset"
+          class="input"
+        >
+        <input
+          v-model="event.producer_count"
+          type="text"
+          name="prod_count"
+          placeholder="Producer count"
+          class="input"
+        >
         <!--</div>-->
       </div>
     </div>
     <div class="form-row fourth-row">
       <div class="internal-notes-wrap">
-        <textarea placeholder="Internal notes" class="input"></textarea>
+        <textarea v-model="event.internal_notes" placeholder="Internal notes" class="input">event.internal_notes</textarea>
         <button class="history">
           <font-awesome-icon class="icon" icon="history"/>History
         </button>
       </div>
       <div class="producer-notes-wrap">
-        <textarea placeholder="Producer notes" class="input"></textarea>
+        <textarea v-model="event.producer_notes" placeholder="Producer notes" class="input">event.producer_notes</textarea>
         <button class="history">
           <font-awesome-icon class="icon" icon="history"/>History
         </button>
       </div>
       <div class="external-notes-wrap">
         <div v-show="!isHidden" class="additionals">
-          <textarea placeholder="External notes" class="input"></textarea>
+          <textarea v-model="event.external_notes" placeholder="External notes" class="input">event.external_notes</textarea>
           <button class="history">
             <font-awesome-icon class="icon" icon="history"/>History
           </button>
@@ -405,6 +450,8 @@
 import Vue from 'vue'
 import VueCtkDateTimePicker from 'vue-ctk-date-time-picker'
 import 'vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.min.css'
+import axios from 'axios'
+import modal from '../components/History.vue'
 
 Vue.component('vue-ctk-date-time-picker', VueCtkDateTimePicker)
 
@@ -412,11 +459,22 @@ export default {
   data() {
     return {
       value: null,
-      isHidden: true
+      isHidden: true,
+      event: []
     }
   },
   methods: {
-    //showNotes: function() {}
+    openHistory: function(event) {
+      this.$refs.modal2.open()
+    }
+  },
+  components: {
+    modal
+  },
+  mounted: function() {
+    axios.get('http://localhost:3001/edit').then(response => {
+      this.event = response.data['records'][0]
+    })
   }
 }
 </script>
