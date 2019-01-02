@@ -1,6 +1,6 @@
-# intempio-admin
+# intempio
 
-> Intempio projects admin
+> Intempio SPA alpha version
 
 ## Build Setup
 
