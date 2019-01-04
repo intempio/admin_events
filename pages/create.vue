@@ -9,9 +9,7 @@
         <strong>Project:</strong>
       </label>
       <b-select placeholder="Project">
-        <option>Sunovion</option>
-        <option>Biogen</option>
-        <option>Novartis</option>
+        <option v-for="project in projects" v-bind:key="project.project_id">{{project.project_name}}</option>
       </b-select>
       <label>
         <strong>Event Name:</strong>
@@ -33,12 +31,12 @@
         <option value="cancel">Cancelled</option>
       </b-select>
       <div class="history-wrap">
-        <modal :client-status-hist="event.client_status_hist" ref="modal2">
+        <modal :client-status-hist="event.client_status_hist" ref="client_status_history">
           <h2 slot="header" class="colored">Client status history</h2>
           <tr slot="table-header">
-            <th>Person</th>
-            <th>Status</th>
-            <th>Last updated</th>
+            <th class="history-th-1">Person</th>
+            <th class="history-th-2">Status</th>
+            <th class="history-th-3">Last updated</th>
             <th></th>
           </tr>
           <tbody slot="table-body">
@@ -49,7 +47,7 @@
             </tr>
           </tbody>
         </modal>
-        <button class="history" @click="openHistory">
+        <button class="history" @click="ClientStatusHistory">
           <font-awesome-icon class="icon" icon="history"/>History
         </button>
       </div>
@@ -65,18 +63,57 @@
         <option value="2dayqa">2 day QA OK</option>
         <option value="dayofvent">Day of Event OK</option>
       </b-select>
-      <button class="history">
-        <font-awesome-icon class="icon" icon="history"/>History
-      </button>
+      <div class="history-wrap">
+        <modal
+          :operations_status_hist="event.operations_status_hist"
+          ref="operations_status_history"
+        >
+          <h2 slot="header" class="colored">Operations status history</h2>
+          <tr slot="table-header">
+            <th class="history-th-1">ID</th>
+            <th class="history-th-2">Operations status</th>
+            <th class="history-th-3">Updated</th>
+            <th></th>
+          </tr>
+          <tbody slot="table-body">
+            <tr v-for="id in event.operations_status_hist" v-bind:key="id.updated_by_id">
+              <td>{{id.updated_by_id}}</td>
+              <td>{{id.operations_status}}</td>
+              <td>{{id.updated}}</td>
+            </tr>
+          </tbody>
+        </modal>
+        <button class="history" @click="OpenOperationsStatusHistory">
+          <font-awesome-icon class="icon" icon="history"/>History
+        </button>
+      </div>
       <b-select v-model="event.qa_status" placeholder="QA Status">
         <option value="none">None</option>
         <option value="week">Week QA OK</option>
         <option value="weekissues">Week QA Issues</option>
         <option value="report">Report QA OK</option>
       </b-select>
-      <button class="history">
-        <font-awesome-icon class="icon" icon="history"/>History
-      </button>
+      <div class="history-wrap">
+        <modal :qa-status-hist="event.qa_status_hist" ref="qa_status_history">
+          <h2 slot="header" class="colored">QA status history</h2>
+          <tr slot="table-header">
+            <th class="history-th-1">Updated</th>
+            <th class="history-th-2">QA status</th>
+            <th class="history-th-3">Last updated</th>
+            <th></th>
+          </tr>
+          <tbody slot="table-body">
+            <tr v-for="qa in event.qa_status_hist" v-bind:key="qa.qa_status">
+              <td>{{qa.updated}}</td>
+              <td>{{qa.qa_status}}</td>
+              <td>{{qa.updated}}</td>
+            </tr>
+          </tbody>
+        </modal>
+        <button class="history" @click="QaStatusHistory">
+          <font-awesome-icon class="icon" icon="history"/>History
+        </button>
+      </div>
       <b-select v-model="event.production_status" placeholder="Production Status">
         <option value="none">None</option>
         <option value="sent">Sent</option>
@@ -86,9 +123,30 @@
         <option>Run Sheet OK</option>
         <option>Production Ready</option>
       </b-select>
-      <button class="history">
-        <font-awesome-icon class="icon" icon="history"/>History
-      </button>
+      <div class="history-wrap">
+        <modal
+          :production-status-hist="event.production_status_hist"
+          ref="production_status_history"
+        >
+          <h2 slot="header" class="colored">QA status history</h2>
+          <tr slot="table-header">
+            <th class="history-th-1">Updated</th>
+            <th class="history-th-2">Production status</th>
+            <th class="history-th-3">Updated by ID</th>
+            <th></th>
+          </tr>
+          <tbody slot="table-body">
+            <tr v-for="prod in event.production_status_hist" v-bind:key="prod.production_status">
+              <td>{{prod.updated}}</td>
+              <td>{{prod.production_status}}</td>
+              <td>{{prod.updated_by_id}}</td>
+            </tr>
+          </tbody>
+        </modal>
+        <button class="history" @click="ProductionStatusHistory">
+          <font-awesome-icon class="icon" icon="history"/>History
+        </button>
+      </div>
     </div>
     <div class="form-row third-row">
       <div class="pickers-wrap">
@@ -99,18 +157,14 @@
             v-model="event.event_start"
             without-header
             :minute-interval="30"
+            formatted="MMMM Do YYYY, h:mm:ss a"
           ></vue-ctk-date-time-picker>
         </div>
         <!-- <div class="time-zones-wrap"> -->
         <b-select class="time-zones" placeholder="Time zone">
+          <option selected>EST</option>
           <option>GMT</option>
-          <option>GMT+1</option>
-          <option>GMT+2</option>
-          <option selected>GMT-5</option>
-          <option>GMT-6</option>
-          <option>GMT-7</option>
-          <option>GMT-8</option>
-          <option>GMT-9</option>
+          <option>CEST</option>
         </b-select>
         <!--</div>-->
         <!--<div class="duration-offset-count-wrap">-->
@@ -141,22 +195,82 @@
     <div class="form-row fourth-row">
       <div class="internal-notes-wrap">
         <textarea v-model="event.internal_notes" placeholder="Internal notes" class="input">event.internal_notes</textarea>
-        <button class="history">
-          <font-awesome-icon class="icon" icon="history"/>History
-        </button>
+        <div class="history-wrap">
+          <modal
+            :production-status-hist="event.production_status_hist"
+            ref="production_status_history"
+          >
+            <h2 slot="header" class="colored">QA status history</h2>
+            <tr slot="table-header">
+              <th class="history-th-1">Updated</th>
+              <th class="history-th-2">Production status</th>
+              <th class="history-th-3">Updated by ID</th>
+              <th></th>
+            </tr>
+            <tbody slot="table-body">
+              <tr v-for="prod in event.production_status_hist" v-bind:key="prod.production_status">
+                <td>{{prod.updated}}</td>
+                <td>{{prod.production_status}}</td>
+                <td>{{prod.updated_by_id}}</td>
+              </tr>
+            </tbody>
+          </modal>
+          <button class="history" @click="ProductionStatusHistory">
+            <font-awesome-icon class="icon" icon="history"/>History
+          </button>
+        </div>
       </div>
       <div class="producer-notes-wrap">
         <textarea v-model="event.producer_notes" placeholder="Producer notes" class="input">event.producer_notes</textarea>
-        <button class="history">
-          <font-awesome-icon class="icon" icon="history"/>History
-        </button>
+        <div class="history-wrap">
+          <modal :producer_notes_hist="event.producer_notes_hist" ref="producer_notes_history">
+            <h2 slot="header" class="colored">Producer notes history</h2>
+            <tr slot="table-header">
+              <th class="history-th-1">Updated</th>
+              <th class="history-th-2">Producer status</th>
+              <th class="history-th-3">Updated by ID</th>
+              <th></th>
+            </tr>
+            <tbody slot="table-body">
+              <tr
+                v-for="prodevent in event.producer_notes_hist"
+                v-bind:key="prodevent.producer_status"
+              >
+                <td>{{prodevent.updated}}</td>
+                <td>{{prodevent.production_status}}</td>
+                <td>{{prodevent.updated_by_id}}</td>
+              </tr>
+            </tbody>
+          </modal>
+          <button class="history" @click="ProducerNotesHistory">
+            <font-awesome-icon class="icon" icon="history"/>History
+          </button>
+        </div>
       </div>
       <div class="external-notes-wrap">
         <div v-show="!isHidden" class="additionals">
           <textarea v-model="event.external_notes" placeholder="External notes" class="input">event.external_notes</textarea>
-          <button class="history">
-            <font-awesome-icon class="icon" icon="history"/>History
-          </button>
+          <div class="history-wrap">
+            <modal :external-notes-hist="event.external_notes_hist" ref="external_notes_history">
+              <h2 slot="header" class="colored">External Notes history</h2>
+              <tr slot="table-header">
+                <th class="history-th-1">Updated</th>
+                <th class="history-th-2">External Notes</th>
+                <th class="history-th-3">Updated by ID</th>
+                <th></th>
+              </tr>
+              <tbody slot="table-body">
+                <tr v-for="exnote in event.external_notes_hist" v-bind:key="exnote.external_notes">
+                  <td>{{exnote.updated}}</td>
+                  <td>{{exnote.external_notes}}</td>
+                  <td>{{exnote.updated_by_id}}</td>
+                </tr>
+              </tbody>
+            </modal>
+            <button class="history" @click="ExternalNotesHistory">
+              <font-awesome-icon class="icon" icon="history"/>History
+            </button>
+          </div>
         </div>
         <button
           @click="isHidden = !isHidden"
@@ -167,93 +281,7 @@
       </div>
     </div>
     <div class="form-row fifth-row">
-      <div class="assignee width">
-        <h2 class="colored">People Assigned</h2>
-        <table class="assignee-list">
-          <thead>
-            <tr>
-              <td>Person
-                <font-awesome-icon icon="caret-down" size="lg"/>
-              </td>
-              <td>Role
-                <font-awesome-icon icon="caret-down" size="lg"/>
-              </td>
-              <td>Action</td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>
-                <a href="#openModal">Michelle Jordan</a>
-              </td>
-              <!--<div id="openModal" class="modalDialog">
-                  <div>
-                    <a href="#close" title="Close" class="close">X</a>
-                    <h2>Details</h2>
-                    <p>
-                      <strong>Phone Number:</strong> 124334656456
-                    </p>
-                    <p>
-                      <strong>Email Address:</strong> test@test.com
-                    </p>
-                  </div>
-              </div>-->
-              <td>Primary Contact</td>
-              <td>
-                <a>
-                  <font-awesome-icon icon="edit"/>Edit
-                </a>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <a href="#openModal">Edward Colegado</a>
-              </td>
-              <td>Producer</td>
-              <td>
-                <a>
-                  <font-awesome-icon icon="edit"/>Edit
-                </a>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <a href="#openModal">Shylla Punzalan</a>
-              </td>
-              <td>Lead Operations</td>
-              <td>
-                <a>
-                  <font-awesome-icon icon="edit"/>Edit
-                </a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="wrap-pagination-add">
-          <div class="pagination-wrap">
-            <button>&laquo;</button>
-            <button>&raquo;</button>
-          </div>
-          <div class="add-new-record">
-            <b-select placeholder="Person">
-              <option>Shylla Punzalan</option>
-              <option>Jeff Ceniza</option>
-              <option>Jove Aso</option>
-              <option>Michelle Jordan</option>
-              <option>Jaclyn Stephens</option>
-              <option>Edward Colegado</option>
-            </b-select>
-            <b-select placeholder="Role">
-              <option>Lead Operations</option>
-              <option>Lead Producer</option>
-              <option>CSR</option>
-              <option>Primary Contact</option>
-              <option>Producer</option>
-            </b-select>
-            <button class="add_btn">+ Add</button>
-          </div>
-        </div>
-      </div>
+      <people :people-assigned="event.people_assigned"></people>
       <div class="checklists width">
         <h2 class="colored">Checklists</h2>
         <table class="assignee-list">
@@ -452,6 +480,7 @@ import VueCtkDateTimePicker from 'vue-ctk-date-time-picker'
 import 'vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.min.css'
 import axios from 'axios'
 import modal from '../components/History.vue'
+import people from '../components/PeopleAssigned.vue'
 
 Vue.component('vue-ctk-date-time-picker', VueCtkDateTimePicker)
 
@@ -460,21 +489,43 @@ export default {
     return {
       value: null,
       isHidden: true,
-      event: []
+      event: {},
+      projects: []
     }
   },
   methods: {
-    openHistory: function(event) {
-      this.$refs.modal2.open()
+    ClientStatusHistory: function(event) {
+      this.$refs.client_status_history.open()
+    },
+    OpenOperationsStatusHistory: function(id) {
+      this.$refs.operations_status_history.open()
+    },
+    QaStatusHistory: function(qa) {
+      this.$refs.qa_status_history.open()
+    },
+    ProductionStatusHistory: function(prod) {
+      this.$refs.production_status_history.open()
+    },
+    ExternalNotesHistory: function(exnote) {
+      this.$refs.external_notes_history.open()
+    },
+    ProducerNotesHistory: function(prodnote) {
+      this.$refs.producer_notes_history.open()
     }
   },
   components: {
-    modal
+    modal,
+    people
   },
   mounted: function() {
-    axios.get('http://localhost:3001/edit').then(response => {
-      this.event = response.data['records'][0]
-    })
+    axios
+      .get(
+        'https://intempio-api-v3.herokuapp.com/api/v3/events/0f51062b-0701-4a3a-a030-ac7385446e14/cf72db35-82f9-4053-a7a0-96cecc516664'
+      )
+      .then(response => {
+        this.event = response.data['event_records'][0]
+        this.projects = response.data['project_list']
+      })
   }
 }
 </script>
