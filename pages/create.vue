@@ -20,10 +20,15 @@
         name="event_name"
         placeholder="Event Name"
         class="input"
+        @input="onChange('event_name')"
       >
     </div>
     <div class="form-row second-row">
-      <b-select v-model="event.client_status" placeholder="Client Status">
+      <b-select
+        v-model="event.client_status"
+        placeholder="Client Status"
+        @input="onChange('client_status')"
+      >
         <option value="urgent">Urgent</option>
         <option value="request">Request</option>
         <option value="update">Update</option>
@@ -88,7 +93,7 @@
           <font-awesome-icon class="icon" icon="history"/>History
         </button>
       </div>
-      <b-select v-model="event.qa_status" placeholder="QA Status">
+      <b-select v-model="event.qa_status" placeholder="QA Status" @input="onChange('qa_status')">
         <option value="none">None</option>
         <option value="week">Week QA OK</option>
         <option value="weekissues">Week QA Issues</option>
@@ -115,7 +120,11 @@
           <font-awesome-icon class="icon" icon="history"/>History
         </button>
       </div>
-      <b-select v-model="event.production_status" placeholder="Production Status">
+      <b-select
+        v-model="event.production_status"
+        placeholder="Production Status"
+        @input="onChange('production_status')"
+      >
         <option value="none">None</option>
         <option value="sent">Sent</option>
         <option value="question">Question</option>
@@ -161,20 +170,18 @@
             formatted="MMMM Do YYYY, h:mm:ss a"
           ></vue-ctk-date-time-picker>
         </div>
-        <!-- <div class="time-zones-wrap"> -->
-        <b-select class="time-zones" placeholder="Time zone">
+        <b-select class="time-zones" placeholder="Time zone" @input="onChange('time_zone')">
           <option selected>EST</option>
           <option>GMT</option>
           <option>CEST</option>
         </b-select>
-        <!--</div>-->
-        <!--<div class="duration-offset-count-wrap">-->
         <input
           v-model="event.duration_minutes"
           type="text"
           name="duration"
           placeholder="Duration"
           class="input"
+          @input="onChange('duration_minutes')"
         >
         <input
           v-model="event.producer_offset_minutes"
@@ -182,6 +189,7 @@
           name="prod_offset"
           placeholder="Producer offset"
           class="input"
+          @input="onChange('producer_offset_minutes')"
         >
         <input
           v-model="event.producer_count"
@@ -189,13 +197,18 @@
           name="prod_count"
           placeholder="Producer count"
           class="input"
+          @input="onChange('producer_count')"
         >
-        <!--</div>-->
       </div>
     </div>
     <div class="form-row fourth-row">
       <div class="internal-notes-wrap">
-        <textarea v-model="event.internal_notes" placeholder="Internal notes" class="input">event.internal_notes</textarea>
+        <textarea
+          v-model="event.internal_notes"
+          placeholder="Internal notes"
+          class="input"
+          @input="onChange('internal_notes')"
+        >event.internal_notes</textarea>
         <div class="history-wrap">
           <modal
             :production-status-hist="event.production_status_hist"
@@ -222,7 +235,12 @@
         </div>
       </div>
       <div class="producer-notes-wrap">
-        <textarea v-model="event.producer_notes" placeholder="Producer notes" class="input">event.producer_notes</textarea>
+        <textarea
+          v-model="event.producer_notes"
+          placeholder="Producer notes"
+          class="input"
+          @input="onChange('producer_notes')"
+        >event.producer_notes</textarea>
         <div class="history-wrap">
           <modal :producer_notes_hist="event.producer_notes_hist" ref="producer_notes_history">
             <h2 slot="header" class="colored">Producer notes history</h2>
@@ -250,7 +268,12 @@
       </div>
       <div class="external-notes-wrap">
         <div v-show="!isHidden" class="additionals">
-          <textarea v-model="event.external_notes" placeholder="External notes" class="input">event.external_notes</textarea>
+          <textarea
+            v-model="event.external_notes"
+            placeholder="External notes"
+            class="input"
+            @input="onChange('external_notes')"
+          >event.external_notes</textarea>
           <div class="history-wrap">
             <modal :external-notes-hist="event.external_notes_hist" ref="external_notes_history">
               <h2 slot="header" class="colored">External Notes history</h2>
