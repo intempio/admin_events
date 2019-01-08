@@ -51,10 +51,11 @@
           <font-awesome-icon class="icon" icon="history"/>History
         </button>
       </div>
-      <!--<button class="history">
-        <font-awesome-icon class="icon" icon="history"/>History
-      </button>-->
-      <b-select v-model="event.operations_status" placeholder="Operations Status">
+      <b-select
+        v-model="event.operations_status"
+        placeholder="Operations Status"
+        @input="onChange('operations_status')"
+      >
         <option value="none">None</option>
         <option value="ok">Content OK</option>
         <option value="landing">Landing page OK</option>
@@ -511,6 +512,21 @@ export default {
     },
     ProducerNotesHistory: function(prodnote) {
       this.$refs.producer_notes_history.open()
+    },
+    onChange: function(field_name) {
+      console.log(field_name)
+      console.log(this.event[field_name])
+      const url = 'https://intempio-api-v3.herokuapp.com/api/v3/events/'
+      var data = {
+        event_id: this.event.event_id
+      }
+
+      data[field_name] = this.event[field_name]
+      axios.put(url, data, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
     }
   },
   components: {
