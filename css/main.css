@@ -734,6 +734,20 @@ input.filter-item.search-input {
 .history-td-2 {
   width: 33%;
 }
+.select:not(.is-multiple):not(.is-loading)::after {
+  border-color: #0097e1;
+  right: 1.125em;
+  z-index: 3;
+}
+
+/*StatusUpdateModal*/
+.status {
+  justify-content: center;
+}
+
+.save {
+  margin-right: 1%;
+}
 
 /*END OF MODAL COMPONENT */
 

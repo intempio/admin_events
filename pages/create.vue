@@ -24,10 +24,11 @@
       >
     </div>
     <div class="form-row second-row">
+      <statusupdatemodal ref="status_update_modal"></statusupdatemodal>
       <b-select
         v-model="event.client_status"
         placeholder="Client Status"
-        @input="onChangeTimeout('client_status')"
+        @click="StatusUpdateModal"
       >
         <option value="urgent">Urgent</option>
         <option value="request">Request</option>
@@ -172,6 +173,7 @@
             without-header
             :minute-interval="30"
             formatted="MMMM Do YYYY, h:mm:ss a"
+            @input="onChange('event_start')"
           ></vue-ctk-date-time-picker>
         </div>
         <b-select
@@ -335,7 +337,7 @@
               <td>some text</td>
               <td>
                 <a>
-                  <font-awesome-icon icon="trash"/>Edit
+                  <font-awesome-icon icon="edit"/>Edit
                 </a>
               </td>
             </tr>
@@ -514,6 +516,7 @@ import 'vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.min.css'
 import axios from 'axios'
 import modal from '../components/History.vue'
 import people from '../components/PeopleAssigned.vue'
+import statusupdatemodal from '../components/StatusUpdateModal.vue'
 
 Vue.component('vue-ctk-date-time-picker', VueCtkDateTimePicker)
 
@@ -545,6 +548,9 @@ export default {
     ProducerNotesHistory: function(prodnote) {
       this.$refs.producer_notes_history.open()
     },
+    StatusUpdateModal: function() {
+      this.$refs.status_update_modal.open()
+    },
     onChange: function(field_name) {
       console.log(field_name)
       console.log(this.event[field_name])
@@ -571,7 +577,8 @@ export default {
   },
   components: {
     modal,
-    people
+    people,
+    statusupdatemodal
   },
   mounted: function() {
     axios
