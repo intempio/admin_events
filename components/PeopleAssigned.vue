@@ -31,7 +31,7 @@
           </div>-->
           <td>
             <a>
-              <font-awesome-icon icon="edit"/>Edit
+              <font-awesome-icon icon="times-circle"/>Remove
             </a>
           </td>
         </tr>

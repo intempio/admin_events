@@ -20,14 +20,14 @@
         name="event_name"
         placeholder="Event Name"
         class="input"
-        @input="onChange('event_name')"
+        @input="onChangeTimeout('event_name')"
       >
     </div>
     <div class="form-row second-row">
       <b-select
         v-model="event.client_status"
         placeholder="Client Status"
-        @input="onChange('client_status')"
+        @input="onChangeTimeout('client_status')"
       >
         <option value="urgent">Urgent</option>
         <option value="request">Request</option>
@@ -59,7 +59,7 @@
       <b-select
         v-model="event.operations_status"
         placeholder="Operations Status"
-        @input="onChange('operations_status')"
+        @input="onChangeTimeout('operations_status')"
       >
         <option value="none">None</option>
         <option value="ok">Content OK</option>
@@ -93,7 +93,11 @@
           <font-awesome-icon class="icon" icon="history"/>History
         </button>
       </div>
-      <b-select v-model="event.qa_status" placeholder="QA Status" @input="onChange('qa_status')">
+      <b-select
+        v-model="event.qa_status"
+        placeholder="QA Status"
+        @input="onChangeTimeout('qa_status')"
+      >
         <option value="none">None</option>
         <option value="week">Week QA OK</option>
         <option value="weekissues">Week QA Issues</option>
@@ -123,7 +127,7 @@
       <b-select
         v-model="event.production_status"
         placeholder="Production Status"
-        @input="onChange('production_status')"
+        @input="onChangeTimeout('production_status')"
       >
         <option value="none">None</option>
         <option value="sent">Sent</option>
@@ -170,10 +174,15 @@
             formatted="MMMM Do YYYY, h:mm:ss a"
           ></vue-ctk-date-time-picker>
         </div>
-        <b-select class="time-zones" placeholder="Time zone" @input="onChange('time_zone')">
-          <option selected>EST</option>
-          <option>GMT</option>
-          <option>CEST</option>
+        <b-select
+          v-model="event.time_zone"
+          class="time-zones"
+          placeholder="Time zone"
+          @input="onChangeTimeout('time_zone')"
+        >
+          <option value="est" selected>EST</option>
+          <option value="gtm">GMT</option>
+          <option value="cest">CEST</option>
         </b-select>
         <input
           v-model="event.duration_minutes"
@@ -181,7 +190,7 @@
           name="duration"
           placeholder="Duration"
           class="input"
-          @input="onChange('duration_minutes')"
+          @input="onChangeTimeout('duration_minutes')"
         >
         <input
           v-model="event.producer_offset_minutes"
@@ -189,7 +198,7 @@
           name="prod_offset"
           placeholder="Producer offset"
           class="input"
-          @input="onChange('producer_offset_minutes')"
+          @input="onChangeTimeout('producer_offset_minutes')"
         >
         <input
           v-model="event.producer_count"
@@ -197,7 +206,7 @@
           name="prod_count"
           placeholder="Producer count"
           class="input"
-          @input="onChange('producer_count')"
+          @input="onChangeTimeout('producer_count')"
         >
       </div>
     </div>
@@ -207,7 +216,7 @@
           v-model="event.internal_notes"
           placeholder="Internal notes"
           class="input"
-          @input="onChange('internal_notes')"
+          @input="onChangeTimeout('internal_notes')"
         >event.internal_notes</textarea>
         <div class="history-wrap">
           <modal
@@ -239,7 +248,7 @@
           v-model="event.producer_notes"
           placeholder="Producer notes"
           class="input"
-          @input="onChange('producer_notes')"
+          @input="onChangeTimeout('producer_notes')"
         >event.producer_notes</textarea>
         <div class="history-wrap">
           <modal :producer_notes_hist="event.producer_notes_hist" ref="producer_notes_history">
@@ -272,7 +281,7 @@
             v-model="event.external_notes"
             placeholder="External notes"
             class="input"
-            @input="onChange('external_notes')"
+            @input="onChangeTimeout('external_notes')"
           >event.external_notes</textarea>
           <div class="history-wrap">
             <modal :external-notes-hist="event.external_notes_hist" ref="external_notes_history">
@@ -326,7 +335,7 @@
               <td>some text</td>
               <td>
                 <a>
-                  <font-awesome-icon icon="edit"/>Edit
+                  <font-awesome-icon icon="trash"/>Edit
                 </a>
               </td>
             </tr>
@@ -550,6 +559,14 @@ export default {
           'Content-Type': 'application/json'
         }
       })
+    },
+
+    onChangeTimeout: function(field_name) {
+      if (this.timeout) {
+        clearTimeout(this.timeout)
+      }
+
+      this.timeout = setTimeout(() => this.onChange(field_name), 1500)
     }
   },
   components: {
