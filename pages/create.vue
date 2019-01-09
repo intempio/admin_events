@@ -28,7 +28,7 @@
       <b-select
         v-model="event.client_status"
         placeholder="Client Status"
-        @click="StatusUpdateModal"
+        @click="onStatusUpdateModal"
       >
         <option value="urgent">Urgent</option>
         <option value="request">Request</option>
@@ -548,7 +548,7 @@ export default {
     ProducerNotesHistory: function(prodnote) {
       this.$refs.producer_notes_history.open()
     },
-    StatusUpdateModal: function() {
+    onStatusUpdateModal: function() {
       this.$refs.status_update_modal.open()
     },
     onChange: function(field_name) {
