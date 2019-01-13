@@ -8,9 +8,11 @@
       <label>
         <strong>Project:</strong>
       </label>
+      <!--
       <b-select placeholder="Project">
         <option v-for="project in projects" v-bind:key="project.project_id">{{project.project_name}}</option>
       </b-select>
+      -->
       <label>
         <strong>Event Name:</strong>
       </label>
@@ -20,7 +22,7 @@
         name="event_name"
         placeholder="Event Name"
         class="input"
-        @input="onChangeTimeout('event_name')"
+        @input="onChange('event_name')"
       >
     </div>
     <div class="form-row second-row">
@@ -29,21 +31,13 @@
         :saveCallback="onChange"
         fieldName="client_status"
       ></statusupdatemodal>
-      <div class="control">
-        <span class="select is-empty">
-          <select
-            v-model="event.client_status"
-            placeholder="Client Status"
-            @input="onStatusUpdateModal"
-          >
-            <option value="urgent">Urgent</option>
-            <option value="request">Request</option>
-            <option value="update">Update</option>
-            <option value="scheduled">Scheduled</option>
-            <option value="cancel">Cancelled</option>
-          </select>
-        </span>
-      </div>
+      <b-select v-model="event.client_status" placeholder="Client Status">
+        <option value="urgent">Urgent</option>
+        <option value="request">Request</option>
+        <option value="update">Update</option>
+        <option value="scheduled">Scheduled</option>
+        <option value="cancel">Cancelled</option>
+      </b-select>
       <div class="history-wrap">
         <modal :client-status-hist="event.client_status_hist" ref="client_status_history">
           <h2 slot="header" class="colored">Client status history</h2>
@@ -68,7 +62,7 @@
       <b-select
         v-model="event.operations_status"
         placeholder="Operations Status"
-        @input="onChangeTimeout('operations_status')"
+        @input="onChange('operations_status')"
       >
         <option value="none">None</option>
         <option value="ok">Content OK</option>
@@ -102,11 +96,7 @@
           <font-awesome-icon class="icon" icon="history"/>History
         </button>
       </div>
-      <b-select
-        v-model="event.qa_status"
-        placeholder="QA Status"
-        @input="onChangeTimeout('qa_status')"
-      >
+      <b-select v-model="event.qa_status" placeholder="QA Status" @input="onChange('qa_status')">
         <option value="none">None</option>
         <option value="week">Week QA OK</option>
         <option value="weekissues">Week QA Issues</option>
@@ -136,7 +126,7 @@
       <b-select
         v-model="event.production_status"
         placeholder="Production Status"
-        @input="onChangeTimeout('production_status')"
+        @input="onChange('production_status')"
       >
         <option value="none">None</option>
         <option value="sent">Sent</option>
@@ -181,15 +171,9 @@
             without-header
             :minute-interval="30"
             formatted="MMMM Do YYYY, h:mm:ss a"
-            @input="onChange('event_start')"
           ></vue-ctk-date-time-picker>
         </div>
-        <b-select
-          v-model="event.time_zone"
-          class="time-zones"
-          placeholder="Time zone"
-          @input="onChangeTimeout('time_zone')"
-        >
+        <b-select v-model="event.time_zone" class="time-zones" placeholder="Time zone">
           <option value="est" selected>EST</option>
           <option value="gtm">GMT</option>
           <option value="cest">CEST</option>
@@ -537,6 +521,38 @@ export default {
       projects: []
     }
   },
+  watch: {
+    'event.client_status': function(val, oldVal) {
+      if (oldVal !== undefined) {
+        this.$refs.status_update_modal.open()
+      }
+    },
+    'event.event_start': function(val, oldVal) {
+      if (oldVal !== undefined) {
+        this.onChange('event_start')
+      }
+    },
+    'event.operations_status': function(val, oldVal) {
+      if (oldVal !== undefined) {
+        this.onChange('operations_status')
+      }
+    },
+    'event.qa_status': function(val, oldVal) {
+      if (oldVal !== undefined) {
+        this.onChange('qa_status')
+      }
+    },
+    'event.production_status': function(val, oldVal) {
+      if (oldVal !== undefined) {
+        this.onChange('production_status')
+      }
+    },
+    'event.time_zone': function(val, oldVal) {
+      if (oldVal !== undefined) {
+        this.onChange('time_zone')
+      }
+    }
+  },
   methods: {
     ClientStatusHistory: function(event) {
       this.$refs.client_status_history.open()
@@ -556,10 +572,12 @@ export default {
     ProducerNotesHistory: function(prodnote) {
       this.$refs.producer_notes_history.open()
     },
-    onStatusUpdateModal: function() {
-      this.$refs.status_update_modal.open()
-    },
+    //onStatusUpdateModal: function() {
+    //  this.$refs.status_update_modal.open()
+    //},
     onChange: function(field_name) {
+      //alert(field_name)
+      // return
       console.log(field_name)
       console.log(this.event[field_name])
       const url = 'https://intempio-api-v3.herokuapp.com/api/v3/events/'
