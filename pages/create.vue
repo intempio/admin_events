@@ -24,18 +24,26 @@
       >
     </div>
     <div class="form-row second-row">
-      <statusupdatemodal ref="status_update_modal"></statusupdatemodal>
-      <b-select
-        v-model="event.client_status"
-        placeholder="Client Status"
-        @click="onStatusUpdateModal"
-      >
-        <option value="urgent">Urgent</option>
-        <option value="request">Request</option>
-        <option value="update">Update</option>
-        <option value="scheduled">Scheduled</option>
-        <option value="cancel">Cancelled</option>
-      </b-select>
+      <statusupdatemodal
+        ref="status_update_modal"
+        :saveCallback="onChange"
+        fieldName="client_status"
+      ></statusupdatemodal>
+      <div class="control">
+        <span class="select is-empty">
+          <select
+            v-model="event.client_status"
+            placeholder="Client Status"
+            @input="onStatusUpdateModal"
+          >
+            <option value="urgent">Urgent</option>
+            <option value="request">Request</option>
+            <option value="update">Update</option>
+            <option value="scheduled">Scheduled</option>
+            <option value="cancel">Cancelled</option>
+          </select>
+        </span>
+      </div>
       <div class="history-wrap">
         <modal :client-status-hist="event.client_status_hist" ref="client_status_history">
           <h2 slot="header" class="colored">Client status history</h2>
