@@ -31,181 +31,218 @@
         :saveCallback="onChange"
         fieldName="client_status"
       ></statusupdatemodal>
-      <b-select v-model="event.client_status" placeholder="Client Status">
-        <option value="urgent">Urgent</option>
-        <option value="request">Request</option>
-        <option value="update">Update</option>
-        <option value="scheduled">Scheduled</option>
-        <option value="cancel">Cancelled</option>
-      </b-select>
-      <div class="history-wrap">
-        <modal :client-status-hist="event.client_status_hist" ref="client_status_history">
-          <h2 slot="header" class="colored">Client status history</h2>
-          <tr slot="table-header">
-            <th class="history-th-1">Person</th>
-            <th class="history-th-2">Status</th>
-            <th class="history-th-3">Last updated</th>
-            <th></th>
-          </tr>
-          <tbody slot="table-body">
-            <tr v-for="client in event.client_status_hist" v-bind:key="client.user_name">
-              <td>{{client.user_name}}</td>
-              <td>{{client.client_status}}</td>
-              <td>{{client.updated}}</td>
+      <div class="client-status-history-wrap">
+        <div class="client-status-wrap">
+          <label class="field-headers">Client Status:</label>
+          <b-select v-model="event.client_status" placeholder="Client Status">
+            <option value="urgent">Urgent</option>
+            <option value="request">Request</option>
+            <option value="update">Update</option>
+            <option value="scheduled">Scheduled</option>
+            <option value="in process">In process</option>
+            <option value="cancelled">Cancelled</option>
+          </b-select>
+        </div>
+        <div class="history-wrap hist-left-margin">
+          <modal :client-status-hist="event.client_status_hist" ref="client_status_history">
+            <h2 slot="header" class="colored">Client status history</h2>
+            <tr slot="table-header">
+              <th class="history-th-1">Person</th>
+              <th class="history-th-2">Status</th>
+              <th class="history-th-3">Last updated</th>
+              <th></th>
             </tr>
-          </tbody>
-        </modal>
-        <button class="history" @click="ClientStatusHistory">
-          <font-awesome-icon class="icon" icon="history"/>History
-        </button>
+            <tbody slot="table-body">
+              <tr v-for="client in event.client_status_hist" v-bind:key="client.user_name">
+                <td>{{client.user_name}}</td>
+                <td>{{client.client_status}}</td>
+                <td>{{client.updated}}</td>
+              </tr>
+            </tbody>
+          </modal>
+          <button class="history" @click="ClientStatusHistory">
+            <font-awesome-icon class="icon" icon="history"/>History
+          </button>
+        </div>
       </div>
-      <b-select
-        v-model="event.operations_status"
-        placeholder="Operations Status"
-        @input="onChange('operations_status')"
-      >
-        <option value="none">None</option>
-        <option value="ok">Content OK</option>
-        <option value="landing">Landing page OK</option>
-        <option value="ac">AC Room OK</option>
-        <option value="email">Email OK</option>
-        <option value="2dayqa">2 day QA OK</option>
-        <option value="dayofvent">Day of Event OK</option>
-      </b-select>
-      <div class="history-wrap">
-        <modal
-          :operations_status_hist="event.operations_status_hist"
-          ref="operations_status_history"
-        >
-          <h2 slot="header" class="colored">Operations status history</h2>
-          <tr slot="table-header">
-            <th class="history-th-1">ID</th>
-            <th class="history-th-2">Operations status</th>
-            <th class="history-th-3">Updated</th>
-            <th></th>
-          </tr>
-          <tbody slot="table-body">
-            <tr v-for="id in event.operations_status_hist" v-bind:key="id.updated_by_id">
-              <td>{{id.updated_by_id}}</td>
-              <td>{{id.operations_status}}</td>
-              <td>{{id.updated}}</td>
+      <div class="client-status-history-wrap">
+        <div class="client-status-wrap">
+          <label class="field-headers">Operation Status:</label>
+          <b-select v-model="event.operations_status" placeholder="Operations Status">
+            <option value="none">None</option>
+            <option value="ok">Content OK</option>
+            <option value="landing">Landing page OK</option>
+            <option value="ac">AC Room OK</option>
+            <option value="email">Email OK</option>
+            <option value="2dayqa">2 day QA OK</option>
+            <option value="dayofevent">Day of Event OK</option>
+          </b-select>
+        </div>
+        <div class="history-wrap hist-left-margin">
+          <modal
+            :operations_status_hist="event.operations_status_hist"
+            ref="operations_status_history"
+          >
+            <h2 slot="header" class="colored">Operations status history</h2>
+            <tr slot="table-header">
+              <th class="history-th-1">ID</th>
+              <th class="history-th-2">Operations status</th>
+              <th class="history-th-3">Updated</th>
+              <th></th>
             </tr>
-          </tbody>
-        </modal>
-        <button class="history" @click="OpenOperationsStatusHistory">
-          <font-awesome-icon class="icon" icon="history"/>History
-        </button>
+            <tbody slot="table-body">
+              <tr v-for="id in event.operations_status_hist" v-bind:key="id.updated_by_id">
+                <td>{{id.updated_by_id}}</td>
+                <td>{{id.operations_status}}</td>
+                <td>{{id.updated}}</td>
+              </tr>
+            </tbody>
+          </modal>
+          <button class="history" @click="OpenOperationsStatusHistory">
+            <font-awesome-icon class="icon" icon="history"/>History
+          </button>
+        </div>
       </div>
-      <b-select v-model="event.qa_status" placeholder="QA Status" @input="onChange('qa_status')">
-        <option value="none">None</option>
-        <option value="week">Week QA OK</option>
-        <option value="weekissues">Week QA Issues</option>
-        <option value="report">Report QA OK</option>
-      </b-select>
-      <div class="history-wrap">
-        <modal :qa-status-hist="event.qa_status_hist" ref="qa_status_history">
-          <h2 slot="header" class="colored">QA status history</h2>
-          <tr slot="table-header">
-            <th class="history-th-1">Updated</th>
-            <th class="history-th-2">QA status</th>
-            <th class="history-th-3">Last updated</th>
-            <th></th>
-          </tr>
-          <tbody slot="table-body">
-            <tr v-for="qa in event.qa_status_hist" v-bind:key="qa.qa_status">
-              <td>{{qa.updated}}</td>
-              <td>{{qa.qa_status}}</td>
-              <td>{{qa.updated}}</td>
+      <div class="client-status-history-wrap">
+        <div class="client-status-wrap">
+          <label class="field-headers">QA Status:</label>
+          <b-select
+            v-model="event.qa_status"
+            placeholder="QA Status"
+            @input="onChange('qa_status')"
+          >
+            <option value="none">None</option>
+            <option value="week">Week QA OK</option>
+            <option value="weekissues">Week QA Issues</option>
+            <option value="report">Report QA OK</option>
+          </b-select>
+        </div>
+        <div class="history-wrap hist-left-margin">
+          <modal :qa-status-hist="event.qa_status_hist" ref="qa_status_history">
+            <h2 slot="header" class="colored">QA status history</h2>
+            <tr slot="table-header">
+              <th class="history-th-1">Updated</th>
+              <th class="history-th-2">QA status</th>
+              <th class="history-th-3">Last updated</th>
+              <th></th>
             </tr>
-          </tbody>
-        </modal>
-        <button class="history" @click="QaStatusHistory">
-          <font-awesome-icon class="icon" icon="history"/>History
-        </button>
+            <tbody slot="table-body">
+              <tr v-for="qa in event.qa_status_hist" v-bind:key="qa.qa_status">
+                <td>{{qa.updated}}</td>
+                <td>{{qa.qa_status}}</td>
+                <td>{{qa.updated}}</td>
+              </tr>
+            </tbody>
+          </modal>
+          <button class="history" @click="QaStatusHistory">
+            <font-awesome-icon class="icon" icon="history"/>History
+          </button>
+        </div>
       </div>
-      <b-select
-        v-model="event.production_status"
-        placeholder="Production Status"
-        @input="onChange('production_status')"
-      >
-        <option value="none">None</option>
-        <option value="sent">Sent</option>
-        <option value="question">Question</option>
-        <option value="accepted">Accepted</option>
-        <option value="denied">Denied</option>
-        <option>Run Sheet OK</option>
-        <option>Production Ready</option>
-      </b-select>
-      <div class="history-wrap">
-        <modal
-          :production-status-hist="event.production_status_hist"
-          ref="production_status_history"
-        >
-          <h2 slot="header" class="colored">QA status history</h2>
-          <tr slot="table-header">
-            <th class="history-th-1">Updated</th>
-            <th class="history-th-2">Production status</th>
-            <th class="history-th-3">Updated by ID</th>
-            <th></th>
-          </tr>
-          <tbody slot="table-body">
-            <tr v-for="prod in event.production_status_hist" v-bind:key="prod.production_status">
-              <td>{{prod.updated}}</td>
-              <td>{{prod.production_status}}</td>
-              <td>{{prod.updated_by_id}}</td>
+      <div class="client-status-history-wrap">
+        <div class="client-status-wrap">
+          <label class="field-headers">Production Status:</label>
+          <b-select
+            v-model="event.production_status"
+            placeholder="Production Status"
+            @input="onChange('production_status')"
+          >
+            <option value="none">None</option>
+            <option value="sent">Sent</option>
+            <option value="question">Question</option>
+            <option value="accepted">Accepted</option>
+            <option value="denied">Denied</option>
+            <option>Run Sheet OK</option>
+            <option>Production Ready</option>
+          </b-select>
+        </div>
+        <div class="history-wrap hist-left-margin">
+          <modal
+            :production-status-hist="event.production_status_hist"
+            ref="production_status_history"
+          >
+            <h2 slot="header" class="colored">QA status history</h2>
+            <tr slot="table-header">
+              <th class="history-th-1">Updated</th>
+              <th class="history-th-2">Production status</th>
+              <th class="history-th-3">Updated by ID</th>
+              <th></th>
             </tr>
-          </tbody>
-        </modal>
-        <button class="history" @click="ProductionStatusHistory">
-          <font-awesome-icon class="icon" icon="history"/>History
-        </button>
+            <tbody slot="table-body">
+              <tr v-for="prod in event.production_status_hist" v-bind:key="prod.production_status">
+                <td>{{prod.updated}}</td>
+                <td>{{prod.production_status}}</td>
+                <td>{{prod.updated_by_id}}</td>
+              </tr>
+            </tbody>
+          </modal>
+          <button class="history" @click="ProductionStatusHistory">
+            <font-awesome-icon class="icon" icon="history"/>History
+          </button>
+        </div>
       </div>
     </div>
     <div class="form-row third-row">
       <div class="pickers-wrap">
-        <div class="date-time-picker-wrap">
-          <vue-ctk-date-time-picker
-            class="ctk-date-time-picker"
-            label="Event Start"
-            v-model="event.event_start"
-            without-header
-            :minute-interval="30"
-            formatted="MMMM Do YYYY, h:mm:ss a"
-          ></vue-ctk-date-time-picker>
+        <div class="inputs-wrap">
+          <label class="field-headers">Event Start:</label>
+          <div class="date-time-picker-wrap">
+            <vue-ctk-date-time-picker
+              class="ctk-date-time-picker"
+              v-model="event.event_start"
+              label
+              without-header
+              :minute-interval="30"
+              formatted="MMMM Do YYYY, h:mm:ss a"
+            ></vue-ctk-date-time-picker>
+          </div>
         </div>
-        <b-select v-model="event.time_zone" class="time-zones" placeholder="Time zone">
-          <option value="est" selected>EST</option>
-          <option value="gtm">GMT</option>
-          <option value="cest">CEST</option>
-        </b-select>
-        <input
-          v-model="event.duration_minutes"
-          type="text"
-          name="duration"
-          placeholder="Duration"
-          class="input"
-          @input="onChangeTimeout('duration_minutes')"
-        >
-        <input
-          v-model="event.producer_offset_minutes"
-          type="text"
-          name="prod_offset"
-          placeholder="Producer offset"
-          class="input"
-          @input="onChangeTimeout('producer_offset_minutes')"
-        >
-        <input
-          v-model="event.producer_count"
-          type="text"
-          name="prod_count"
-          placeholder="Producer count"
-          class="input"
-          @input="onChangeTimeout('producer_count')"
-        >
+        <div class="inputs-wrap">
+          <label class="field-headers-1">Time zone:</label>
+          <b-select v-model="event.time_zone" class="time-zones" placeholder="Time zone">
+            <option value="est" selected>EST</option>
+            <option value="gtm">GMT</option>
+            <option value="cest">CEST</option>
+          </b-select>
+        </div>
+        <div class="inputs-wrap">
+          <label class="field-headers-1 item2">Duration:</label>
+          <input
+            v-model="event.duration_minutes"
+            type="text"
+            name="duration"
+            placeholder="Duration"
+            class="input"
+            @input="onChangeTimeout('duration_minutes')"
+          >
+        </div>
+        <div class="inputs-wrap">
+          <label class="field-headers-1 item3">Producer offset:</label>
+          <input
+            v-model="event.producer_offset_minutes"
+            type="text"
+            name="prod_offset"
+            placeholder="Producer offset"
+            class="input"
+            @input="onChangeTimeout('producer_offset_minutes')"
+          >
+        </div>
+        <div class="inputs-wrap">
+          <label class="field-headers-1 item4">Producer count:</label>
+          <input
+            v-model="event.producer_count"
+            type="text"
+            name="prod_count"
+            placeholder="Producer count"
+            class="input"
+            @input="onChangeTimeout('producer_count')"
+          >
+        </div>
       </div>
     </div>
     <div class="form-row fourth-row">
       <div class="internal-notes-wrap">
+        <label class="field-headers-2 item5">Internal notes:</label>
         <textarea
           v-model="event.internal_notes"
           placeholder="Internal notes"
@@ -238,6 +275,7 @@
         </div>
       </div>
       <div class="producer-notes-wrap">
+        <label class="field-headers-2 item6">Internal notes:</label>
         <textarea
           v-model="event.producer_notes"
           placeholder="Producer notes"
@@ -271,6 +309,7 @@
       </div>
       <div class="external-notes-wrap">
         <div v-show="!isHidden" class="additionals">
+          <label class="field-headers-2 item7">External notes:</label>
           <textarea
             v-model="event.external_notes"
             placeholder="External notes"
@@ -308,9 +347,13 @@
       </div>
     </div>
     <div class="form-row fifth-row">
-      <people :people-assigned="event.people_assigned"></people>
+      <people
+        :people-assigned="event.people_assigned"
+        :persons="persons"
+        :event-id="event.event_id"
+      ></people>
       <div class="checklists width">
-        <h2 class="colored">Checklists</h2>
+        <h2 class="colored">Checklist</h2>
         <table class="assignee-list">
           <thead>
             <tr>
@@ -375,11 +418,11 @@
     </div>
     <div class="form-row sixth-row">
       <div class="product-sec width">
-        <h2 class="colored">Products</h2>
+        <h2 class="colored">Product</h2>
         <table class="assignee-list">
           <thead>
             <tr>
-              <td>Item name
+              <td>Items
                 <font-awesome-icon icon="caret-down" size="lg"/>
               </td>
               <td>Content
@@ -438,14 +481,14 @@
         </div>
       </div>
       <div class="client width">
-        <h2 class="colored">Clients</h2>
+        <h2 class="colored">Client</h2>
         <table class="assignee-list">
           <thead>
             <tr>
               <td>Item
                 <font-awesome-icon icon="caret-down" size="lg"/>
               </td>
-              <td>Description
+              <td>Content
                 <font-awesome-icon icon="caret-down" size="lg"/>
               </td>
               <td>Action</td>
@@ -518,7 +561,8 @@ export default {
       value: null,
       isHidden: true,
       event: {},
-      projects: []
+      projects: [],
+      persons: []
     }
   },
   watch: {
@@ -572,14 +616,7 @@ export default {
     ProducerNotesHistory: function(prodnote) {
       this.$refs.producer_notes_history.open()
     },
-    //onStatusUpdateModal: function() {
-    //  this.$refs.status_update_modal.open()
-    //},
     onChange: function(field_name) {
-      //alert(field_name)
-      // return
-      console.log(field_name)
-      console.log(this.event[field_name])
       const url = 'https://intempio-api-v3.herokuapp.com/api/v3/events/'
       var data = {
         event_id: this.event.event_id
@@ -599,6 +636,26 @@ export default {
       }
 
       this.timeout = setTimeout(() => this.onChange(field_name), 1500)
+    },
+
+    fetchEvent: function() {
+      axios
+        .get(
+          'https://intempio-api-v3.herokuapp.com/api/v3/events/0f51062b-0701-4a3a-a030-ac7385446e14/cf72db35-82f9-4053-a7a0-96cecc516664'
+        )
+        .then(response => {
+          this.event = response.data['event_records'][0]
+          this.projects = response.data['project_list']
+        })
+    },
+    fetchPersons: function() {
+      axios
+        .get('https://intempio-api-v3.herokuapp.com/api/v3/persons/')
+        .then(response => {
+          console.log(response.data)
+          this.persons = response.data
+        })
+      //console.log(this.persons)
     }
   },
   components: {
@@ -607,14 +664,8 @@ export default {
     statusupdatemodal
   },
   mounted: function() {
-    axios
-      .get(
-        'https://intempio-api-v3.herokuapp.com/api/v3/events/0f51062b-0701-4a3a-a030-ac7385446e14/cf72db35-82f9-4053-a7a0-96cecc516664'
-      )
-      .then(response => {
-        this.event = response.data['event_records'][0]
-        this.projects = response.data['project_list']
-      })
+    this.fetchEvent()
+    this.fetchPersons()
   }
 }
 </script>

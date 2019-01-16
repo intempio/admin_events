@@ -43,36 +43,59 @@
         <button>&raquo;</button>
       </div>
       <div class="add-new-record">
-        <b-select placeholder="Person">
-          <option>Shylla Punzalan</option>
-          <option>Jeff Ceniza</option>
-          <option>Jove Aso</option>
-          <option>Michelle Jordan</option>
-          <option>Jaclyn Stephens</option>
-          <option>Edward Colegado</option>
+        <b-select v-model="selectedPerson" placeholder="Person">
+          <option
+            value="person.person_id"
+            v-for="person in persons"
+            v-bind:key="person.person_id"
+          >{{person.first_name}} {{person.last_name}}</option>
         </b-select>
-        <b-select placeholder="Role">
-          <option>Lead Operations</option>
-          <option>Lead Producer</option>
-          <option>CSR</option>
-          <option>Primary Contact</option>
-          <option>Producer</option>
+        <b-select v-model="selectedRole" placeholder="Role">
+          <option v-for="role in roles" v-bind:key="role" value="role">{{role}}</option>
         </b-select>
-        <button class="add_btn">+ Add</button>
+        <button class="add_btn" @click="add">+ Add</button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import roles from '../roles.json'
 export default {
   name: 'people',
   template: '#people-assinged',
-  props: { peopleAssigned: Array },
+  props: { peopleAssigned: Array, persons: Array, eventId: String },
   data: function() {
-    return { show: true }
+    return {
+      roles: roles,
+      show: true,
+      selectedPerson: ''
+    }
   },
-  methods: {},
+  methods: {
+    add: function(field_name) {
+      const url = 'https://intempio-api-v3.herokuapp.com/api/v3/events/'
+      var data = {
+        event_id: this.eventId
+        /* people_assigned: [
+          personId: this.persons.person_id,
+
+        ]*/
+      }
+
+      console.log(roles)
+      data[peopleAssigned] = this.peopleAssigned
+      alert(event_id)
+      alert(data)
+      console.log(roles)
+      /* axios.put(url, data, {
+        headers: {
+          'Content-Type': 'application/json'
+        } 
+      
+      }),*/
+    }
+  },
   computed: {}
 }
 </script>
