@@ -31,7 +31,7 @@
           </div>-->
           <td>
             <a>
-              <font-awesome-icon icon="times-circle"/>Remove
+              <font-awesome-icon icon="times-circle" @click="remove"/>Remove
             </a>
           </td>
         </tr>
@@ -45,13 +45,12 @@
       <div class="add-new-record">
         <b-select v-model="selectedPerson" placeholder="Person">
           <option
-            value="person.person_id"
             v-for="person in persons"
             v-bind:key="person.person_id"
           >{{person.first_name}} {{person.last_name}}</option>
         </b-select>
         <b-select v-model="selectedRole" placeholder="Role">
-          <option v-for="role in roles" v-bind:key="role" value="role">{{role}}</option>
+          <option v-for="role in roles" v-bind:key="role" :value="role">{{role}}</option>
         </b-select>
         <button class="add_btn" @click="add">+ Add</button>
       </div>
@@ -61,6 +60,7 @@
 
 <script>
 import roles from '../roles.json'
+import axios from 'axios'
 export default {
   name: 'people',
   template: '#people-assinged',
@@ -69,32 +69,46 @@ export default {
     return {
       roles: roles,
       show: true,
-      selectedPerson: ''
+      selectedPerson: '',
+      selectedRole: ''
     }
   },
   methods: {
     add: function(field_name) {
-      const url = 'https://intempio-api-v3.herokuapp.com/api/v3/events/'
+      // const url = 'https://intempio-api-v3.herokuapp.com/api/v3/events/'
+      const url = 'http://localhost:3001/peopleassigned'
       var data = {
-        event_id: this.eventId
-        /* people_assigned: [
-          personId: this.persons.person_id,
-
-        ]*/
+        event_id: this.eventId,
+        people_assigned: [
+          {
+            person: this.selectedPerson,
+            role: this.selectedRole
+          }
+        ]
       }
 
-      console.log(roles)
-      data[peopleAssigned] = this.peopleAssigned
-      alert(event_id)
-      alert(data)
-      console.log(roles)
-      /* axios.put(url, data, {
-        headers: {
-          'Content-Type': 'application/json'
-        } 
-      
-      }),*/
-    }
+      axios
+        .post(url, data, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(response => {
+          console.log(response)
+          debugger
+          this.peopleAssigned.push({
+            person: this.selectedPerson,
+            role: this.selectedRole
+          })
+        })
+        .catch(function(error) {
+          console.log(error)
+        })
+        .then(function() {
+          // always executed
+        })
+    },
+    remove: function() {}
   },
   computed: {}
 }

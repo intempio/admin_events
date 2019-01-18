@@ -275,7 +275,7 @@
         </div>
       </div>
       <div class="producer-notes-wrap">
-        <label class="field-headers-2 item6">Internal notes:</label>
+        <label class="field-headers-2 item6">Producer notes:</label>
         <textarea
           v-model="event.producer_notes"
           placeholder="Producer notes"
@@ -309,7 +309,7 @@
       </div>
       <div class="external-notes-wrap">
         <div v-show="!isHidden" class="additionals">
-          <label class="field-headers-2 item7">External notes:</label>
+          <label class="field-headers-2">External notes:</label>
           <textarea
             v-model="event.external_notes"
             placeholder="External notes"

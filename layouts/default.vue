@@ -1,8 +1,11 @@
 <template>
   <div id="app">
     <div class="head">
-      <img src="~/assets/operation.png" class="mobile_btn">
-      <span>Operations Admin</span>
+      <div class="header-admin">
+        <img src="~/assets/operation.png" class="mobile_btn">
+        <span>Operations Admin</span>
+      </div>
+      <div class="header-projects">Sunovion</div>
     </div>
     <div class="menu-wrap">
       <template>
@@ -21,37 +24,12 @@
           </a>
         </Push>
       </template>
-      <!--<template>
-        <sidebar-menu class="sidebar" :menu="menu"/>
-      </template>-->
-      <!--<label for="menu-toggle" class="menu-icon"></label>
-      <aside class="sidebar">
-        <ul>
-          <li>
-            <img src="~/assets/biogen.png"> Biogen
-          </li>
-          <li class="active">
-            <img src="~/assets/sunovion.png"> Sunovion
-          </li>
-          <li>
-            <img src="~/assets/unassigned.png">Unassigned
-          </li>
-        </ul>
-      </aside>-->
     </div>
 
     <section class="main-content" id="page-wrap">
       <div id="wrap">
         <nuxt/>
       </div>
-
-      <!--<div class="slideout-sidebar">
-        <ul>
-          <li><img src="~/assets/biogen.png" /> Biogen</li>
-          <li class="active"><img src="~/assets/sunovion.png" /> Sunovion</li>
-          <li><img src="~/assets/unassigned.png" />Unassigned</li>
-        </ul>
-      </div>-->
     </section>
   </div>
 </template>

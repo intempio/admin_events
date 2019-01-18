@@ -99,6 +99,9 @@ div.head {
   position: fixed;
   z-index: 4;
   width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 aside ul {
   padding: 10px 0;
@@ -423,7 +426,7 @@ h2.colored {
   margin-right: 1%;
 }
 #showNotesBtn {
-  margin-top: 1%;
+  margin-top: 5%;
 }
 .history {
   width: 80px;
@@ -766,6 +769,7 @@ input.filter-item.search-input {
   opacity: 1;
   transform: translateY(0);
   font-size: 11px;
+  display: block;
 }
 
 .form-row,
@@ -794,7 +798,9 @@ input.filter-item.search-input {
   flex-direction: column;
   margin-right: 1%;
 }
-/*END OF MODAL COMPONENT */
+
+.header-projects {
+}
 
 /*-----------Media Queries Starts Here----------------*/
 /*
