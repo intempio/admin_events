@@ -14,9 +14,9 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(item, index) in peopleAssigned" v-bind:key="item.person">
+        <tr v-for="(item, index) in peopleAssigned" v-bind:key="item.person_id">
           <td>{{item.person}}</td>
-          <td>{{item.role}}</td>
+          <td>{{item.person_role}}</td>
           <!--<div id="openModal" class="modalDialog">
                   <div>
                     <a href="#close" title="Close" class="close">X</a>
@@ -30,8 +30,8 @@
                   </div>
           </div>-->
           <td>
-            <a>
-              <font-awesome-icon icon="times-circle" @click="remove"/>Remove
+            <a @click="remove(index, item.person_id)">
+              <font-awesome-icon icon="times-circle"/>Remove
             </a>
           </td>
         </tr>
@@ -43,8 +43,9 @@
         <button @click="nextPage">&raquo;</button>
       </div>
       <div class="add-new-record">
-        <b-select v-model="selectedPerson" placeholder="Person">
+        <b-select v-model="selectedPersonId" placeholder="Person">
           <option
+            :value="person.person_id"
             v-for="person in persons"
             v-bind:key="person.person_id"
           >{{person.first_name}} {{person.last_name}}</option>
@@ -52,7 +53,7 @@
         <b-select v-model="selectedRole" placeholder="Role">
           <option v-for="role in roles" v-bind:key="role" :value="role">{{role}}</option>
         </b-select>
-        <button class="add_btn" @click="add">+ Add</button>
+        <button class="add_btn" @click="add()">+ Add</button>
       </div>
     </div>
   </div>
@@ -64,9 +65,11 @@ import axios from 'axios'
 export default {
   name: 'people',
   template: '#people-assinged',
-  props: { peopleAssigned: Array, persons: Array, eventId: String },
+  props: { eventId: String },
   data: function() {
     return {
+      persons: [],
+      peopleAssigned: [],
       roles: roles,
       show: true,
       selectedPerson: '',
@@ -76,17 +79,44 @@ export default {
     }
   },
   methods: {
+    fetchPersons: function() {
+      axios
+        .get('https://intempio-api-v3.herokuapp.com/api/v3/persons/')
+        .then(response => {
+          this.persons = response.data
+          this.personsDict = this.persons.reduce(
+            (obj, person) => ({
+              [person.person_id]: person,
+              ...obj
+            }),
+            {}
+          )
+          this.fetchPeopleAssigned()
+        })
+        .catch(function(error) {
+          console.log(error)
+        })
+        .then(function() {
+          // always executed even with catched errors
+        })
+    },
+
+    fetchPeopleAssigned: function(personsDict) {
+      axios
+        .get(
+          'https://intempio-api-v3.herokuapp.com/api/v3/eventpersons?eventID=0f51062b-0701-4a3a-a030-ac7385446e14'
+        )
+        .then(response => {
+          this.peopleAssigned = response.data
+        })
+    },
+
     add: function(field_name) {
-      // const url = 'https://intempio-api-v3.herokuapp.com/api/v3/events/'
-      const url = 'http://localhost:3001/peopleassigned'
+      const url = 'https://intempio-api-v3.herokuapp.com/api/v3/eventpersons/'
       var data = {
         event_id: this.eventId,
-        people_assigned: [
-          {
-            person: this.selectedPerson,
-            role: this.selectedRole
-          }
-        ]
+        person_id: this.selectedPersonId,
+        person_role: this.selectedRole
       }
 
       axios
@@ -96,10 +126,7 @@ export default {
           }
         })
         .then(response => {
-          this.peopleAssigned.push({
-            person: this.selectedPerson,
-            role: this.selectedRole
-          })
+          this.fetchPeopleAssigned()
         })
         .catch(function(error) {
           console.log(error)
@@ -108,8 +135,31 @@ export default {
           // always executed
         })
     },
-    remove: function(index) {
-      this.peopleAssigned.splice(index, 1)
+    remove: function(index, person_id) {
+      const url = 'https://intempio-api-v3.herokuapp.com/api/v3/eventpersons/'
+      var data = {
+        event_id: this.eventId,
+        person_id: person_id
+      }
+      axios
+        .delete(
+          url,
+          { data },
+          {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }
+        )
+        .then(response => {
+          this.peopleAssigned.splice(index, 1)
+        })
+        .catch(function(error) {
+          console.log(error)
+        })
+        .then(function() {
+          // always executed
+        })
     },
     nextPage: function() {
       if (this.currentPage * this.pageSize < this.peopleAssigned.length)
@@ -119,6 +169,10 @@ export default {
       if (this.currentPage > 1) this.currentPage--
     }
   },
-  computed: {}
+  computed: {},
+
+  mounted: function() {
+    this.fetchPersons()
+  }
 }
 </script>

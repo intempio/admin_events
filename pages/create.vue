@@ -347,11 +347,7 @@
       </div>
     </div>
     <div class="form-row fifth-row">
-      <people
-        :people-assigned="event.people_assigned"
-        :persons="persons"
-        :event-id="event.event_id"
-      ></people>
+      <people :event-id="event.event_id"></people>
       <div class="checklists width">
         <h2 class="colored">Checklist</h2>
         <table class="assignee-list">
@@ -561,8 +557,7 @@ export default {
       value: null,
       isHidden: true,
       event: {},
-      projects: [],
-      persons: []
+      projects: []
     }
   },
   watch: {
@@ -647,15 +642,6 @@ export default {
           this.event = response.data['event_records'][0]
           this.projects = response.data['project_list']
         })
-    },
-    fetchPersons: function() {
-      axios
-        .get('https://intempio-api-v3.herokuapp.com/api/v3/persons/')
-        .then(response => {
-          console.log(response.data)
-          this.persons = response.data
-        })
-      //console.log(this.persons)
     }
   },
   components: {
@@ -665,7 +651,6 @@ export default {
   },
   mounted: function() {
     this.fetchEvent()
-    this.fetchPersons()
   }
 }
 </script>

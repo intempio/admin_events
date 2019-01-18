@@ -571,6 +571,7 @@ table.assignee .add_btn,
 }
 p.event_code {
   display: inline-block;
+  padding: 1%;
 }
 .first-row .input {
   width: 43%;
