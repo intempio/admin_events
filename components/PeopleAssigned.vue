@@ -14,9 +14,9 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="item in peopleAssigned" v-bind:key="item.person">
+        <tr v-for="(item, index) in peopleAssigned" v-bind:key="item.person_id">
           <td>{{item.person}}</td>
-          <td>{{item.role}}</td>
+          <td>{{item.person_role}}</td>
           <!--<div id="openModal" class="modalDialog">
                   <div>
                     <a href="#close" title="Close" class="close">X</a>
@@ -30,7 +30,7 @@
                   </div>
           </div>-->
           <td>
-            <a>
+            <a @click="remove(index, item.person_id)">
               <font-awesome-icon icon="times-circle"/>Remove
             </a>
           </td>
@@ -39,40 +39,140 @@
     </table>
     <div class="wrap-pagination-add">
       <div class="pagination-wrap">
-        <button>&laquo;</button>
-        <button>&raquo;</button>
+        <button @click="prevPage">&laquo;</button>
+        <button @click="nextPage">&raquo;</button>
       </div>
       <div class="add-new-record">
-        <b-select placeholder="Person">
-          <option>Shylla Punzalan</option>
-          <option>Jeff Ceniza</option>
-          <option>Jove Aso</option>
-          <option>Michelle Jordan</option>
-          <option>Jaclyn Stephens</option>
-          <option>Edward Colegado</option>
+        <b-select v-model="selectedPersonId" placeholder="Person">
+          <option
+            :value="person.person_id"
+            v-for="person in persons"
+            v-bind:key="person.person_id"
+          >{{person.first_name}} {{person.last_name}}</option>
         </b-select>
-        <b-select placeholder="Role">
-          <option>Lead Operations</option>
-          <option>Lead Producer</option>
-          <option>CSR</option>
-          <option>Primary Contact</option>
-          <option>Producer</option>
+        <b-select v-model="selectedRole" placeholder="Role">
+          <option v-for="role in roles" v-bind:key="role" :value="role">{{role}}</option>
         </b-select>
-        <button class="add_btn">+ Add</button>
+        <button class="add_btn" @click="add()">+ Add</button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import roles from '../roles.json'
+import axios from 'axios'
 export default {
   name: 'people',
   template: '#people-assinged',
-  props: { peopleAssigned: Array },
+  props: { eventId: String },
   data: function() {
-    return { show: true }
+    return {
+      persons: [],
+      peopleAssigned: [],
+      roles: roles,
+      show: true,
+      selectedPerson: '',
+      selectedRole: '',
+      pageSize: 3,
+      currentPage: 1
+    }
   },
-  methods: {},
-  computed: {}
+  methods: {
+    fetchPersons: function() {
+      axios
+        .get('https://intempio-api-v3.herokuapp.com/api/v3/persons/')
+        .then(response => {
+          this.persons = response.data
+          this.personsDict = this.persons.reduce(
+            (obj, person) => ({
+              [person.person_id]: person,
+              ...obj
+            }),
+            {}
+          )
+          this.fetchPeopleAssigned()
+        })
+        .catch(function(error) {
+          console.log(error)
+        })
+        .then(function() {
+          // always executed even with catched errors
+        })
+    },
+
+    fetchPeopleAssigned: function(personsDict) {
+      axios
+        .get(
+          'https://intempio-api-v3.herokuapp.com/api/v3/eventpersons?eventID=0f51062b-0701-4a3a-a030-ac7385446e14'
+        )
+        .then(response => {
+          this.peopleAssigned = response.data
+        })
+    },
+
+    add: function(field_name) {
+      const url = 'https://intempio-api-v3.herokuapp.com/api/v3/eventpersons/'
+      var data = {
+        event_id: this.eventId,
+        person_id: this.selectedPersonId,
+        person_role: this.selectedRole
+      }
+
+      axios
+        .post(url, data, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(response => {
+          this.fetchPeopleAssigned()
+        })
+        .catch(function(error) {
+          console.log(error)
+        })
+        .then(function() {
+          // always executed
+        })
+    },
+    remove: function(index, person_id) {
+      const url = 'https://intempio-api-v3.herokuapp.com/api/v3/eventpersons/'
+      var data = {
+        event_id: this.eventId,
+        person_id: person_id
+      }
+      axios
+        .delete(
+          url,
+          { data },
+          {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }
+        )
+        .then(response => {
+          this.peopleAssigned.splice(index, 1)
+        })
+        .catch(function(error) {
+          console.log(error)
+        })
+        .then(function() {
+          // always executed
+        })
+    },
+    nextPage: function() {
+      if (this.currentPage * this.pageSize < this.peopleAssigned.length)
+        this.currentPage++
+    },
+    prevPage: function() {
+      if (this.currentPage > 1) this.currentPage--
+    }
+  },
+  computed: {},
+
+  mounted: function() {
+    this.fetchPersons()
+  }
 }
 </script>

@@ -29,7 +29,10 @@
 export default {
   name: 'statusupdatemodal',
   template: '#modal-template',
-  props: { clientStatusHist: Array },
+  props: {
+    saveCallback: Function,
+    fieldName: String
+  },
   data: function() {
     return { show: false }
   },
@@ -40,8 +43,10 @@ export default {
     close: function() {
       this.show = false
     },
-
-    save: function() {}
+    save: function() {
+      this.saveCallback(this.fieldName)
+      this.show = false
+    }
   },
   computed: {}
 }
