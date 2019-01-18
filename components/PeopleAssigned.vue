@@ -14,7 +14,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="item in peopleAssigned" v-bind:key="item.person">
+        <tr v-for="(item, index) in peopleAssigned" v-bind:key="item.person">
           <td>{{item.person}}</td>
           <td>{{item.role}}</td>
           <!--<div id="openModal" class="modalDialog">
@@ -39,8 +39,8 @@
     </table>
     <div class="wrap-pagination-add">
       <div class="pagination-wrap">
-        <button>&laquo;</button>
-        <button>&raquo;</button>
+        <button @click="prevPage">&laquo;</button>
+        <button @click="nextPage">&raquo;</button>
       </div>
       <div class="add-new-record">
         <b-select v-model="selectedPerson" placeholder="Person">
@@ -70,7 +70,9 @@ export default {
       roles: roles,
       show: true,
       selectedPerson: '',
-      selectedRole: ''
+      selectedRole: '',
+      pageSize: 3,
+      currentPage: 1
     }
   },
   methods: {
@@ -94,8 +96,6 @@ export default {
           }
         })
         .then(response => {
-          console.log(response)
-          debugger
           this.peopleAssigned.push({
             person: this.selectedPerson,
             role: this.selectedRole
@@ -108,7 +108,16 @@ export default {
           // always executed
         })
     },
-    remove: function() {}
+    remove: function(index) {
+      this.peopleAssigned.splice(index, 1)
+    },
+    nextPage: function() {
+      if (this.currentPage * this.pageSize < this.peopleAssigned.length)
+        this.currentPage++
+    },
+    prevPage: function() {
+      if (this.currentPage > 1) this.currentPage--
+    }
   },
   computed: {}
 }
