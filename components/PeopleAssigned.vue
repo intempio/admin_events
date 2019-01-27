@@ -75,7 +75,8 @@ export default {
       selectedPerson: '',
       selectedRole: '',
       pageSize: 3,
-      currentPage: 1
+      currentPage: 1,
+      selectedPersonId: ''
     }
   },
   methods: {
@@ -169,6 +170,7 @@ export default {
       if (this.currentPage > 1) this.currentPage--
     }
   },
+
   computed: {},
 
   mounted: function() {

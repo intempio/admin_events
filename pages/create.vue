@@ -348,194 +348,11 @@
     </div>
     <div class="form-row fifth-row">
       <people :event-id="event.event_id"></people>
-      <div class="checklists width">
-        <h2 class="colored">Checklist</h2>
-        <table class="assignee-list">
-          <thead>
-            <tr>
-              <td>Items
-                <font-awesome-icon icon="caret-down" size="lg"/>
-              </td>
-              <td>Content
-                <font-awesome-icon icon="caret-down" size="lg"/>
-              </td>
-              <td>Action</td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Deck 1</td>
-              <td>some text</td>
-              <td>
-                <a>
-                  <font-awesome-icon icon="edit"/>Edit
-                </a>
-              </td>
-            </tr>
-            <tr>
-              <td>Deck 2</td>
-              <td>some text 2</td>
-              <td>
-                <a>
-                  <font-awesome-icon icon="edit"/>Edit
-                </a>
-              </td>
-            </tr>
-            <tr>
-              <td>Speaker 1</td>
-              <td>some text 3</td>
-              <td>
-                <a>
-                  <font-awesome-icon icon="edit"/>Edit
-                </a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="wrap-pagination-add">
-          <div class="pagination-wrap">
-            <button>&laquo;</button>
-            <button>&raquo;</button>
-          </div>
-          <div class="add-new-record">
-            <b-select placeholder="Items">
-              <option>Name</option>
-              <option>Description</option>
-              <option>Producer-onsite</option>
-              <option>Seminar-room</option>
-              <option>Recording</option>
-              <option>Audio Number</option>
-            </b-select>
-            <input type="text" name="url" placeholder="some text 4" class="input input-items">
-            <button class="add_btn">+ Add</button>
-          </div>
-        </div>
-      </div>
+      <eventtag :event-id="event.event_id" tag-type="checklist" title="Checklist"></eventtag>
     </div>
     <div class="form-row sixth-row">
-      <div class="product-sec width">
-        <h2 class="colored">Product</h2>
-        <table class="assignee-list">
-          <thead>
-            <tr>
-              <td>Items
-                <font-awesome-icon icon="caret-down" size="lg"/>
-              </td>
-              <td>Content
-                <font-awesome-icon icon="caret-down" size="lg"/>
-              </td>
-              <td>Action</td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Name</td>
-              <td>test text</td>
-              <td>
-                <a>
-                  <font-awesome-icon icon="edit"/>Edit
-                </a>
-              </td>
-            </tr>
-            <tr>
-              <td>Description</td>
-              <td>some text here</td>
-              <td>
-                <a>
-                  <font-awesome-icon icon="edit"/>Edit
-                </a>
-              </td>
-            </tr>
-            <tr>
-              <td>Producer-onsite</td>
-              <td>some text here</td>
-              <td>
-                <a>
-                  <font-awesome-icon icon="edit"/>Edit
-                </a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="wrap-pagination-add">
-          <div class="pagination-wrap">
-            <button>&laquo;</button>
-            <button>&raquo;</button>
-          </div>
-          <div class="add-new-record">
-            <b-select placeholder="Person">
-              <option>Shylla Punzalan</option>
-              <option>Jeff Ceniza</option>
-              <option>Jove Aso</option>
-              <option>Michelle Jordan</option>
-              <option>Jaclyn Stephens</option>
-              <option>Edward Colegado</option>
-            </b-select>
-            <input type="text" name="url" placeholder="input some text " class="input input-items">
-            <button class="add_btn">+ Add</button>
-          </div>
-        </div>
-      </div>
-      <div class="client width">
-        <h2 class="colored">Client</h2>
-        <table class="assignee-list">
-          <thead>
-            <tr>
-              <td>Item
-                <font-awesome-icon icon="caret-down" size="lg"/>
-              </td>
-              <td>Content
-                <font-awesome-icon icon="caret-down" size="lg"/>
-              </td>
-              <td>Action</td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>PO#</td>
-              <td>some text</td>
-              <td>
-                <a>
-                  <font-awesome-icon icon="edit"/>Edit
-                </a>
-              </td>
-            </tr>
-            <tr>
-              <td>Event Identifier</td>
-              <td>some text here</td>
-              <td>
-                <a>
-                  <font-awesome-icon icon="edit"/>Edit
-                </a>
-              </td>
-            </tr>
-            <tr>
-              <td>Brand</td>
-              <td>Some text here</td>
-              <td>
-                <a>
-                  <font-awesome-icon icon="edit"/>Edit
-                </a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="wrap-pagination-add">
-          <div class="pagination-wrap">
-            <button>&laquo;</button>
-            <button>&raquo;</button>
-          </div>
-          <div class="add-new-record">
-            <b-select placeholder="Items">
-              <option>PO#</option>
-              <option>Event Identifier</option>
-              <option>Brand</option>
-            </b-select>
-            <input type="text" name="url" placeholder="input some text " class="input input-items">
-            <button class="add_btn">+ Add</button>
-          </div>
-        </div>
-      </div>
+      <eventtag :event-id="event.event_id" tag-type="product" title="Product"></eventtag>
+      <eventtag :event-id="event.event_id" tag-type="client" title="Client"></eventtag>
     </div>
   </section>
 </template>
@@ -548,6 +365,7 @@ import axios from 'axios'
 import modal from '../components/History.vue'
 import people from '../components/PeopleAssigned.vue'
 import statusupdatemodal from '../components/StatusUpdateModal.vue'
+import eventtag from '../components/Eventtag.vue'
 
 Vue.component('vue-ctk-date-time-picker', VueCtkDateTimePicker)
 
@@ -636,7 +454,8 @@ export default {
     fetchEvent: function() {
       axios
         .get(
-          'https://intempio-api-v3.herokuapp.com/api/v3/events/0f51062b-0701-4a3a-a030-ac7385446e14/cf72db35-82f9-4053-a7a0-96cecc516664'
+          //'https://intempio-api-v3.herokuapp.com/api/v3/events/0f51062b-0701-4a3a-a030-ac7385446e14/cf72db35-82f9-4053-a7a0-96cecc516664'
+          'https://intempio-api-v3.herokuapp.com/api/v3/events/0f51062b-0701-4a3a-a030-ac7385446e14'
         )
         .then(response => {
           this.event = response.data['event_records'][0]
@@ -647,7 +466,8 @@ export default {
   components: {
     modal,
     people,
-    statusupdatemodal
+    statusupdatemodal,
+    eventtag
   },
   mounted: function() {
     this.fetchEvent()
