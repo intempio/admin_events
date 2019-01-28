@@ -4,17 +4,17 @@
     <table class="assignee-list">
       <thead>
         <tr>
-          <td>Person
+          <td class="tbl-sort" @click="sort('person')">Person
             <font-awesome-icon icon="caret-down" size="lg"/>
           </td>
-          <td>Role
+          <td class="tbl-sort" @click="sort('person_role')">Role
             <font-awesome-icon icon="caret-down" size="lg"/>
           </td>
           <td>Action</td>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(item, index) in peopleAssigned" v-bind:key="item.person_id">
+        <tr v-for="(item, index) in sortedPeopleAssigned" v-bind:key="item.person_id">
           <td>{{item.person}}</td>
           <td>{{item.person_role}}</td>
           <!--<div id="openModal" class="modalDialog">
@@ -74,6 +74,9 @@ export default {
       show: true,
       selectedPerson: '',
       selectedRole: '',
+      selectedPersonId: '',
+      currentSort: 'first_name',
+      currentSortDir: 'asc',
       pageSize: 3,
       currentPage: 1
     }
@@ -135,6 +138,7 @@ export default {
           // always executed
         })
     },
+
     remove: function(index, person_id) {
       const url = 'https://intempio-api-v3.herokuapp.com/api/v3/eventpersons/'
       var data = {
@@ -161,6 +165,15 @@ export default {
           // always executed
         })
     },
+
+    sort: function(s) {
+      //if s == current sort, reverse
+      if (s === this.currentSort) {
+        this.currentSortDir = this.currentSortDir === 'asc' ? 'desc' : 'asc'
+      }
+      this.currentSort = s
+    },
+
     nextPage: function() {
       if (this.currentPage * this.pageSize < this.peopleAssigned.length)
         this.currentPage++
@@ -169,7 +182,24 @@ export default {
       if (this.currentPage > 1) this.currentPage--
     }
   },
-  computed: {},
+
+  computed: {
+    sortedPeopleAssigned: function() {
+      return this.peopleAssigned
+        .sort((a, b) => {
+          let modifier = 1
+          if (this.currentSortDir === 'desc') modifier = -1
+          if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier
+          if (a[this.currentSort] > b[this.currentSort]) return 1 * modifier
+          return 0
+        })
+        .filter((event, index) => {
+          let start = (this.currentPage - 1) * this.pageSize
+          let end = this.currentPage * this.pageSize
+          if (index >= start && index < end) return true
+        })
+    }
+  },
 
   mounted: function() {
     this.fetchPersons()
