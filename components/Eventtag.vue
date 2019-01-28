@@ -4,17 +4,17 @@
     <table class="assignee-list">
       <thead>
         <tr>
-          <td>Items
+          <td class="tbl-sort" @click="sort('tag_name')">Items
             <font-awesome-icon icon="caret-down" size="lg"/>
           </td>
-          <td>Content
+          <td class="tbl-sort" @click="sort('tag_value')">Content
             <font-awesome-icon icon="caret-down" size="lg"/>
           </td>
           <td>Action</td>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(item, index) in Checklist" v-bind:key="item.tag_name">
+        <tr v-for="(item, index) in sortedEventtags" v-bind:key="item.tag_name">
           <td>{{item.tag_name}}</td>
           <td>
             <div v-show="index != currentIndex">
@@ -38,8 +38,8 @@
     </table>
     <div class="wrap-pagination-add">
       <div class="pagination-wrap">
-        <button>&laquo;</button>
-        <button>&raquo;</button>
+        <button @click="prevPage">&laquo;</button>
+        <button @click="nextPage">&raquo;</button>
       </div>
       <div class="add-new-record">
         <b-select v-model="selectedItem" placeholder="Items">
@@ -68,26 +68,28 @@ export default {
   props: { eventId: String, tagType: String, title: String },
   data: function() {
     return {
-      Checklist: [],
+      Eventtag: [],
       items: items,
       isHidden: false,
       show: true,
       InputTagName: '',
+      currentIndex: -1,
+      currentSort: 'tag_name',
+      currentSortDir: 'asc',
       pageSize: 3,
-      currentPage: 1,
-      currentIndex: -1
+      currentPage: 1
     }
   },
   watch: {
     eventId: function(val) {
       if (val !== undefined) {
-        this.fetchChecklist()
+        this.fetchEventtag()
       }
     }
   },
 
   methods: {
-    fetchChecklist: function() {
+    fetchEventtag: function() {
       const url =
         'https://intempio-api-v3.herokuapp.com/api/v3/eventtags/?eventID=' +
         this.eventId +
@@ -95,9 +97,10 @@ export default {
         this.tagType
 
       axios.get(url).then(response => {
-        this.Checklist = response.data
+        this.Eventtag = response.data
       })
     },
+
     add: function(field_name) {
       const url = 'https://intempio-api-v3.herokuapp.com/api/v3/eventtags/'
       var data = {
@@ -114,7 +117,7 @@ export default {
           }
         })
         .then(response => {
-          this.fetchChecklist()
+          this.fetchEventtag()
         })
         .catch(function(error) {
           console.log(error)
@@ -147,7 +150,7 @@ export default {
           }
         })
         .then(response => {
-          this.fetchChecklist()
+          this.fetchEventtag()
         })
         .catch(function(error) {
           console.log(error)
@@ -155,8 +158,37 @@ export default {
         .then(function() {
           // always executed
         })
+    },
+
+    sort: function(s) {
+      //if s == current sort, reverse
+      if (s === this.currentSort) {
+        this.currentSortDir = this.currentSortDir === 'asc' ? 'desc' : 'asc'
+      }
+      this.currentSort = s
+    },
+    nextPage: function() {
+      if (this.currentPage * this.pageSize < this.Eventtag.length)
+        this.currentPage++
+    },
+    prevPage: function() {
+      if (this.currentPage > 1) this.currentPage--
     }
   },
-  computed: {}
+  computed: {
+    sortedEventtags: function() {
+      return this.Eventtag.sort((a, b) => {
+        let modifier = 1
+        if (this.currentSortDir === 'desc') modifier = -1
+        if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier
+        if (a[this.currentSort] > b[this.currentSort]) return 1 * modifier
+        return 0
+      }).filter((event, index) => {
+        let start = (this.currentPage - 1) * this.pageSize
+        let end = this.currentPage * this.pageSize
+        if (index >= start && index < end) return true
+      })
+    }
+  }
 }
 </script>
