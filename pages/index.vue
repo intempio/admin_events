@@ -51,7 +51,6 @@ export default {
   mounted: function() {
     axios
       .get('https://intempio-api-v3.herokuapp.com/api/v3/events/')
-      //.get('http://localhost:3001/view')
       .then(response => {
         this.events = response.data['records']
         this.recentEvents = response.data['records'].filter((event, index) => {

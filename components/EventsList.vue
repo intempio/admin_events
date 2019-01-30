@@ -3,7 +3,7 @@
     <table border="1">
       <thead>
         <tr>
-          <th class="tbl-sort" @click="sort('customer_name')">Contact
+          <th class="tbl-sort" @click="sort('contact')">Contact
             <font-awesome-icon icon="caret-down" size="lg"/>
           </th>
           <th class="tbl-sort" @click="sort('event_code')">Event Code
@@ -27,7 +27,8 @@
       <tbody>
         <tr class="sub" v-for="event in sortedEvents" v-bind:key="event.event_code">
           <td>
-            <a href="#openModal">{{ event.customer_name }}</a>
+            {{ event.contact }}
+            <!--<a href="#openModal">{{ event.contact }}</a>
             <div id="openModal" class="modalDialog">
               <div>
                 <a href="#close" title="Close" class="close">X</a>
@@ -47,7 +48,7 @@
                   </li>
                 </ul>
               </div>
-            </div>
+            </div>-->
           </td>
           <td>{{ event.event_code }}</td>
           <td>{{ event.event_name }}</td>
@@ -55,7 +56,7 @@
           <td>{{ event.updated }}</td>
           <td>{{ event.client_status }}</td>
           <td>
-            <a href="/create">
+            <a :href="'/events/' + event.event_id">
               <button>Edit</button>
             </a>
             <button class="clone">Clone</button>
