@@ -59,7 +59,7 @@
             <a :href="'/events/' + event.event_id">
               <button>Edit</button>
             </a>
-            <button class="clone">Clone</button>
+            <button @click="clone(event.event_id)" class="clone">Clone</button>
           </td>
         </tr>
       </tbody>
@@ -74,7 +74,7 @@ import axios from 'axios'
 
 export default {
   name: 'EventsList',
-  props: { events: Array, isRecent: Boolean },
+  props: { events: Array, isRecent: Boolean, fetchEvents: Function },
   data() {
     return {
       currentSort: 'event_code',
@@ -98,6 +98,31 @@ export default {
     },
     prevPage: function() {
       if (this.currentPage > 1) this.currentPage--
+    },
+
+    clone: function(event_id) {
+      const url = 'https://intempio-api-v3.herokuapp.com/api/v3/events/'
+      var data = {
+        event_id: event_id,
+        clone: 'True'
+      }
+
+      axios
+        .post(url, data, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(response => {
+          this.fetchEvents()
+          alert('Event was successfully cloned!')
+        })
+        .catch(function(error) {
+          console.log(error)
+        })
+        .then(function() {
+          // always executed even with catched errors
+        })
     }
   },
   computed: {
