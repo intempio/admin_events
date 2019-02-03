@@ -42,7 +42,7 @@
         <button @click="nextPage">&raquo;</button>
       </div>
       <div class="add-new-record">
-        <b-select v-model="selectedItem" placeholder="Items">
+        <b-select v-model="selectedItem" placeholder="Items" class="eventtag-select">
           <option :value="item" v-for="item in items" v-bind:key="item">{{item}}</option>
         </b-select>
         <input

@@ -218,14 +218,15 @@
         </div>
         <div class="inputs-wrap">
           <label class="field-headers-1 item3">Producer offset:</label>
-          <input
+          <b-select
             v-model="event.producer_offset_minutes"
-            type="text"
-            name="prod_offset"
             placeholder="Producer offset"
-            class="input"
-            @input="onChangeTimeout('producer_offset_minutes')"
+            @input="onChange('producer_offset_minutes')"
           >
+            <option value="0">0</option>
+            <option value="60" selected>60</option>
+            <option value="120">120</option>
+          </b-select>
         </div>
         <div class="inputs-wrap">
           <label class="field-headers-1 item4">Producer count:</label>
@@ -408,6 +409,11 @@ export default {
     'event.time_zone': function(val, oldVal) {
       if (oldVal !== undefined) {
         this.onChange('time_zone')
+      }
+    },
+    'event.producer_offset_minutes': function(val, oldVal) {
+      if (oldVal !== undefined) {
+        this.onChange('producer_offset_minutes')
       }
     }
   },
