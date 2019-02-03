@@ -206,7 +206,7 @@
           </b-select>
         </div>
         <div class="inputs-wrap">
-          <label class="field-headers-1 item2">Duration:</label>
+          <label class="field-headers-1 item2">Duration(minutes):</label>
           <input
             v-model="event.duration_minutes"
             type="text"
@@ -362,10 +362,11 @@ import Vue from 'vue'
 import VueCtkDateTimePicker from 'vue-ctk-date-time-picker'
 import 'vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.min.css'
 import axios from 'axios'
-import modal from '../components/History.vue'
-import people from '../components/PeopleAssigned.vue'
-import statusupdatemodal from '../components/StatusUpdateModal.vue'
-import eventtag from '../components/Eventtag.vue'
+
+import modal from '../../components/History.vue'
+import people from '../../components/PeopleAssigned.vue'
+import statusupdatemodal from '../../components/StatusUpdateModal.vue'
+import eventtag from '../../components/Eventtag.vue'
 
 Vue.component('vue-ctk-date-time-picker', VueCtkDateTimePicker)
 
@@ -452,6 +453,7 @@ export default {
     },
 
     fetchEvent: function() {
+<<<<<<< HEAD:pages/create.vue
       axios
         .get(
           //'https://intempio-api-v3.herokuapp.com/api/v3/events/0f51062b-0701-4a3a-a030-ac7385446e14/cf72db35-82f9-4053-a7a0-96cecc516664'
@@ -461,6 +463,15 @@ export default {
           this.event = response.data['event_records'][0]
           this.projects = response.data['project_list']
         })
+=======
+      const url =
+        'https://intempio-api-v3.herokuapp.com/api/v3/events/' +
+        this.$route.params.event_id
+      axios.get(url).then(response => {
+        this.event = response.data['event_records'][0]
+        this.projects = response.data['project_list']
+      })
+>>>>>>> develop:pages/events/_event_id.vue
     }
   },
   components: {
@@ -470,6 +481,8 @@ export default {
     eventtag
   },
   mounted: function() {
+    console.log(this.$route.params)
+
     this.fetchEvent()
   }
 }

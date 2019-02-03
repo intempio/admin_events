@@ -24,7 +24,7 @@
       </a>
     </div>
 
-    <events-list :events="events"></events-list>
+    <events-list :events="events" :fetchEvents="fetchEvents"></events-list>
   </section>
 </template>
 
@@ -45,24 +45,30 @@ export default {
       recentEvents: []
     }
   },
+  methods: {
+    fetchEvents: function() {
+      axios
+        .get('https://intempio-api-v3.herokuapp.com/api/v3/events/')
+        .then(response => {
+          this.events = response.data['records']
+          this.recentEvents = response.data['records'].filter(
+            (event, index) => {
+              if (
+                event.client_status == 'update' ||
+                event.client_status == 'urgent' ||
+                event.client_status == 'request'
+              )
+                return true
+            }
+          )
+        })
+    }
+  },
   components: {
     EventsList
   },
   mounted: function() {
-    axios
-      .get('https://intempio-api-v3.herokuapp.com/api/v3/events/')
-      //.get('http://localhost:3001/view')
-      .then(response => {
-        this.events = response.data['records']
-        this.recentEvents = response.data['records'].filter((event, index) => {
-          if (
-            event.client_status == 'update' ||
-            event.client_status == 'urgent' ||
-            event.client_status == 'request'
-          )
-            return true
-        })
-      })
+    this.fetchEvents()
   }
 }
 </script>
