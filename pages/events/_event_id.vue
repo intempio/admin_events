@@ -453,17 +453,6 @@ export default {
     },
 
     fetchEvent: function() {
-<<<<<<< HEAD:pages/create.vue
-      axios
-        .get(
-          //'https://intempio-api-v3.herokuapp.com/api/v3/events/0f51062b-0701-4a3a-a030-ac7385446e14/cf72db35-82f9-4053-a7a0-96cecc516664'
-          'https://intempio-api-v3.herokuapp.com/api/v3/events/0f51062b-0701-4a3a-a030-ac7385446e14'
-        )
-        .then(response => {
-          this.event = response.data['event_records'][0]
-          this.projects = response.data['project_list']
-        })
-=======
       const url =
         'https://intempio-api-v3.herokuapp.com/api/v3/events/' +
         this.$route.params.event_id
@@ -471,7 +460,6 @@ export default {
         this.event = response.data['event_records'][0]
         this.projects = response.data['project_list']
       })
->>>>>>> develop:pages/events/_event_id.vue
     }
   },
   components: {
