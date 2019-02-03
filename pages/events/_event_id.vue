@@ -218,14 +218,6 @@
         </div>
         <div class="inputs-wrap">
           <label class="field-headers-1 item3">Producer offset:</label>
-          <!--<input
-            v-model="event.producer_offset_minutes"
-            type="text"
-            name="prod_offset"
-            placeholder="Producer offset"
-            class="input"
-            @input="onChangeTimeout('producer_offset_minutes')"
-          >-->
           <b-select
             v-model="event.producer_offset_minutes"
             placeholder="Producer offset"

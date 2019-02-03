@@ -390,7 +390,7 @@ h2.colored {
   justify-content: space-between;
 }
 .input-items {
-  width: 40%;
+  width: 38%;
 }
 .pagination-wrap {
   width: 30%;
@@ -802,7 +802,8 @@ input.filter-item.search-input {
   margin-right: 1%;
 }
 
-.header-projects {
+.eventtag-select {
+  width: 41%;
 }
 
 /*-----------Media Queries Starts Here----------------*/
