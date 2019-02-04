@@ -185,7 +185,10 @@ export default {
 
   computed: {
     sortedPeopleAssigned: function() {
-      return this.peopleAssigned
+      const peopleassigned =
+        this.peopleAssigned == null ? [] : this.peopleAssigned
+
+      return peopleassigned
         .sort((a, b) => {
           let modifier = 1
           if (this.currentSortDir === 'desc') modifier = -1
