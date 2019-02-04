@@ -177,17 +177,21 @@ export default {
   },
   computed: {
     sortedEventtags: function() {
-      return this.Eventtag.sort((a, b) => {
-        let modifier = 1
-        if (this.currentSortDir === 'desc') modifier = -1
-        if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier
-        if (a[this.currentSort] > b[this.currentSort]) return 1 * modifier
-        return 0
-      }).filter((event, index) => {
-        let start = (this.currentPage - 1) * this.pageSize
-        let end = this.currentPage * this.pageSize
-        if (index >= start && index < end) return true
-      })
+      const eventtags = this.Eventtag == null ? [] : this.Eventtag
+
+      return eventtags
+        .sort((a, b) => {
+          let modifier = 1
+          if (this.currentSortDir === 'desc') modifier = -1
+          if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier
+          if (a[this.currentSort] > b[this.currentSort]) return 1 * modifier
+          return 0
+        })
+        .filter((event, index) => {
+          let start = (this.currentPage - 1) * this.pageSize
+          let end = this.currentPage * this.pageSize
+          if (index >= start && index < end) return true
+        })
     }
   }
 }
