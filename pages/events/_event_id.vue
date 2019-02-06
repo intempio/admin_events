@@ -206,7 +206,7 @@
           </b-select>
         </div>
         <div class="inputs-wrap">
-          <label class="field-headers-1 item2">Duration(minutes):</label>
+          <label class="field-headers-1 item2">Duration( minutes):</label>
           <input
             v-model="event.duration_minutes"
             type="text"
