@@ -71,6 +71,7 @@
 
 <script>
 import axios from 'axios'
+import router from 'vue-router'
 
 export default {
   name: 'EventsList',
@@ -114,8 +115,7 @@ export default {
           }
         })
         .then(response => {
-          this.fetchEvents()
-          alert('Event was successfully cloned!')
+          this.$router.push(`/events/${response.data.event_id}`)
         })
         .catch(function(error) {
           console.log(error)
