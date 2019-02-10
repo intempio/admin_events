@@ -806,6 +806,13 @@ input.filter-item.search-input {
   width: 41%;
 }
 
+.bm-item-list > .popup-menu-item > a {
+  margin-left: 10px;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 400 !important;
+  line-height: 1.5;
+}
 /*-----------Media Queries Starts Here----------------*/
 /*
 @media screen and (max-width: 800px) {

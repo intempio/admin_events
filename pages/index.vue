@@ -1,74 +1,44 @@
 <template>
-  <section class="content main">
-    <h2>Recent Updates: Sunovion</h2>
-
-    <events-list :events="recentEvents" :is-recent="true"></events-list>
-
-    <div class="filter-container" style="margin-bottom: 25px">
-      <div class="search-input-field-name">
-        <input
-          type="text"
-          style="width: 200px;"
-          class="filter-item search-input"
-          placeholder="Search"
-          v-model="search"
-        >
-        <button class="search-icon">
-          <font-awesome-icon icon="search"/>
-        </button>
+  <section>
+    <div class="head">
+      <div class="header-admin">
+        <img src="~/assets/operation.png" class="mobile_btn">
+        <span>Operations Admin</span>
       </div>
-      <a href="/create">
-        <button class="add_btn">
-          <font-awesome-icon class="icon" icon="calendar-plus"/>Add
-        </button>
-      </a>
+      <div class="header-projects">{{client_name}}</div>
     </div>
 
-    <events-list :events="events" :fetchEvents="fetchEvents"></events-list>
+    <popupmenu :set-client="setClient"></popupmenu>
+
+    <section class="main-content" id="page-wrap">
+      <div id="wrap">
+        <client-main :client-id="client_id"></client-main>
+      </div>
+    </section>
   </section>
 </template>
 
 <script>
-import EventsList from '../components/EventsList.vue'
+import ClientMain from '../components/ClientMain.vue'
+import popupmenu from '../components/popupmenu.vue'
 import axios from 'axios'
-
 export default {
-  name: 'App',
+  name: 'index',
   data() {
     return {
-      currentSort: 'event_code',
-      currentSortDir: 'asc',
-      pageSize: 9,
-      currentPage: 1,
-      search: '',
-      events: [],
-      recentEvents: []
-    }
-  },
-  methods: {
-    fetchEvents: function() {
-      axios
-        .get('https://intempio-api-v3.herokuapp.com/api/v3/events/')
-        .then(response => {
-          this.events = response.data['records']
-          this.recentEvents = response.data['records'].filter(
-            (event, index) => {
-              if (
-                event.client_status == 'update' ||
-                event.client_status == 'urgent' ||
-                event.client_status == 'request'
-              )
-                return true
-            }
-          )
-        })
+      client_id: 'cf72db35-82f9-4053-a7a0-96cecc516664',
+      client_name: 'Biogen'
     }
   },
   components: {
-    EventsList
+    ClientMain,
+    popupmenu
   },
-  mounted: function() {
-    this.fetchEvents()
+  methods: {
+    setClient: function(client_id, client_name) {
+      this.client_id = client_id
+      this.client_name = client_name
+    }
   }
 }
 </script>
