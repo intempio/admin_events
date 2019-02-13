@@ -17,11 +17,13 @@
           <font-awesome-icon icon="search"/>
         </button>
       </div>
-      <a href="/create">
-        <button class="add_btn">
-          <font-awesome-icon class="icon" icon="calendar-plus"/>Add
-        </button>
-      </a>
+
+      <addeventmodal ref="add_event_modal" :client-id="clientId"></addeventmodal>
+
+      <button class="add_btn" @click="AddEventModal">
+        <font-awesome-icon class="icon" icon="calendar-plus"/>Add
+      </button>
+
     </div>
 
     <events-list :events="events" :fetchEvents="fetchEvents"></events-list>
@@ -30,6 +32,8 @@
 
 <script>
 import EventsList from '../components/EventsList.vue'
+import addeventmodal from '../components/addeventpopup.vue'
+
 import axios from 'axios'
 
 export default {
@@ -47,8 +51,8 @@ export default {
     }
   },
   watch: {
-    clientId: function clientChanged() {
-      console.log('clientIdChanged')
+    clientId: function() {
+
       this.fetchEvents()
     }
   },
@@ -74,10 +78,15 @@ export default {
             return true
         })
       })
+    },
+
+    AddEventModal: function(addeventmodal) {
+      this.$refs.add_event_modal.open()
     }
   },
   components: {
-    EventsList
+    EventsList,
+    addeventmodal
   },
   mounted: function() {
     this.fetchEvents()
