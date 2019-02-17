@@ -7,7 +7,11 @@
     <div class="filter-container" style="margin-bottom: 25px">
       <div class="search-input-field-name cleartext-wrap">
         <input type="text" class="filter-item search-input" placeholder="Search" v-model="search">
-        <span class="cleartext-close" v-show="this.search != ''" @click="search = ''">&#215;</span>
+        <span
+          class="cleartext-close"
+          v-show="this.search != ''"
+          @click="search = '', onSearch()"
+        >&#215;</span>
         <button @click="onSearch()" class="search-icon">
           <font-awesome-icon icon="search"/>
         </button>
@@ -86,7 +90,6 @@ export default {
     },
 
     onSearch: function() {
-      // alert(this.search)
       this.fetchEvents()
     }
   },
