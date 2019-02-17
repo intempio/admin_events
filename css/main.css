@@ -89,7 +89,7 @@ button {
   cursor: pointer;
 }
 input.filter-item {
-  padding: 7px 10px;
+  padding: 7px 20px 7px 10px;
   width: 320px !important;
 }
 div.head {
@@ -189,9 +189,6 @@ thead {
   border-left: 0 !important;
   border-bottom: 0 !important;
   border-top: 0 !important;
-}
-input.filter-item.search-input {
-  display: inline-block;
 }
 button.search {
   display: inline-block;
@@ -626,9 +623,11 @@ button.add {
   margin: 2% 0;
 }
 input.filter-item.search-input {
-  width: 320px;
+  display: inline-block;
+  width: 320px !important;
   height: 35px;
-  padding: 7px 10px;
+  padding: 7px 20px 7px 10px;
+  margin-right: 1%;
 }
 
 .search-input-field-name {
@@ -821,5 +820,23 @@ input.filter-item.search-input {
 
 .b-radio.radio {
   color: #0097e1;
+}
+
+.cleartext-wrap {
+  position: relative;
+  width: 320px;
+}
+
+.cleartext-close {
+  display: block;
+  position: absolute;
+  top: 5px;
+  left: 252px;
+  z-index: 100;
+  cursor: pointer;
+}
+
+.search-icon {
+  height: 35px;
 }
 /*-----------Media Queries Starts Here----------------*/

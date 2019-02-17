@@ -2,18 +2,13 @@
   <section class="content main">
     <h2>Recent Updates:</h2>
 
-    <events-list :events="recentEvents" :is-recent="true"></events-list>
+    <events-list :events="recentEvents"></events-list>
 
     <div class="filter-container" style="margin-bottom: 25px">
-      <div class="search-input-field-name">
-        <input
-          type="text"
-          style="width: 200px;"
-          class="filter-item search-input"
-          placeholder="Search"
-          v-model="search"
-        >
-        <button class="search-icon">
+      <div class="search-input-field-name cleartext-wrap">
+        <input type="text" class="filter-item search-input" placeholder="Search" v-model="search">
+        <span class="cleartext-close" v-show="this.search != ''" @click="search = ''">&#215;</span>
+        <button @click="onSearch()" class="search-icon">
           <font-awesome-icon icon="search"/>
         </button>
       </div>
@@ -23,7 +18,6 @@
       <button class="add_btn" @click="AddEventModal">
         <font-awesome-icon class="icon" icon="calendar-plus"/>Add
       </button>
-
     </div>
 
     <events-list :events="events" :fetchEvents="fetchEvents"></events-list>
@@ -52,7 +46,6 @@ export default {
   },
   watch: {
     clientId: function() {
-
       this.fetchEvents()
     }
   },
@@ -60,28 +53,41 @@ export default {
     fetchEvents: function() {
       const url =
         'https://intempio-api-v3.herokuapp.com/api/v3/events/?clientID=' +
-        this.clientId
+        this.clientId +
+        '&fromDate=2019-01-01 10:20 AM&toDate=2019-12-31 10:30 PM&searchStr=' +
+        this.search
 
       axios.get(url).then(response => {
         this.events = response.data['records']
         if (this.events === null) {
           this.events = []
-          this.recentEvents = []
+          if (this.search === '') {
+            this.recentEvents = []
+          }
           return
         }
-        this.recentEvents = response.data['records'].filter((event, index) => {
-          if (
-            event.client_status == 'update' ||
-            event.client_status == 'urgent' ||
-            event.client_status == 'request'
+        if (this.search === '') {
+          this.recentEvents = response.data['records'].filter(
+            (event, index) => {
+              if (
+                event.client_status == 'update' ||
+                event.client_status == 'urgent' ||
+                event.client_status == 'request'
+              )
+                return true
+            }
           )
-            return true
-        })
+        }
       })
     },
 
     AddEventModal: function(addeventmodal) {
       this.$refs.add_event_modal.open()
+    },
+
+    onSearch: function() {
+      // alert(this.search)
+      this.fetchEvents()
     }
   },
   components: {

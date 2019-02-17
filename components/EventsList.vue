@@ -75,7 +75,7 @@ import router from 'vue-router'
 
 export default {
   name: 'EventsList',
-  props: { events: Array, isRecent: Boolean, fetchEvents: Function },
+  props: { events: Array, fetchEvents: Function },
   data() {
     return {
       currentSort: 'event_code',
