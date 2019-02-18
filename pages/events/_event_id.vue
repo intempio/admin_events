@@ -192,8 +192,9 @@
               v-model="event.event_start"
               label
               without-header
-              :minute-interval="30"
-              formatted="MMMM Do YYYY, h:mm:ss a"
+              :minute-interval="15"
+              formatted="MMMM Do YYYY, h:mm:ss"
+              time-format="'H:mm:ss"
             ></vue-ctk-date-time-picker>
           </div>
         </div>

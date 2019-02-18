@@ -12,10 +12,10 @@
           <th class="tbl-sort" @click="sort('event_name')">Event Name
             <font-awesome-icon icon="caret-down" size="lg"/>
           </th>
-          <th class="tbl-sort" @click="sort('event_date')">Event Date
+          <th class="tbl-sort" @click="sort('event_start')">Event Date
             <font-awesome-icon icon="caret-down" size="lg"/>
           </th>
-          <th class="tbl-sort" @click="sort('last_updated')">Last Updated
+          <th class="tbl-sort" @click="sort('updated')">Last Updated
             <font-awesome-icon icon="caret-down" size="lg"/>
           </th>
           <th class="tbl-sort" @click="sort('client_status')">Client Status
@@ -75,7 +75,7 @@ import router from 'vue-router'
 
 export default {
   name: 'EventsList',
-  props: { events: Array, isRecent: Boolean, fetchEvents: Function },
+  props: { events: Array, fetchEvents: Function },
   data() {
     return {
       currentSort: 'event_code',
