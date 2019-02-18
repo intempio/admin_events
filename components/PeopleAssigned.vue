@@ -81,6 +81,13 @@ export default {
       currentPage: 1
     }
   },
+  watch: {
+    eventId: function(val) {
+      if (val !== undefined) {
+        this.fetchPeopleAssigned()
+      }
+    }
+  },
   methods: {
     fetchPersons: function() {
       axios
@@ -105,13 +112,13 @@ export default {
     },
 
     fetchPeopleAssigned: function(personsDict) {
-      axios
-        .get(
-          'https://intempio-api-v3.herokuapp.com/api/v3/eventpersons?eventID=0f51062b-0701-4a3a-a030-ac7385446e14'
-        )
-        .then(response => {
-          this.peopleAssigned = response.data
-        })
+      const url =
+        'https://intempio-api-v3.herokuapp.com/api/v3/eventpersons/?eventID=' +
+        this.eventId
+
+      axios.get(url).then(response => {
+        this.peopleAssigned = response.data
+      })
     },
 
     add: function(field_name) {
@@ -202,10 +209,6 @@ export default {
           if (index >= start && index < end) return true
         })
     }
-  },
-
-  mounted: function() {
-    this.fetchPersons()
   }
 }
 </script>
