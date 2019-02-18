@@ -476,7 +476,7 @@ export default {
     eventtag
   },
   mounted: function() {
-    console.log(this.$route.params)
+    //console.log(this.$route.params)
 
     this.fetchEvent()
   }
