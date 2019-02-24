@@ -77,7 +77,8 @@ export default {
       currentSort: 'tag_name',
       currentSortDir: 'asc',
       pageSize: 3,
-      currentPage: 1
+      currentPage: 1,
+      selectedItem: ''
     }
   },
   watch: {
