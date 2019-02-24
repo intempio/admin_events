@@ -56,9 +56,9 @@
           <td>{{ event.updated }}</td>
           <td>{{ event.client_status }}</td>
           <td>
-            <a :href="'/events/' + event.event_id">
+            <router-link :to="'/events/' + event.event_id">
               <button>Edit</button>
-            </a>
+            </router-link>
             <button @click="clone(event.event_id)" class="clone">Clone</button>
           </td>
         </tr>

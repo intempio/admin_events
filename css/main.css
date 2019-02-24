@@ -50,7 +50,6 @@ tr {
   width: 84%;
   display: inline-block;
   vertical-align: top;
-  margin-top: 60px;
   margin-left: 3%;
 }
 .header {
@@ -121,7 +120,9 @@ aside li img {
   display: flex;
   flex-flow: column;
   justify-content: space-between;
-  padding: 20px;
+  padding-top: 80px;
+  padding-left: 15px;
+  padding-right: 15px;
 }
 .el-input__inner {
   padding: 7px 10px;
