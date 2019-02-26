@@ -206,9 +206,9 @@
           <div class="inputs-wrap">
             <label class="field-headers-1">Time zone:</label>
             <b-select v-model="event.time_zone" class="time-zones" placeholder="Time zone">
-              <option value="est" selected>EST</option>
-              <option value="gmt">GMT</option>
-              <option value="cest">CEST</option>
+              <option value="EST" selected>EST</option>
+              <option value="GMT">GMT</option>
+              <option value="CEST">CEST</option>
             </b-select>
           </div>
           <div class="inputs-wrap">
