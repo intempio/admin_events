@@ -78,13 +78,15 @@ export default {
       currentSort: 'first_name',
       currentSortDir: 'asc',
       pageSize: 3,
-      currentPage: 1
+      currentPage: 1,
+      personsDict: []
     }
   },
   watch: {
     eventId: function(val) {
       if (val !== undefined) {
         this.fetchPeopleAssigned()
+        this.fetchPersons()
       }
     }
   },
