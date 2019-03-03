@@ -626,7 +626,7 @@ button.add {
 input.filter-item.search-input {
   display: inline-block;
   width: 320px !important;
-  height: 35px;
+  height: 37.7px;
   padding: 7px 20px 7px 10px;
   margin-right: 1%;
 }
@@ -825,7 +825,7 @@ input.filter-item.search-input {
 
 .cleartext-wrap {
   position: relative;
-  width: 320px;
+  width: 550px;
 }
 
 .cleartext-close {
@@ -840,4 +840,5 @@ input.filter-item.search-input {
 .search-icon {
   height: 35px;
 }
+
 /*-----------Media Queries Starts Here----------------*/
