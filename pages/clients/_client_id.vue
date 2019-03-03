@@ -18,7 +18,7 @@
             <span
               class="cleartext-close"
               v-show="this.search"
-              @click="search = '', onSearch()"
+              @click="search = '', dateFrom='', dateTo='', onSearch()"
             >&#215;</span>
 
             <div class="inputs-wrap from">
@@ -30,6 +30,7 @@
                   disable-time
                   without-header
                   formatted="DD-MM-YYYY"
+                  format="YYYY-MM-DD"
                 ></vue-ctk-date-time-picker>
               </div>
             </div>
@@ -43,6 +44,7 @@
                   without-header
                   disable-time
                   formatted="DD-MM-YYYY"
+                  format="YYYY-MM-DD"
                 ></vue-ctk-date-time-picker>
               </div>
             </div>
@@ -93,14 +95,28 @@ export default {
 
   methods: {
     fetchEvents: function() {
+      let date = new Date()
+      date.setDate(date.getDate())
+      let curdatestr = date.toISOString().split('T')[0]
+
+      date.setDate(date.getDate() + 30)
+      let dateTostr = date.toISOString().split('T')[0]
+
       let url =
         'https://intempio-api-v3.herokuapp.com/api/v3/events/?clientID=' +
         this.$route.params.client_id
       if (this.search) {
-        url +=
-          '&fromDate=2019-01-01 10:20 AM&toDate=2019-12-31 10:30 PM' +
-          '&searchStr=' +
-          this.search
+        url += '&searchStr=' + this.search
+        if (this.dateFrom) {
+          url += '&fromDate=' + this.dateFrom + ' 09:00 AM'
+        } else {
+          url += '&fromDate=' + curdatestr + ' 09:00 AM'
+        }
+        if (this.dateTo) {
+          url += '&toDate=' + this.dateTo + ' 10:00 PM'
+        } else {
+          url += '&toDate=' + dateTostr + ' 10:00 PM'
+        }
       }
 
       axios.get(url).then(response => {
@@ -145,6 +161,12 @@ export default {
       if (this.search) {
         url += `?search=${this.search}`
       }
+      if (this.dateFrom) {
+        url += `&fromDate=${this.dateFrom}`
+      }
+      if (this.dateTo) {
+        url += `&toDate=${this.dateTo}`
+      }
       this.$router.push(url)
       this.fetchEvents()
     }
@@ -156,6 +178,11 @@ export default {
   },
   mounted: function() {
     this.search = this.$route.query.search
+    if (this.$route.query.fromDate && this.$route.query.toDate) {
+      this.dateFrom = this.$route.query.fromDate
+      this.dateTo = this.$route.query.toDate
+    }
+
     this.fetchEvents()
     this.fetchRecentEvents()
   }
