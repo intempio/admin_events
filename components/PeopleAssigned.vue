@@ -93,7 +93,7 @@ export default {
   methods: {
     fetchPersons: function() {
       axios
-        .get('https://intempio-api-v3.herokuapp.com/api/v3/persons/')
+        .get(process.env.VUE_APP_API + '/api/v3/persons/')
         .then(response => {
           this.persons = response.data
           this.personsDict = this.persons.reduce(
@@ -115,7 +115,8 @@ export default {
 
     fetchPeopleAssigned: function(personsDict) {
       const url =
-        'https://intempio-api-v3.herokuapp.com/api/v3/eventpersons/?eventID=' +
+        process.env.VUE_APP_API +
+        '/api/v3/eventpersons/?eventID=' +
         this.eventId
 
       axios.get(url).then(response => {
@@ -124,7 +125,7 @@ export default {
     },
 
     add: function(field_name) {
-      const url = 'https://intempio-api-v3.herokuapp.com/api/v3/eventpersons/'
+      const url = process.env.VUE_APP_API + '/api/v3/eventpersons/'
       var data = {
         event_id: this.eventId,
         person_id: this.selectedPersonId,
@@ -149,7 +150,7 @@ export default {
     },
 
     remove: function(index, person_id) {
-      const url = 'https://intempio-api-v3.herokuapp.com/api/v3/eventpersons/'
+      const url = process.env.VUE_APP_API + '/api/v3/eventpersons/'
       var data = {
         event_id: this.eventId,
         person_id: person_id
