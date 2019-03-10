@@ -102,7 +102,7 @@ export default {
     },
 
     clone: function(event_id) {
-      const url = 'https://intempio-api-v3.herokuapp.com/api/v3/events/'
+      const url = process.env.VUE_APP_API + '/api/v3/events/'
       var data = {
         event_id: event_id,
         clone: 'True'

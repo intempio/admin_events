@@ -103,7 +103,8 @@ export default {
       let dateTostr = date.toISOString().split('T')[0]
 
       let url =
-        'https://intempio-api-v3.herokuapp.com/api/v3/events/?clientID=' +
+        process.env.VUE_APP_API +
+        '/api/v3/events/?clientID=' +
         this.$route.params.client_id
       if (this.search) {
         url += '&searchStr=' + this.search
@@ -131,7 +132,8 @@ export default {
     fetchRecentEvents: function() {
       console.log(process.env.VUE_APP_API)
       let url =
-        'https://intempio-api-v3.herokuapp.com/api/v3/events/?clientID=' +
+        process.env.VUE_APP_API +
+        '/api/v3/events/?clientID=' +
         this.$route.params.client_id +
         '&recentUpdates=true'
 

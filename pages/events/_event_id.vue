@@ -451,7 +451,7 @@ export default {
       this.$refs.producer_notes_history.open()
     },
     onChange: function(field_name) {
-      const url = 'https://intempio-api-v3.herokuapp.com/api/v3/events/'
+      const url = process.env.VUE_APP_API + '/api/v3/events/'
       var data = {
         event_id: this.event.event_id
       }
@@ -474,7 +474,8 @@ export default {
 
     fetchEvent: function() {
       const url =
-        'https://intempio-api-v3.herokuapp.com/api/v3/events/' +
+        process.env.VUE_APP_API +
+        '/api/v3/events/' +
         this.$route.params.event_id
       axios.get(url).then(response => {
         this.event = response.data['event_records'][0]

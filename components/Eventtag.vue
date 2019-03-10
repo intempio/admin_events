@@ -92,7 +92,8 @@ export default {
   methods: {
     fetchEventtag: function() {
       const url =
-        'https://intempio-api-v3.herokuapp.com/api/v3/eventtags/?eventID=' +
+        process.env.VUE_APP_API +
+        '/api/v3/eventtags/?eventID=' +
         this.eventId +
         '&tagType=' +
         this.tagType
@@ -103,7 +104,7 @@ export default {
     },
 
     add: function(field_name) {
-      const url = 'https://intempio-api-v3.herokuapp.com/api/v3/eventtags/'
+      const url = process.env.VUE_APP_API + '/api/v3/eventtags/'
       var data = {
         event_id: this.eventId,
         tag_type: this.tagType,
@@ -134,8 +135,7 @@ export default {
     },
 
     onChange: function(tag_value, tag_name) {
-      debugger
-      const url = 'https://intempio-api-v3.herokuapp.com/api/v3/eventtags/'
+      const url = process.env.VUE_APP_API + '/api/v3/eventtags/'
 
       var data = {
         event_id: this.eventId,

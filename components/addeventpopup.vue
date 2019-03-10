@@ -60,15 +60,14 @@ export default {
     },
     fetchProducts: function() {
       const url =
-        'https://intempio-api-v3.herokuapp.com/api/v3/products?clientID=' +
-        this.clientId
+        process.env.VUE_APP_API + '/api/v3/products?clientID=' + this.clientId
 
       axios.get(url).then(response => {
         this.Products = response.data
       })
     },
     addEvent: function() {
-      const url = 'https://intempio-api-v3.herokuapp.com/api/v3/events/'
+      const url = process.env.VUE_APP_API + '/api/v3/events/'
       var data = {
         client_id: this.clientId,
         product_id: this.getProductId(this.selectedProduct)

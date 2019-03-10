@@ -41,7 +41,7 @@ export default {
   },
   methods: {
     fetchClients: function() {
-      const url = 'https://intempio-api-v3.herokuapp.com/api/v3/clients/'
+      const url = process.env.VUE_APP_API + '/api/v3/clients/'
 
       axios.get(url).then(response => {
         this.clients = response.data
