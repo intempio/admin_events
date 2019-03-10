@@ -129,8 +129,7 @@ export default {
     },
 
     fetchRecentEvents: function() {
-      console.log('process.env')
-      console.log(process.env.VUE_APP_TEST)
+      console.log(process.env.VUE_APP_API)
       let url =
         'https://intempio-api-v3.herokuapp.com/api/v3/events/?clientID=' +
         this.$route.params.client_id +

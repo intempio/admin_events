@@ -1,6 +1,11 @@
 const pkg = require('./package')
 
 module.exports = {
+  env: {
+    VUE_APP_API:
+      process.env.VUE_APP_API || 'https://intempio-api-v3.herokuapp.com'
+  },
+
   mode: 'spa',
 
   /*
