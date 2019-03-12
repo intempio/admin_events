@@ -105,6 +105,7 @@ export default {
       let url =
         process.env.VUE_APP_API +
         '/api/v3/events/?clientID=' +
+
         this.$route.params.client_id
       if (this.search) {
         url += '&searchStr=' + this.search
@@ -130,6 +131,7 @@ export default {
     },
 
     fetchRecentEvents: function() {
+
       console.log(process.env.VUE_APP_API)
       let url =
         process.env.VUE_APP_API +
@@ -144,7 +146,9 @@ export default {
           return
         }
 
+
         this.recentEvents = response.data['records']
+
       })
     },
 
