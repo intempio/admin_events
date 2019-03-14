@@ -75,11 +75,10 @@
             <label class="field-headers">Operation Status:</label>
             <b-select v-model="event.operations_status" placeholder="Operations Status">
               <option value="content - ok">Content - OK</option>
-              <option value="2 day qa - ok">2 day QA - OK</option>
+              <option value="2 day qa - ok">2 Day QA - OK</option>
               <option value="ac room - ok">AC Room - OK</option>
-              <option value="day of event QA - ok">Day of Event QA - OK</option>
               <option value="email - ok">Email - OK</option>
-              <option value="landing page - ok">Landing page - OK</option>
+              <option value="landing page - ok">Landing Page - OK</option>
               <option value="last min">Last min</option>
               <option value="urgent 48">Urgent 48</option>
               <option value="rescheduled">Rescheduled</option>
@@ -119,9 +118,11 @@
               placeholder="QA Status"
               @input="onChange('qa_status')"
             >
-              <option value="qweek qa issues">QWeek QA Issues</option>
+              <option value="qa issues">QA Issues</option>
               <option value="report qa - ok">Report QA - OK</option>
               <option value="week qa - ok">Week QA - OK</option>
+              <option value="3rd day qa - ok">3rd day QA - OK</option>
+              <option value="sod qa - ok">SOD QA - OK</option>
             </b-select>
           </div>
           <div class="history-wrap hist-left-margin">
