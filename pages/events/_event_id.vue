@@ -416,6 +416,9 @@ export default {
     },
     'event.operations_status': function(val, oldVal) {
       if (oldVal !== undefined) {
+        console.log('onchange')
+        console.log(oldVal)
+        console.log(val)
         this.onChange('operations_status')
       }
     },
@@ -442,24 +445,31 @@ export default {
   },
   methods: {
     ClientStatusHistory: function(event) {
+      this.fetchEvent()
       this.$refs.client_status_history.open()
     },
     OpenOperationsStatusHistory: function(id) {
+      this.fetchEvent()
       this.$refs.operations_status_history.open()
     },
     QaStatusHistory: function(qa) {
+      this.fetchEvent()
       this.$refs.qa_status_history.open()
     },
     ProductionStatusHistory: function(prod) {
+      this.fetchEvent()
       this.$refs.production_status_history.open()
     },
     ExternalNotesHistory: function(exnote) {
+      this.fetchEvent()
       this.$refs.external_notes_history.open()
     },
     ProducerNotesHistory: function(prodnote) {
+      this.fetchEvent()
       this.$refs.producer_notes_history.open()
     },
     onChange: function(field_name) {
+      if (!this.event[field_name]) return
       const url = process.env.VUE_APP_API + '/api/v3/events/'
       var data = {
         event_id: this.event.event_id
