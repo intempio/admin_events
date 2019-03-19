@@ -416,9 +416,6 @@ export default {
     },
     'event.operations_status': function(val, oldVal) {
       if (oldVal !== undefined) {
-        console.log('onchange')
-        console.log(oldVal)
-        console.log(val)
         this.onChange('operations_status')
       }
     },

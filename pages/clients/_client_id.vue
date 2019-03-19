@@ -95,13 +95,6 @@ export default {
 
   methods: {
     fetchEvents: function() {
-      let date = new Date()
-      date.setDate(date.getDate())
-      let curdatestr = date.toISOString().split('T')[0]
-
-      date.setDate(date.getDate() + 30)
-      let dateTostr = date.toISOString().split('T')[0]
-
       let url =
         process.env.VUE_APP_API +
         '/api/v3/events/?clientID=' +
@@ -111,14 +104,11 @@ export default {
       }
 
       if (this.dateFrom) {
-        url += '&fromDate=' + this.dateFrom + ' 09:00 AM'
-      } else {
-        url += '&fromDate=' + curdatestr + ' 09:00 AM'
+        url += '&fromDate=' + this.dateFrom
       }
+
       if (this.dateTo) {
-        url += '&toDate=' + this.dateTo + ' 10:00 PM'
-      } else {
-        url += '&toDate=' + dateTostr + ' 10:00 PM'
+        url += '&toDate=' + this.dateTo
       }
 
       axios.get(url).then(response => {
@@ -154,6 +144,13 @@ export default {
     },
 
     onSearch: function() {
+      let date = new Date()
+      date.setDate(date.getDate())
+      let curdatestr = date.toISOString().split('T')[0]
+
+      date.setDate(date.getDate() + 30)
+      let dateTostr = date.toISOString().split('T')[0]
+
       let url = `/clients/${this.$route.params.client_id}`
       let params = []
       let str = ''
@@ -162,10 +159,14 @@ export default {
         params.push(`search=${this.search}`)
       }
       if (this.dateFrom) {
-        params.push(`search=${this.dateFrom}`)
+        params.push(`fromDate=${this.dateFrom}`)
+      } else {
+        params.push(`fromDate=` + curdatestr)
       }
       if (this.dateTo) {
-        params.push(`search=${this.dateTo}`)
+        params.push(`toDate=${this.dateTo}`)
+      } else {
+        params.push(`toDate=` + dateTostr)
       }
 
       str = params.join('&')
