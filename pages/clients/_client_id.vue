@@ -15,11 +15,6 @@
               placeholder="Search"
               v-model="search"
             >
-            <span
-              class="cleartext-close"
-              v-show="this.search"
-              @click="search = '', dateFrom='', dateTo='', onSearch()"
-            >&#215;</span>
 
             <div class="inputs-wrap from">
               <div class="date-time-picker-wrap">
@@ -51,6 +46,14 @@
 
             <button @click="onSearch()" class="search-icon">
               <font-awesome-icon icon="search"/>
+            </button>
+            
+            <button
+              class="search-icon clear"
+              v-show="this.search || (this.dateFrom && this.dateTo)"
+              @click="search = '', dateFrom='', dateTo='', onSearch()"
+            >
+              <font-awesome-icon icon="times-circle"/>
             </button>
           </div>
 
