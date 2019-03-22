@@ -15,11 +15,6 @@
               placeholder="Search"
               v-model="search"
             >
-            <span
-              class="cleartext-close"
-              v-show="this.search"
-              @click="search = '', dateFrom='', dateTo='', onSearch()"
-            >&#215;</span>
 
             <div class="inputs-wrap from">
               <div class="date-time-picker-wrap">
@@ -51,6 +46,14 @@
 
             <button @click="onSearch()" class="search-icon">
               <font-awesome-icon icon="search"/>
+            </button>
+            
+            <button
+              class="search-icon clear"
+              v-show="this.search || (this.dateFrom && this.dateTo)"
+              @click="search = '', dateFrom='', dateTo='', onSearch()"
+            >
+              <font-awesome-icon icon="times-circle"/>
             </button>
           </div>
 
@@ -95,30 +98,20 @@ export default {
 
   methods: {
     fetchEvents: function() {
-      let date = new Date()
-      date.setDate(date.getDate())
-      let curdatestr = date.toISOString().split('T')[0]
-
-      date.setDate(date.getDate() + 30)
-      let dateTostr = date.toISOString().split('T')[0]
-
       let url =
         process.env.VUE_APP_API +
         '/api/v3/events/?clientID=' +
-
         this.$route.params.client_id
       if (this.search) {
         url += '&searchStr=' + this.search
-        if (this.dateFrom) {
-          url += '&fromDate=' + this.dateFrom + ' 09:00 AM'
-        } else {
-          url += '&fromDate=' + curdatestr + ' 09:00 AM'
-        }
-        if (this.dateTo) {
-          url += '&toDate=' + this.dateTo + ' 10:00 PM'
-        } else {
-          url += '&toDate=' + dateTostr + ' 10:00 PM'
-        }
+      }
+
+      if (this.dateFrom) {
+        url += '&fromDate=' + this.dateFrom
+      }
+
+      if (this.dateTo) {
+        url += '&toDate=' + this.dateTo
       }
 
       axios.get(url).then(response => {
@@ -131,8 +124,7 @@ export default {
     },
 
     fetchRecentEvents: function() {
-
-      console.log(process.env.VUE_APP_API)
+      //console.log(process.env.VUE_APP_API)
       let url =
         process.env.VUE_APP_API +
         '/api/v3/events/?clientID=' +
@@ -146,9 +138,7 @@ export default {
           return
         }
 
-
         this.recentEvents = response.data['records']
-
       })
     },
 
@@ -157,17 +147,37 @@ export default {
     },
 
     onSearch: function() {
+      let date = new Date()
+      date.setDate(date.getDate())
+      let curdatestr = date.toISOString().split('T')[0]
+
+      date.setDate(date.getDate() + 30)
+      let dateTostr = date.toISOString().split('T')[0]
+
       let url = `/clients/${this.$route.params.client_id}`
+      let params = []
+      let str = ''
 
       if (this.search) {
-        url += `?search=${this.search}`
+        params.push(`search=${this.search}`)
       }
       if (this.dateFrom) {
-        url += `&fromDate=${this.dateFrom}`
+        params.push(`fromDate=${this.dateFrom}`)
+      } else {
+        params.push(`fromDate=` + curdatestr)
       }
       if (this.dateTo) {
-        url += `&toDate=${this.dateTo}`
+        params.push(`toDate=${this.dateTo}`)
+      } else {
+        params.push(`toDate=` + dateTostr)
       }
+
+      str = params.join('&')
+
+      if (str !== '') {
+        url += '?' + str
+      }
+
       this.$router.push(url)
       this.fetchEvents()
     }

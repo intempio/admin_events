@@ -825,7 +825,7 @@ input.filter-item.search-input {
 
 .cleartext-wrap {
   position: relative;
-  width: 550px;
+  width: 580px;
 }
 
 .cleartext-close {
@@ -839,6 +839,7 @@ input.filter-item.search-input {
 
 .search-icon {
   height: 35px;
+  margin-right: 1%;
 }
 
 /*-----------Media Queries Starts Here----------------*/

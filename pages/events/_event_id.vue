@@ -74,6 +74,7 @@
           <div class="client-status-wrap">
             <label class="field-headers">Operation Status:</label>
             <b-select v-model="event.operations_status" placeholder="Operations Status">
+              <option value="none">None</option>
               <option value="content - ok">Content - OK</option>
               <option value="2 day qa - ok">2 Day QA - OK</option>
               <option value="ac room - ok">AC Room - OK</option>
@@ -118,6 +119,7 @@
               placeholder="QA Status"
               @input="onChange('qa_status')"
             >
+              <option value="none">None</option>
               <option value="qa issues">QA Issues</option>
               <option value="report qa - ok">Report QA - OK</option>
               <option value="week qa - ok">Week QA - OK</option>
@@ -155,6 +157,7 @@
               placeholder="Production Status"
               @input="onChange('production_status')"
             >
+              <option value="none">None</option>
               <option value="accepted">Accepted</option>
               <option value="denied">Denied</option>
               <option value="question">Question</option>
@@ -299,8 +302,8 @@
             v-model="event.producer_notes"
             placeholder="Producer notes"
             class="input"
-            @input="onChangeTimeout('producer_notes')"
-          >event.producer_notes</textarea>
+            @input="onChangeTimeout('producer_notes_hist')"
+          >event.producer_notes_hist</textarea>
           <div class="history-wrap">
             <modal :producer_notes_hist="event.producer_notes_hist" ref="producer_notes_history">
               <h2 slot="header" class="colored">Producer notes history</h2>
@@ -316,7 +319,7 @@
                   v-bind:key="prodevent.producer_status"
                 >
                   <td>{{prodevent.updated}}</td>
-                  <td>{{prodevent.production_status}}</td>
+                  <td>{{prodevent.producer_notes}}</td>
                   <td>{{prodevent.updated_by_id}}</td>
                 </tr>
               </tbody>
@@ -442,24 +445,31 @@ export default {
   },
   methods: {
     ClientStatusHistory: function(event) {
+      this.fetchEvent()
       this.$refs.client_status_history.open()
     },
     OpenOperationsStatusHistory: function(id) {
+      this.fetchEvent()
       this.$refs.operations_status_history.open()
     },
     QaStatusHistory: function(qa) {
+      this.fetchEvent()
       this.$refs.qa_status_history.open()
     },
     ProductionStatusHistory: function(prod) {
+      this.fetchEvent()
       this.$refs.production_status_history.open()
     },
     ExternalNotesHistory: function(exnote) {
+      this.fetchEvent()
       this.$refs.external_notes_history.open()
     },
     ProducerNotesHistory: function(prodnote) {
+      this.fetchEvent()
       this.$refs.producer_notes_history.open()
     },
     onChange: function(field_name) {
+      if (!this.event[field_name]) return
       const url = process.env.VUE_APP_API + '/api/v3/events/'
       var data = {
         event_id: this.event.event_id
