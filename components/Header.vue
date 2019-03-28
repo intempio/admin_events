@@ -5,6 +5,13 @@
         <img src="~/assets/operation.png" class="mobile_btn">
         <span>Operations Admin</span>
       </div>
+      <div v-if="!isAuthenticated">
+        <a @click="login">Login</a>
+      </div>
+      <div v-if="isAuthenticated">
+        <a @click="logout">Logout</a>
+      </div>
+
       <div class="header-projects">{{currentclient}}</div>
     </div>
     <div class="menu-wrap">
@@ -31,7 +38,15 @@ export default {
   data: function() {
     return {
       clients: [],
-      currentclient: ''
+      currentclient: '',
+      isAuthenticated: false
+    }
+  },
+  async created() {
+    try {
+      await this.$auth.renewTokens()
+    } catch (e) {
+      console.log(e)
     }
   },
   watch: {
@@ -40,6 +55,17 @@ export default {
     }
   },
   methods: {
+    login() {
+      this.$auth.login()
+    },
+    logout() {
+      this.$auth.logOut()
+    },
+    handleLoginEvent(data) {
+      this.isAuthenticated = data.loggedIn
+      this.profile = data.profile
+    },
+
     fetchClients: function() {
       const url = process.env.VUE_APP_API + '/api/v3/clients/'
 
@@ -57,9 +83,9 @@ export default {
         filteredclient = this.clients.filter(
           client => client.client_id === this.clientid
         )
-        console.log(this.clientid)
-        console.log(this.clients)
-        console.log(filteredclient)
+        //console.log(this.clientid)
+        //console.log(this.clients)
+        //console.log(filteredclient)
         if (filteredclient[0] === undefined) return
         //debugger
         this.currentclient = filteredclient[0].client_name

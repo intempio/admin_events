@@ -47,7 +47,7 @@
             <button @click="onSearch()" class="search-icon">
               <font-awesome-icon icon="search"/>
             </button>
-            
+
             <button
               class="search-icon clear"
               v-show="this.search || (this.dateFrom && this.dateTo)"
@@ -78,7 +78,6 @@ import clientheader from '../../components/Header.vue'
 import VueCtkDateTimePicker from 'vue-ctk-date-time-picker'
 import 'vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.min.css'
 import axios from 'axios'
-
 Vue.component('vue-ctk-date-time-picker', VueCtkDateTimePicker)
 
 export default {

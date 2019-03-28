@@ -1,7 +1,5 @@
 <template>
   <section>
-    <script type="text/javascript" src="node_modules/auth0-js/build/auth0.js"></script>
-
     <clientheader></clientheader>
 
     <section class="main-content" id="page-wrap">
