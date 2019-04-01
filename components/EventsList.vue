@@ -3,22 +3,28 @@
     <table border="1">
       <thead>
         <tr>
-          <th class="tbl-sort" @click="sort('contact')">Contact
+          <th class="tbl-sort" @click="sort('contact')">
+            Contact
             <font-awesome-icon icon="caret-down" size="lg"/>
           </th>
-          <th class="tbl-sort" @click="sort('event_code')">Event Code
+          <th class="tbl-sort" @click="sort('event_code')">
+            Event Code
             <font-awesome-icon icon="caret-down" size="lg"/>
           </th>
-          <th class="tbl-sort" @click="sort('event_name')">Event Name
+          <th class="tbl-sort" @click="sort('event_name')">
+            Event Name
             <font-awesome-icon icon="caret-down" size="lg"/>
           </th>
-          <th class="tbl-sort" @click="sort('event_start')">Event Date
+          <th class="tbl-sort" @click="sort('event_start')">
+            Event Date
             <font-awesome-icon icon="caret-down" size="lg"/>
           </th>
-          <th class="tbl-sort" @click="sort('updated')">Last Updated
+          <th class="tbl-sort" @click="sort('updated')">
+            Last Updated
             <font-awesome-icon icon="caret-down" size="lg"/>
           </th>
-          <th class="tbl-sort" @click="sort('client_status')">Client Status
+          <th class="tbl-sort" @click="sort('client_status')">
+            Client Status
             <font-awesome-icon icon="caret-down" size="lg"/>
           </th>
           <th>Actions</th>
@@ -101,7 +107,9 @@ export default {
       if (this.currentPage > 1) this.currentPage--
     },
 
-    clone: function(event_id) {
+    clone: async function(event_id) {
+      const accessToken = await this.$auth.getAccessToken()
+
       const url = process.env.VUE_APP_API + '/api/v3/events/'
       var data = {
         event_id: event_id,
@@ -111,7 +119,8 @@ export default {
       axios
         .post(url, data, {
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`
           }
         })
         .then(response => {

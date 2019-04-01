@@ -66,13 +66,21 @@ export default {
       this.profile = data.profile
     },
 
-    fetchClients: function() {
+    fetchClients: async function() {
+      const accessToken = await this.$auth.getAccessToken()
+
       const url = process.env.VUE_APP_API + '/api/v3/clients/'
 
-      axios.get(url).then(response => {
-        this.clients = response.data
-        this.currentclientname()
-      })
+      axios
+        .get(url, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`
+          }
+        })
+        .then(response => {
+          this.clients = response.data
+          this.currentclientname()
+        })
     },
     currentclientname: function() {
       //debugger

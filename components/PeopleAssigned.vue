@@ -4,10 +4,12 @@
     <table class="assignee-list">
       <thead>
         <tr>
-          <td class="tbl-sort" @click="sort('person')">Person
+          <td class="tbl-sort" @click="sort('person')">
+            Person
             <font-awesome-icon icon="caret-down" size="lg"/>
           </td>
-          <td class="tbl-sort" @click="sort('person_role')">Role
+          <td class="tbl-sort" @click="sort('person_role')">
+            Role
             <font-awesome-icon icon="caret-down" size="lg"/>
           </td>
           <td>Action</td>
@@ -91,9 +93,17 @@ export default {
     }
   },
   methods: {
-    fetchPersons: function() {
+    fetchPersons: async function() {
+      const accessToken = await this.$auth.getAccessToken()
+
+      const url = process.env.VUE_APP_API + '/api/v3/persons/'
+
       axios
-        .get(process.env.VUE_APP_API + '/api/v3/persons/')
+        .get(url, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`
+          }
+        })
         .then(response => {
           this.persons = response.data
           this.personsDict = this.persons.reduce(
@@ -113,18 +123,28 @@ export default {
         })
     },
 
-    fetchPeopleAssigned: function(personsDict) {
+    fetchPeopleAssigned: async function(personsDict) {
+      const accessToken = await this.$auth.getAccessToken()
+
       const url =
         process.env.VUE_APP_API +
         '/api/v3/eventpersons/?eventID=' +
         this.eventId
 
-      axios.get(url).then(response => {
-        this.peopleAssigned = response.data
-      })
+      axios
+        .get(url, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`
+          }
+        })
+        .then(response => {
+          this.peopleAssigned = response.data
+        })
     },
 
-    add: function(field_name) {
+    add: async function(field_name) {
+      const accessToken = await this.$auth.getAccessToken()
+
       const url = process.env.VUE_APP_API + '/api/v3/eventpersons/'
       var data = {
         event_id: this.eventId,
@@ -135,7 +155,8 @@ export default {
       axios
         .post(url, data, {
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`
           }
         })
         .then(response => {
@@ -149,7 +170,9 @@ export default {
         })
     },
 
-    remove: function(index, person_id) {
+    remove: async function(index, person_id) {
+      const accessToken = await this.$auth.getAccessToken()
+
       const url = process.env.VUE_APP_API + '/api/v3/eventpersons/'
       var data = {
         event_id: this.eventId,
@@ -161,7 +184,8 @@ export default {
           { data },
           {
             headers: {
-              'Content-Type': 'application/json'
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${accessToken}`
             }
           }
         )

@@ -468,7 +468,9 @@ export default {
       this.fetchEvent()
       this.$refs.producer_notes_history.open()
     },
-    onChange: function(field_name) {
+    onChange: async function(field_name) {
+      const accessToken = await this.$auth.getAccessToken()
+
       if (!this.event[field_name]) return
       const url = process.env.VUE_APP_API + '/api/v3/events/'
       var data = {
@@ -478,6 +480,7 @@ export default {
       data[field_name] = this.event[field_name]
       axios.put(url, data, {
         headers: {
+          Authorization: `Bearer ${accessToken}`,
           'Content-Type': 'application/json'
         }
       })
@@ -491,16 +494,24 @@ export default {
       this.timeout = setTimeout(() => this.onChange(field_name), 1500)
     },
 
-    fetchEvent: function() {
+    fetchEvent: async function() {
+      const accessToken = await this.$auth.getAccessToken()
+
       const url =
         process.env.VUE_APP_API +
         '/api/v3/events/' +
         this.$route.params.event_id
-      axios.get(url).then(response => {
-        this.event = response.data['event_records'][0]
-        this.projects = response.data['project_list']
-        this.clientid = this.event.client_id
-      })
+      axios
+        .get(url, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`
+          }
+        })
+        .then(response => {
+          this.event = response.data['event_records'][0]
+          this.projects = response.data['project_list']
+          this.clientid = this.event.client_id
+        })
     }
   },
   components: {

@@ -4,10 +4,12 @@
     <table class="assignee-list">
       <thead>
         <tr>
-          <td class="tbl-sort" @click="sort('tag_name')">Items
+          <td class="tbl-sort" @click="sort('tag_name')">
+            Items
             <font-awesome-icon icon="caret-down" size="lg"/>
           </td>
-          <td class="tbl-sort" @click="sort('tag_value')">Content
+          <td class="tbl-sort" @click="sort('tag_value')">
+            Content
             <font-awesome-icon icon="caret-down" size="lg"/>
           </td>
           <td>Action</td>
@@ -90,7 +92,9 @@ export default {
   },
 
   methods: {
-    fetchEventtag: function() {
+    fetchEventtag: async function() {
+      const accessToken = await this.$auth.getAccessToken()
+
       const url =
         process.env.VUE_APP_API +
         '/api/v3/eventtags/?eventID=' +
@@ -98,12 +102,20 @@ export default {
         '&tagType=' +
         this.tagType
 
-      axios.get(url).then(response => {
-        this.Eventtag = response.data
-      })
+      axios
+        .get(url, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`
+          }
+        })
+        .then(response => {
+          this.Eventtag = response.data
+        })
     },
 
-    add: function(field_name) {
+    add: async function(field_name) {
+      const accessToken = await this.$auth.getAccessToken()
+
       const url = process.env.VUE_APP_API + '/api/v3/eventtags/'
       var data = {
         event_id: this.eventId,
@@ -115,7 +127,8 @@ export default {
       axios
         .post(url, data, {
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`
           }
         })
         .then(response => {
@@ -134,7 +147,9 @@ export default {
       this.$refs['tagv' + index][0].focus()
     },
 
-    onChange: function(tag_value, tag_name) {
+    onChange: async function(tag_value, tag_name) {
+      const accessToken = await this.$auth.getAccessToken()
+
       const url = process.env.VUE_APP_API + '/api/v3/eventtags/'
 
       var data = {
@@ -147,7 +162,8 @@ export default {
       axios
         .put(url, data, {
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`
           }
         })
         .then(response => {

@@ -96,8 +96,8 @@ export default {
   },
 
   methods: {
-    fetchEvents: function() {
-      const accessToken = this.$auth.getAccessToken()
+    fetchEvents: async function() {
+      const accessToken = await this.$auth.getAccessToken()
       console.log(accessToken)
       let url =
         process.env.VUE_APP_API +
@@ -130,23 +130,31 @@ export default {
         })
     },
 
-    fetchRecentEvents: function() {
+    fetchRecentEvents: async function() {
       //console.log(process.env.VUE_APP_API)
+      const accessToken = await this.$auth.getAccessToken()
+
       let url =
         process.env.VUE_APP_API +
         '/api/v3/events/?clientID=' +
         this.$route.params.client_id +
         '&recentUpdates=true'
 
-      axios.get(url).then(response => {
-        const events = response.data['records']
-        if (events === null) {
-          this.recentEvents = []
-          return
-        }
+      axios
+        .get(url, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`
+          }
+        })
+        .then(response => {
+          const events = response.data['records']
+          if (events === null) {
+            this.recentEvents = []
+            return
+          }
 
-        this.recentEvents = response.data['records']
-      })
+          this.recentEvents = response.data['records']
+        })
     },
 
     AddEventModal: function(addeventmodal) {

@@ -58,15 +58,25 @@ export default {
     close: function() {
       this.show = false
     },
-    fetchProducts: function() {
+    fetchProducts: async function() {
+      const accessToken = await this.$auth.getAccessToken()
+
       const url =
         process.env.VUE_APP_API + '/api/v3/products?clientID=' + this.clientId
 
-      axios.get(url).then(response => {
-        this.Products = response.data
-      })
+      axios
+        .get(url, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`
+          }
+        })
+        .then(response => {
+          this.Products = response.data
+        })
     },
-    addEvent: function() {
+    addEvent: async function() {
+      const accessToken = await this.$auth.getAccessToken()
+
       const url = process.env.VUE_APP_API + '/api/v3/events/'
       var data = {
         client_id: this.clientId,
@@ -76,7 +86,8 @@ export default {
       axios
         .post(url, data, {
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`
           }
         })
         .then(response => {
