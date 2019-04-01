@@ -175,7 +175,7 @@
               :production-status-hist="event.production_status_hist"
               ref="production_status_history"
             >
-              <h2 slot="header" class="colored">QA status history</h2>
+              <h2 slot="header" class="colored">Production status history</h2>
               <tr slot="table-header">
                 <th class="history-th-1">Updated</th>
                 <th class="history-th-2">Production status</th>
@@ -269,29 +269,23 @@
             @input="onChangeTimeout('internal_notes')"
           >event.internal_notes</textarea>
           <div class="history-wrap">
-            <modal
-              :production-status-hist="event.production_status_hist"
-              ref="production_status_history"
-            >
+            <modal :internal-notes-hist="event.internal_notes_hist" ref="internal_notes_history">
               <h2 slot="header" class="colored">Internal notes history</h2>
               <tr slot="table-header">
                 <th class="history-th-1">Updated</th>
-                <th class="history-th-2">Production status</th>
+                <th class="history-th-2">Internal notes</th>
                 <th class="history-th-3">Updated by ID</th>
                 <th></th>
               </tr>
               <tbody slot="table-body">
-                <tr
-                  v-for="prod in event.production_status_hist"
-                  v-bind:key="prod.production_status"
-                >
+                <tr v-for="prod in event.internal_notes_hist" v-bind:key="prod.internal_notes">
                   <td>{{prod.updated}}</td>
-                  <td>{{prod.production_status}}</td>
+                  <td>{{prod.internal_notes}}</td>
                   <td>{{prod.updated_by_id}}</td>
                 </tr>
               </tbody>
             </modal>
-            <button class="history" @click="ProductionStatusHistory">
+            <button class="history" @click="InternalNotesHistory">
               <font-awesome-icon class="icon" icon="history"/>History
             </button>
           </div>
@@ -302,14 +296,14 @@
             v-model="event.producer_notes"
             placeholder="Producer notes"
             class="input"
-            @input="onChangeTimeout('producer_notes_hist')"
+            @input="onChangeTimeout('producer_notes')"
           >event.producer_notes_hist</textarea>
           <div class="history-wrap">
             <modal :producer_notes_hist="event.producer_notes_hist" ref="producer_notes_history">
               <h2 slot="header" class="colored">Producer notes history</h2>
               <tr slot="table-header">
                 <th class="history-th-1">Updated</th>
-                <th class="history-th-2">Producer status</th>
+                <th class="history-th-2">Producer notes</th>
                 <th class="history-th-3">Updated by ID</th>
                 <th></th>
               </tr>
@@ -459,6 +453,10 @@ export default {
     ProductionStatusHistory: function(prod) {
       this.fetchEvent()
       this.$refs.production_status_history.open()
+    },
+    InternalNotesHistory: function(prod) {
+      this.fetchEvent()
+      this.$refs.internal_notes_history.open()
     },
     ExternalNotesHistory: function(exnote) {
       this.fetchEvent()
