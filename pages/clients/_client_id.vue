@@ -97,6 +97,8 @@ export default {
 
   methods: {
     fetchEvents: function() {
+      const accessToken = this.$auth.getAccessToken()
+      console.log(accessToken)
       let url =
         process.env.VUE_APP_API +
         '/api/v3/events/?clientID=' +
@@ -113,13 +115,19 @@ export default {
         url += '&toDate=' + this.dateTo
       }
 
-      axios.get(url).then(response => {
-        this.events = response.data['records']
-        if (this.events === null) {
-          this.events = []
-          return
-        }
-      })
+      axios
+        .get(url, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`
+          }
+        })
+        .then(response => {
+          this.events = response.data['records']
+          if (this.events === null) {
+            this.events = []
+            return
+          }
+        })
     },
 
     fetchRecentEvents: function() {

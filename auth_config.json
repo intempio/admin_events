@@ -1,4 +1,5 @@
 {
   "domain": "intempio.auth0.com",
-  "clientId": "yfiGkfHSKg5KuvB3tI7fXjRQXY7yK3l5"
+  "clientId": "yfiGkfHSKg5KuvB3tI7fXjRQXY7yK3l5",
+  "audience": "intempio-api-v3.herokuapp.com"
 }

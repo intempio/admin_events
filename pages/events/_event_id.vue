@@ -76,7 +76,6 @@
             <b-select v-model="event.operations_status" placeholder="Operations Status">
               <option value="none">None</option>
               <option value="content - ok">Content - OK</option>
-              <option value="2 day qa - ok">2 Day QA - OK</option>
               <option value="ac room - ok">AC Room - OK</option>
               <option value="email - ok">Email - OK</option>
               <option value="landing page - ok">Landing Page - OK</option>
@@ -124,6 +123,7 @@
               <option value="report qa - ok">Report QA - OK</option>
               <option value="week qa - ok">Week QA - OK</option>
               <option value="3rd day qa - ok">3rd day QA - OK</option>
+              <option value="2 day qa - ok">2 Day QA - OK</option>
               <option value="sod qa - ok">SOD QA - OK</option>
             </b-select>
           </div>
@@ -273,7 +273,7 @@
               :production-status-hist="event.production_status_hist"
               ref="production_status_history"
             >
-              <h2 slot="header" class="colored">QA status history</h2>
+              <h2 slot="header" class="colored">Internal notes history</h2>
               <tr slot="table-header">
                 <th class="history-th-1">Updated</th>
                 <th class="history-th-2">Production status</th>

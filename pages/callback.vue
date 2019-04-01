@@ -8,7 +8,8 @@
 export default {
   methods: {
     handleLoginEvent(data) {
-      this.$router.push(data.state.target || '/')
+      console.log(data)
+      this.$router.push(data.state ? data.state.target || '/' : '/')
     }
   },
   created() {
