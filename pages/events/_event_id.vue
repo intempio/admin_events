@@ -278,10 +278,13 @@
                 <th></th>
               </tr>
               <tbody slot="table-body">
-                <tr v-for="prod in event.internal_notes_hist" v-bind:key="prod.internal_notes">
-                  <td>{{prod.updated}}</td>
-                  <td>{{prod.internal_notes}}</td>
-                  <td>{{prod.updated_by_id}}</td>
+                <tr
+                  v-for="intnote in event.internal_notes_hist"
+                  v-bind:key="intnote.internal_notes"
+                >
+                  <td>{{intnote.updated}}</td>
+                  <td>{{intnote.internal_notes}}</td>
+                  <td>{{intnote.updated_by_id}}</td>
                 </tr>
               </tbody>
             </modal>
@@ -454,7 +457,7 @@ export default {
       this.fetchEvent()
       this.$refs.production_status_history.open()
     },
-    InternalNotesHistory: function(prod) {
+    InternalNotesHistory: function(intnote) {
       this.fetchEvent()
       this.$refs.internal_notes_history.open()
     },
