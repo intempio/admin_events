@@ -24,7 +24,7 @@
           name="event_name"
           placeholder="Event Name"
           class="input"
-          @input="onChange('event_name')"
+          @input="onChangeTimeout('event_name')"
         >
       </div>
       <div class="form-row second-row">

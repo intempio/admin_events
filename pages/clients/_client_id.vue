@@ -98,7 +98,7 @@ export default {
   methods: {
     fetchEvents: async function() {
       const accessToken = await this.$auth.getAccessToken()
-      console.log(accessToken)
+
       let url =
         process.env.VUE_APP_API +
         '/api/v3/events/?clientID=' +
