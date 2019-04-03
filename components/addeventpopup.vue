@@ -62,7 +62,7 @@ export default {
       const accessToken = await this.$auth.getAccessToken()
 
       const url =
-        process.env.VUE_APP_API + '/api/v3/products?clientID=' + this.clientId
+        process.env.VUE_APP_API + '/api/v3/products/?clientID=' + this.clientId
 
       axios
         .get(url, {
