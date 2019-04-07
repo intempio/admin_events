@@ -749,6 +749,10 @@ input.filter-item.search-input {
 .history-td-2 {
   width: 33%;
 }
+
+.history-td-tb-2 {
+  word-break: break-all;
+}
 .select:not(.is-multiple):not(.is-loading)::after {
   border-color: #0097e1;
   right: 1.125em;

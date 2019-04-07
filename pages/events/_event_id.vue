@@ -284,7 +284,7 @@
                   v-bind:key="intnote.internal_notes"
                 >
                   <td>{{intnote.updated}}</td>
-                  <td>{{intnote.internal_notes}}</td>
+                  <td class="history-td-tb-2">{{intnote.internal_notes}}</td>
                   <td>{{intnote.updated_by_id}}</td>
                 </tr>
               </tbody>
@@ -317,7 +317,7 @@
                   v-bind:key="prodevent.producer_status"
                 >
                   <td>{{prodevent.updated}}</td>
-                  <td>{{prodevent.producer_notes}}</td>
+                  <td class="history-td-tb-2">{{prodevent.producer_notes}}</td>
                   <td>{{prodevent.updated_by_id}}</td>
                 </tr>
               </tbody>
@@ -351,7 +351,7 @@
                     v-bind:key="exnote.external_notes"
                   >
                     <td>{{exnote.updated}}</td>
-                    <td>{{exnote.external_notes}}</td>
+                    <td class="history-td-tb-2">{{exnote.external_notes}}</td>
                     <td>{{exnote.updated_by_id}}</td>
                   </tr>
                 </tbody>
