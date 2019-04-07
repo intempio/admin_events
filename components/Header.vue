@@ -6,10 +6,10 @@
         <span>Operations Admin</span>
       </div>
       <div v-if="!isAuthenticated">
-        <a @click="login">Login</a>
+        <a @click="login" class="login-style">Login</a>
       </div>
       <div v-if="isAuthenticated">
-        <a @click="logout">Logout</a>
+        <a @click="logout" class="login-style">Logout</a>
       </div>
 
       <div class="header-projects">{{currentclient}}</div>

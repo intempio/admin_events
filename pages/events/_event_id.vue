@@ -203,17 +203,18 @@
         <div class="pickers-wrap">
           <div class="inputs-wrap">
             <label class="field-headers">Event Start:</label>
-            <div class="date-time-picker-wrap">
-              <vue-ctk-date-time-picker
-                class="ctk-date-time-picker"
-                v-model="event.event_start"
-                label
-                without-header
-                :minute-interval="15"
-                formatted="MMMM Do YYYY, h:mm:ss"
-                time-format="'H:mm:ss"
-              ></vue-ctk-date-time-picker>
-            </div>
+            <VueCtkDateTimePicker
+              id="CtkDateTimePicker"
+              v-model="event.event_start"
+              format="YYYY-MM-DDTHH:mm:ssZ"
+              formatted="YYYY-MM-DD HH:mm:ss"
+              noHeader="true"
+              noButtonNow="true"
+              color="#0097e1"
+              minute-interval="15"
+              label
+              v-on:validate="onChange('event_start')"
+            ></VueCtkDateTimePicker>
           </div>
           <div class="inputs-wrap">
             <label class="field-headers-1">Time zone:</label>
@@ -383,7 +384,7 @@
 <script>
 import Vue from 'vue'
 import VueCtkDateTimePicker from 'vue-ctk-date-time-picker'
-import 'vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.min.css'
+import 'vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css'
 import axios from 'axios'
 import modal from '../../components/History.vue'
 import people from '../../components/PeopleAssigned.vue'
@@ -391,7 +392,7 @@ import statusupdatemodal from '../../components/StatusUpdateModal.vue'
 import eventtag from '../../components/Eventtag.vue'
 import clientheader from '../../components/Header.vue'
 
-Vue.component('vue-ctk-date-time-picker', VueCtkDateTimePicker)
+Vue.component('VueCtkDateTimePicker', VueCtkDateTimePicker)
 
 export default {
   data() {
@@ -409,11 +410,7 @@ export default {
         this.$refs.status_update_modal.open()
       }
     },
-    'event.event_start': function(val, oldVal) {
-      if (oldVal !== undefined) {
-        this.onChange('event_start')
-      }
-    },
+
     'event.operations_status': function(val, oldVal) {
       if (oldVal !== undefined) {
         this.onChange('operations_status')

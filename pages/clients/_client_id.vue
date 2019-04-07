@@ -18,29 +18,33 @@
 
             <div class="inputs-wrap from">
               <div class="date-time-picker-wrap">
-                <vue-ctk-date-time-picker
+                <VueCtkDateTimePicker
+                  id="CtkDateTimePicker"
                   v-model="dateFrom"
-                  class="ctk-date-time-picker"
+                  noHeader="true"
+                  noButtonNow="true"
+                  color="#0097e1"
                   label="From"
-                  disable-time
-                  without-header
-                  formatted="DD-MM-YYYY"
+                  only-date="true"
+                  formatted="YYYY-MM-DD"
                   format="YYYY-MM-DD"
-                ></vue-ctk-date-time-picker>
+                ></VueCtkDateTimePicker>
               </div>
             </div>
 
             <div class="inputs-wrap from">
               <div class="date-time-picker-wrap">
-                <vue-ctk-date-time-picker
+                <VueCtkDateTimePicker
+                  id="CtkDateTimePicker"
                   v-model="dateTo"
-                  class="ctk-date-time-picker"
-                  label="to"
-                  without-header
-                  disable-time
-                  formatted="DD-MM-YYYY"
+                  noHeader="true"
+                  noButtonNow="true"
+                  color="#0097e1"
+                  label="To"
+                  only-date="true"
+                  formatted="YYYY-MM-DD"
                   format="YYYY-MM-DD"
-                ></vue-ctk-date-time-picker>
+                ></VueCtkDateTimePicker>
               </div>
             </div>
 
@@ -76,9 +80,10 @@ import EventsList from '../../components/EventsList.vue'
 import addeventmodal from '../../components/addeventpopup.vue'
 import clientheader from '../../components/Header.vue'
 import VueCtkDateTimePicker from 'vue-ctk-date-time-picker'
-import 'vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.min.css'
+import 'vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css'
 import axios from 'axios'
-Vue.component('vue-ctk-date-time-picker', VueCtkDateTimePicker)
+
+Vue.component('VueCtkDateTimePicker', VueCtkDateTimePicker)
 
 export default {
   data() {

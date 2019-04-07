@@ -394,6 +394,8 @@ h2.colored {
   width: 25%;
 }
 
+/*VueCtkDateTimePicker*/
+
 #CtkDateTimePicker {
   height: 37px;
   min-height: 37px;
@@ -402,6 +404,13 @@ h2.colored {
   width: 100%;
   height: 2.25em;
   margin-right: 1%;
+}
+.datepicker-buttons-container .datepicker-button svg {
+  fill: #74bd44 !important;
+}
+
+.datepicker-buttons-container .datepicker-button .datepicker-button-effect {
+  background: #74bd44 !important;
 }
 /*.duration-offset-count-wrap {
   width: 100%;
@@ -840,6 +849,10 @@ input.filter-item.search-input {
 .search-icon {
   height: 35px;
   margin-right: 1%;
+}
+
+.login-style {
+  color: white;
 }
 
 /*-----------Media Queries Starts Here----------------*/
