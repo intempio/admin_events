@@ -267,7 +267,7 @@
             v-model="event.internal_notes"
             placeholder="Internal notes"
             class="input"
-            @input="onChangeTimeout('internal_notes')"
+            @input="onChangeTimeoutLong('internal_notes')"
           >event.internal_notes</textarea>
           <div class="history-wrap">
             <modal :internal-notes-hist="event.internal_notes_hist" ref="internal_notes_history">
@@ -300,7 +300,7 @@
             v-model="event.producer_notes"
             placeholder="Producer notes"
             class="input"
-            @input="onChangeTimeout('producer_notes')"
+            @input="onChangeTimeoutLong('producer_notes')"
           >event.producer_notes_hist</textarea>
           <div class="history-wrap">
             <modal :producer_notes_hist="event.producer_notes_hist" ref="producer_notes_history">
@@ -334,7 +334,7 @@
               v-model="event.external_notes"
               placeholder="External notes"
               class="input"
-              @input="onChangeTimeout('external_notes')"
+              @input="onChangeTimeoutLong('external_notes')"
             >event.external_notes</textarea>
             <div class="history-wrap">
               <modal :external-notes-hist="event.external_notes_hist" ref="external_notes_history">
@@ -490,6 +490,14 @@ export default {
       }
 
       this.timeout = setTimeout(() => this.onChange(field_name), 1500)
+    },
+
+    onChangeTimeoutLong: function(field_name) {
+      if (this.timeout) {
+        clearTimeout(this.timeout)
+      }
+
+      this.timeout = setTimeout(() => this.onChange(field_name), 5000)
     },
 
     fetchEvent: async function() {
