@@ -37,15 +37,15 @@
           <div class="client-status-wrap">
             <label class="field-headers">Client Status:</label>
             <b-select v-model="event.client_status" placeholder="Client Status">
-              <option value="cancelled">Cancelled</option>
+              <option value="new">New</option>
               <option value="in process">In Process</option>
-              <option value="last minute cancelled">Last Minute Cancelled</option>
-              <option value="potential">Potential</option>
-              <option value="request">Request</option>
-              <option value="rescheduled">Rescheduled</option>
-              <option value="scheduled">Scheduled</option>
               <option value="update">Update</option>
+              <option value="cancelled">Cancelled</option>
+              <option value="rescheduled">Rescheduled</option>
               <option value="urgent">Urgent</option>
+              <option value="report sent">Report Sent</option>
+              <option value="new - incomplete">New - Incomplete</option>
+              <option value="invisible">Invisible</option>
             </b-select>
           </div>
           <div class="history-wrap hist-left-margin">
@@ -74,15 +74,9 @@
           <div class="client-status-wrap">
             <label class="field-headers">Operation Status:</label>
             <b-select v-model="event.operations_status" placeholder="Operations Status">
-              <option value="none">None</option>
-              <option value="content - ok">Content - OK</option>
-              <option value="ac room - ok">AC Room - OK</option>
-              <option value="email - ok">Email - OK</option>
-              <option value="landing page - ok">Landing Page - OK</option>
-              <option value="last min">Last min</option>
-              <option value="urgent 48">Urgent 48</option>
-              <option value="rescheduled">Rescheduled</option>
-              <option value="pending event info">Pending Event Info</option>
+              <option value="new">New</option>
+              <option value="delete">Delete</option>
+              <option value="last min cancellation">Last min Cancellation</option>
             </b-select>
           </div>
           <div class="history-wrap hist-left-margin">
@@ -118,13 +112,12 @@
               placeholder="QA Status"
               @input="onChange('qa_status')"
             >
-              <option value="none">None</option>
-              <option value="qa issues">QA Issues</option>
-              <option value="report qa - ok">Report QA - OK</option>
-              <option value="week qa - ok">Week QA - OK</option>
-              <option value="3rd day qa - ok">3rd day QA - OK</option>
-              <option value="2 day qa - ok">2 Day QA - OK</option>
-              <option value="sod qa - ok">SOD QA - OK</option>
+              <option value="qa 1">QA 1</option>
+              <option value="sod">SOD</option>
+              <option value="qa 2">QA 2</option>
+              <option value="Deck QA">Deck QA</option>
+              <option value="presenter calendar qa">Presenter Calendar QA</option>
+              <option value="participant calendar qa">Participant Calendar QA</option>
             </b-select>
           </div>
           <div class="history-wrap hist-left-margin">
@@ -157,17 +150,8 @@
               placeholder="Production Status"
               @input="onChange('production_status')"
             >
-              <option value="none">None</option>
-              <option value="accepted">Accepted</option>
-              <option value="denied">Denied</option>
-              <option value="question">Question</option>
-              <option value="sent">Sent</option>
-              <option value="ac room - ok">AC Room - OK</option>
-              <option value="client content - ok">Client Content - OK</option>
-              <option value="event report - ok">Event Report - OK</option>
-              <option value="helpdesk - ok">Helpdesk - OK</option>
-              <option value="landing page - ok">Landing Page - OK</option>
-              <option value="production ready - ok">Production Ready - OK</option>
+              <option value="producer assigned">Producer Assigned</option>
+              <option value="report sent">Report Sent</option>
             </b-select>
           </div>
           <div class="history-wrap hist-left-margin">
