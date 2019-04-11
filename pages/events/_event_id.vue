@@ -75,7 +75,7 @@
             <label class="field-headers">Operation Status:</label>
             <b-select v-model="event.operations_status" placeholder="Operations Status">
               <option value="new">New</option>
-              <option value="delete">Delete</option>
+              <option value="deleted">Deleted</option>
               <option value="last min cancellation">Last min Cancellation</option>
             </b-select>
           </div>
@@ -190,8 +190,8 @@
             <VueCtkDateTimePicker
               id="CtkDateTimePicker"
               v-model="event.event_start"
-              format="YYYY-MM-DDTHH:mm:ssZ"
-              formatted="YYYY-MM-DD HH:mm:ss"
+              format="YYYY-MM-DD HH:mm"
+              formatted="YYYY-MM-DD HH:mm"
               noHeader="true"
               noButtonNow="true"
               color="#0097e1"
