@@ -24,7 +24,7 @@ export default {
 
   mounted: function() {
     this.$router.push({
-      path: '/clients/cf72db35-82f9-4053-a7a0-96cecc516664'
+      path: '/admin/clients/cf72db35-82f9-4053-a7a0-96cecc516664'
     })
   }
 }

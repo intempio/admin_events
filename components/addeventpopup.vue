@@ -91,7 +91,7 @@ export default {
           }
         })
         .then(response => {
-          this.$router.push(`/events/${response.data.event_id}`)
+          this.$router.push(`/admin/events/${response.data.event_id}`)
         })
         .catch(function(error) {
           console.log(error)

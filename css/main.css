@@ -859,4 +859,7 @@ input.filter-item.search-input {
   color: white;
 }
 
+.right-align {
+  justify-content: flex-end;
+}
 /*-----------Media Queries Starts Here----------------*/

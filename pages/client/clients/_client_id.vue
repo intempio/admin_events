@@ -3,64 +3,7 @@
     <clientheader :clientid="this.$route.params.client_id"></clientheader>
     <section class="main-content content main" id="page-wrap">
       <div id="wrap">
-        <h2>Recent Updates:</h2>
-
-        <events-list :events="recentEvents"></events-list>
-
-        <div class="filter-container" style="margin-bottom: 25px">
-          <div class="search-input-field-name cleartext-wrap">
-            <input
-              type="text"
-              class="filter-item search-input input"
-              placeholder="Search"
-              v-model="search"
-            >
-
-            <div class="inputs-wrap from">
-              <div class="date-time-picker-wrap">
-                <VueCtkDateTimePicker
-                  id="CtkDateTimePicker"
-                  v-model="dateFrom"
-                  noHeader="true"
-                  noButtonNow="true"
-                  color="#0097e1"
-                  label="From"
-                  only-date="true"
-                  formatted="YYYY-MM-DD"
-                  format="YYYY-MM-DD"
-                ></VueCtkDateTimePicker>
-              </div>
-            </div>
-
-            <div class="inputs-wrap from">
-              <div class="date-time-picker-wrap">
-                <VueCtkDateTimePicker
-                  id="CtkDateTimePicker"
-                  v-model="dateTo"
-                  noHeader="true"
-                  noButtonNow="true"
-                  color="#0097e1"
-                  label="To"
-                  only-date="true"
-                  formatted="YYYY-MM-DD"
-                  format="YYYY-MM-DD"
-                ></VueCtkDateTimePicker>
-              </div>
-            </div>
-
-            <button @click="onSearch()" class="search-icon">
-              <font-awesome-icon icon="search"/>
-            </button>
-
-            <button
-              class="search-icon clear"
-              v-show="this.search || (this.dateFrom && this.dateTo)"
-              @click="search = '', dateFrom='', dateTo='', onSearch()"
-            >
-              <font-awesome-icon icon="times-circle"/>
-            </button>
-          </div>
-
+        <div class="filter-container right-align" style="margin-bottom: 25px">
           <addeventmodal ref="add_event_modal" :client-id="this.$route.params.client_id"></addeventmodal>
 
           <button class="add_btn" @click="AddEventModal">
@@ -68,7 +11,7 @@
           </button>
         </div>
 
-        <events-list :events="events" :fetchEvents="fetchEvents"></events-list>
+        <events-list-client :events="events" :fetchEvents="fetchEvents"></events-list-client>
       </div>
     </section>
   </section>
@@ -76,9 +19,9 @@
 
 <script>
 import Vue from 'vue'
-import EventsList from '../../components/EventsList.vue'
-import addeventmodal from '../../components/addeventpopup.vue'
-import clientheader from '../../components/Header.vue'
+import EventsListClient from '../../../components/EventsListClient.vue'
+import addeventmodal from '../../../components/addeventpopup.vue'
+import clientheader from '../../../components/Header.vue'
 import VueCtkDateTimePicker from 'vue-ctk-date-time-picker'
 import 'vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css'
 import axios from 'axios'
@@ -203,7 +146,7 @@ export default {
     }
   },
   components: {
-    EventsList,
+    EventsListClient,
     addeventmodal,
     clientheader
   },

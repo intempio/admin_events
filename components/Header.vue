@@ -18,7 +18,7 @@
       <template>
         <Push noOverlay width="200">
           <div v-for="(item) in clients" v-bind:key="item.client_name" class="popup-menu-item">
-            <router-link :id="item.client_name" :to="'/clients/' + item.client_id">
+            <router-link :id="item.client_name" :to="'/admin/clients/' + item.client_id">
               <span>{{item.client_name}}</span>
             </router-link>
           </div>

@@ -1,16 +1,14 @@
 <template>
-  <div class="events-list">
+  <div class="events-list-client">
     <table border="1">
       <thead>
         <tr>
+          <!--
           <th class="tbl-sort" @click="sort('contact')">
             Contact
             <font-awesome-icon icon="caret-down" size="lg"/>
           </th>
-          <th class="tbl-sort" @click="sort('event_code')">
-            Event Code
-            <font-awesome-icon icon="caret-down" size="lg"/>
-          </th>
+          -->
           <th class="tbl-sort" @click="sort('event_name')">
             Event Name
             <font-awesome-icon icon="caret-down" size="lg"/>
@@ -27,6 +25,8 @@
             Client Status
             <font-awesome-icon icon="caret-down" size="lg"/>
           </th>
+          <th>Par.#</th>
+          <th>Pres.#</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -62,7 +62,7 @@
           <td>{{ event.updated }}</td>
           <td>{{ event.client_status }}</td>
           <td>
-            <router-link :to="'/admin/events/' + event.event_id">
+            <router-link :to="'/events/' + event.event_id">
               <button>Edit</button>
             </router-link>
             <button @click="clone(event.event_id)" class="clone">Clone</button>
@@ -80,7 +80,7 @@ import axios from 'axios'
 import router from 'vue-router'
 
 export default {
-  name: 'EventsList',
+  name: 'EventsListClient',
   props: { events: Array, fetchEvents: Function },
   data() {
     return {
@@ -124,7 +124,7 @@ export default {
           }
         })
         .then(response => {
-          this.$router.push(`/admin/events/${response.data.event_id}`)
+          this.$router.push(`/events/${response.data.event_id}`)
         })
         .catch(function(error) {
           console.log(error)

@@ -370,11 +370,11 @@ import Vue from 'vue'
 import VueCtkDateTimePicker from 'vue-ctk-date-time-picker'
 import 'vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css'
 import axios from 'axios'
-import modal from '../../components/History.vue'
-import people from '../../components/PeopleAssigned.vue'
-import statusupdatemodal from '../../components/StatusUpdateModal.vue'
-import eventtag from '../../components/Eventtag.vue'
-import clientheader from '../../components/Header.vue'
+import modal from '../../../components/History.vue'
+import people from '../../../components/PeopleAssigned.vue'
+import statusupdatemodal from '../../../components/StatusUpdateModal.vue'
+import eventtag from '../../../components/Eventtag.vue'
+import clientheader from '../../../components/Header.vue'
 
 Vue.component('VueCtkDateTimePicker', VueCtkDateTimePicker)
 
