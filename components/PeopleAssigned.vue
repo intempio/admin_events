@@ -76,6 +76,7 @@ export default {
         item => item.trim()
       )
     }
+
     return {
       persons: [],
       peopleAssigned: [],

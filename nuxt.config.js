@@ -2,12 +2,21 @@ const pkg = require('./package')
 
 module.exports = {
   env: {
+    /*API ENVIRONMENT VARIABLES*/
     VUE_APP_API:
       process.env.VUE_APP_API || 'https://intempio-api-v3.herokuapp.com',
+
+    /*PEOPLEASSIGNED and EVENTTAG ENVIRONMENT VARIABLES*/
     CHECKLIST_ITEMS: process.env.CHECKLIST_ITEMS,
     CLIENT_ITEMS: process.env.CLIENT_ITEMS,
     PRODUCT_ITEMS: process.env.PRODUCT_ITEMS,
-    PEOPLE_ASSIGNED_ROLES: process.env.PEOPLE_ASSIGNED_ROLES
+    PEOPLE_ASSIGNED_ROLES: process.env.PEOPLE_ASSIGNED_ROLES,
+
+    /*EVENT STATUSES ENVIRONMENT VARIABLES*/
+    CLIENT_STATUSES: process.env.CLIENT_STATUSES,
+    OPERATION_STATUSES: process.env.OPERATION_STATUSES,
+    QA_STATUSES: process.env.QA_STATUSES,
+    PRODUCTION_STATUSES: process.env.PRODUCTION_STATUSES
   },
 
   mode: 'spa',

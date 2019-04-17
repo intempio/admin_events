@@ -380,16 +380,42 @@ Vue.component('VueCtkDateTimePicker', VueCtkDateTimePicker)
 
 export default {
   data() {
+    let client_statuses = CLIENT_STATUSES
+    if (process.env.CLIENT_STATUSES) {
+      client_statuses = process.env.CLIENT_STATUSES.split(',').map(item =>
+        item.trim()
+      )
+    }
+
+    let operation_statuses = OPERATION_STATUSES
+    if (process.env.OPERATION_STATUSES) {
+      operation_statuses = process.env.OPERATION_STATUSES.split(',').map(item =>
+        item.trim()
+      )
+    }
+
+    let qa_statuses = QA_STATUSES
+    if (process.env.QA_STATUSES) {
+      qa_statuses = process.env.QA_STATUSES.split(',').map(item => item.trim())
+    }
+
+    let production_statuses = PRODUCTION_STATUSES
+    if (process.env.PRODUCTION_STATUSES) {
+      production_statuses = process.env.PRODUCTION_STATUSES.split(',').map(
+        item => item.trim()
+      )
+    }
+
     return {
       value: null,
       isHidden: true,
       event: {},
       projects: [],
       clientid: null,
-      client_statuses: CLIENT_STATUSES,
-      operation_statuses: OPERATION_STATUSES,
-      qa_statuses: QA_STATUSES,
-      production_statuses: PRODUCTION_STATUSES
+      client_statuses,
+      operation_statuses,
+      qa_statuses,
+      production_statuses
     }
   },
   watch: {
