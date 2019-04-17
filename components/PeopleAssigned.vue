@@ -45,14 +45,14 @@
         <button @click="nextPage">&raquo;</button>
       </div>
       <div class="add-new-record">
-        <b-select v-model="selectedPersonId" placeholder="Person">
+        <b-select v-model="selectedPersonId" placeholder="Person" class="eventtag-select">
           <option
             :value="person.person_id"
             v-for="person in persons"
             v-bind:key="person.person_id"
           >{{person.first_name}} {{person.last_name}}</option>
         </b-select>
-        <b-select v-model="selectedRole" placeholder="Role">
+        <b-select v-model="selectedRole" placeholder="Role" class="input-items">
           <option v-for="role in people_assigned_roles" v-bind:key="role" :value="role">{{role}}</option>
         </b-select>
         <button class="add_btn" @click="add()">+ Add</button>
