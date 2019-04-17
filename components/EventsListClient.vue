@@ -32,40 +32,16 @@
       </thead>
       <tbody>
         <tr class="sub" v-for="event in sortedEvents" v-bind:key="event.event_code">
-          <td>
-            {{ event.contact }}
-            <!--<a href="#openModal">{{ event.contact }}</a>
-            <div id="openModal" class="modalDialog">
-              <div>
-                <a href="#close" title="Close" class="close">X</a>
-                <h2>Details</h2>
-                <ul v-for="details in event.customer_details" v-bind:key="details">
-                  <li>
-                    <strong>Customer Name:</strong>
-                    {{ details.customer_name }}
-                  </li>
-                  <li>
-                    <strong>Phone Number:</strong>
-                    {{ details.phone }}
-                  </li>
-                  <li>
-                    <strong>Email Address:</strong>
-                    {{ details.email }}
-                  </li>
-                </ul>
-              </div>
-            </div>-->
-          </td>
-          <td>{{ event.event_code }}</td>
           <td>{{ event.event_name }}</td>
           <td>{{ event.event_start }}</td>
           <td>{{ event.updated }}</td>
           <td>{{ event.client_status }}</td>
+          <td>3</td>
+          <td>2</td>
           <td>
-            <router-link :to="'/events/' + event.event_id">
+            <router-link :to="'client/events/' + event.event_id">
               <button>Edit</button>
             </router-link>
-            <button @click="clone(event.event_id)" class="clone">Clone</button>
           </td>
         </tr>
       </tbody>
