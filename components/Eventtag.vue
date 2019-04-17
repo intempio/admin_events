@@ -61,8 +61,10 @@
 </template>
 
 <script>
-import items from '../items.json'
 import axios from 'axios'
+import { CLIENT_ITEMS } from '../components/constants.js'
+import { CHECKLIST_ITEMS } from '../components/constants.js'
+import { PRODUCT_ITEMS } from '../components/constants.js'
 
 export default {
   name: 'eventtag',
@@ -71,7 +73,6 @@ export default {
   data: function() {
     return {
       Eventtag: [],
-      items: items,
       isHidden: false,
       show: true,
       InputTagName: '',
@@ -209,6 +210,36 @@ export default {
           let end = this.currentPage * this.pageSize
           if (index >= start && index < end) return true
         })
+    },
+
+    items: function() {
+      if (this.tagType === 'checklist') {
+        if (process.env.CHECKLIST_ITEMS) {
+          const checklist_env = process.env.CHECKLIST_ITEMS.split(',').map(
+            item => item.trim()
+          )
+          return checklist_env
+        }
+        return CHECKLIST_ITEMS
+      }
+      if (this.tagType === 'product') {
+        if (process.env.PRODUCT_ITEMS) {
+          const product_env = process.env.PRODUCT_ITEMS.split(',').map(item =>
+            item.trim()
+          )
+          return product_env
+        }
+        return PRODUCT_ITEMS
+      }
+      if (this.tagType === 'client') {
+        if (process.env.CLIENT_ITEMS) {
+          const client_env = process.env.CLIENT_ITEMS.split(',').map(item =>
+            item.trim()
+          )
+          return client_env
+        }
+        return CLIENT_ITEMS
+      }
     }
   }
 }

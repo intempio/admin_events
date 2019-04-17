@@ -53,7 +53,7 @@
           >{{person.first_name}} {{person.last_name}}</option>
         </b-select>
         <b-select v-model="selectedRole" placeholder="Role">
-          <option v-for="role in roles" v-bind:key="role" :value="role">{{role}}</option>
+          <option v-for="role in people_assigned_roles" v-bind:key="role" :value="role">{{role}}</option>
         </b-select>
         <button class="add_btn" @click="add()">+ Add</button>
       </div>
@@ -62,17 +62,23 @@
 </template>
 
 <script>
-import roles from '../roles.json'
 import axios from 'axios'
+import { PEOPLE_ASSIGNED_ROLES } from '../components/constants.js'
+
 export default {
   name: 'people',
   template: '#people-assinged',
   props: { eventId: String },
   data: function() {
+    let people_assigned_roles = PEOPLE_ASSIGNED_ROLES
+    if (process.env.PEOPLE_ASSIGNED_ROLES) {
+      people_assigned_roles = process.env.PEOPLE_ASSIGNED_ROLES.split(',').map(
+        item => item.trim()
+      )
+    }
     return {
       persons: [],
       peopleAssigned: [],
-      roles: roles,
       show: true,
       selectedPerson: '',
       selectedRole: '',
@@ -81,7 +87,8 @@ export default {
       currentSortDir: 'asc',
       pageSize: 3,
       currentPage: 1,
-      personsDict: []
+      personsDict: [],
+      people_assigned_roles
     }
   },
   watch: {

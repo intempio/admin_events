@@ -37,15 +37,11 @@
           <div class="client-status-wrap">
             <label class="field-headers">Client Status:</label>
             <b-select v-model="event.client_status" placeholder="Client Status">
-              <option value="new">New</option>
-              <option value="in process">In Process</option>
-              <option value="update">Update</option>
-              <option value="cancelled">Cancelled</option>
-              <option value="rescheduled">Rescheduled</option>
-              <option value="urgent">Urgent</option>
-              <option value="report sent">Report Sent</option>
-              <option value="new - incomplete">New - Incomplete</option>
-              <option value="invisible">Invisible</option>
+              <option
+                :value="status"
+                v-for="status in client_statuses"
+                v-bind:key="status"
+              >{{status}}</option>
             </b-select>
           </div>
           <div class="history-wrap hist-left-margin">
@@ -74,9 +70,11 @@
           <div class="client-status-wrap">
             <label class="field-headers">Operation Status:</label>
             <b-select v-model="event.operations_status" placeholder="Operations Status">
-              <option value="new">New</option>
-              <option value="deleted">Deleted</option>
-              <option value="last min cancellation">Last min Cancellation</option>
+              <option
+                :value="status"
+                v-for="status in operation_statuses"
+                v-bind:key="status"
+              >{{status}}</option>
             </b-select>
           </div>
           <div class="history-wrap hist-left-margin">
@@ -112,12 +110,7 @@
               placeholder="QA Status"
               @input="onChange('qa_status')"
             >
-              <option value="qa 1">QA 1</option>
-              <option value="sod">SOD</option>
-              <option value="qa 2">QA 2</option>
-              <option value="Deck QA">Deck QA</option>
-              <option value="presenter calendar qa">Presenter Calendar QA</option>
-              <option value="participant calendar qa">Participant Calendar QA</option>
+              <option :value="status" v-for="status in qa_statuses" v-bind:key="status">{{status}}</option>
             </b-select>
           </div>
           <div class="history-wrap hist-left-margin">
@@ -150,8 +143,11 @@
               placeholder="Production Status"
               @input="onChange('production_status')"
             >
-              <option value="producer assigned">Producer Assigned</option>
-              <option value="report sent">Report Sent</option>
+              <option
+                :value="status"
+                v-for="status in production_statuses"
+                v-bind:key="status"
+              >{{status}}</option>
             </b-select>
           </div>
           <div class="history-wrap hist-left-margin">
@@ -375,6 +371,10 @@ import people from '../../../components/PeopleAssigned.vue'
 import statusupdatemodal from '../../../components/StatusUpdateModal.vue'
 import eventtag from '../../../components/Eventtag.vue'
 import clientheader from '../../../components/Header.vue'
+import { CLIENT_STATUSES } from '../../../components/constants.js'
+import { OPERATION_STATUSES } from '../../../components/constants.js'
+import { QA_STATUSES } from '../../../components/constants.js'
+import { PRODUCTION_STATUSES } from '../../../components/constants.js'
 
 Vue.component('VueCtkDateTimePicker', VueCtkDateTimePicker)
 
@@ -385,7 +385,11 @@ export default {
       isHidden: true,
       event: {},
       projects: [],
-      clientid: null
+      clientid: null,
+      client_statuses: CLIENT_STATUSES,
+      operation_statuses: OPERATION_STATUSES,
+      qa_statuses: QA_STATUSES,
+      production_statuses: PRODUCTION_STATUSES
     }
   },
   watch: {
