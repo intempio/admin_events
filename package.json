@@ -26,7 +26,8 @@
     "nuxt-buefy": "^0.3.2",
     "prettier": "^1.15.3",
     "vue-burger-menu": "^1.0.9",
-    "vue-ctk-date-time-picker": "^2.0.4"
+    "vue-ctk-date-time-picker": "^2.0.4",
+    "vue-search-select": "^2.8.3"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.1",

@@ -388,7 +388,7 @@ h2.colored {
   width: 38%;
 }
 .pagination-wrap {
-  width: 25%;
+  width: 18%;
 }
 
 /*VueCtkDateTimePicker*/
@@ -813,7 +813,7 @@ input.filter-item.search-input {
 }
 
 .eventtag-select {
-  width: 41%;
+  width: 39%;
 }
 
 .bm-item-list > .popup-menu-item > a {
@@ -858,5 +858,37 @@ input.filter-item.search-input {
 
 .right-align {
   justify-content: flex-end;
+}
+
+/*Model list custom css styles*/
+.css-select {
+  background-color: white;
+  border-color: #dbdbdb;
+  color: #363636;
+  cursor: pointer;
+  display: block;
+  font-size: 1em;
+  max-width: 100%;
+  outline: none;
+  height: 2.25em !important;
+}
+
+.mselect-wrapper {
+  width: 39% !important;
+  height: 2.25em !important;
+}
+
+.ui.search.selection.dropdown > input.search,
+.ui.fluid.search.selection.dropdown.css-select {
+  line-height: 1.2142em;
+  padding: 0.5em 2.1em 0.5em 1em !important;
+}
+
+.ui.fluid.dropdown {
+  height: 2.25em !important;
+}
+
+.ui.selection.dropdown {
+  height: 2.25em !important;
 }
 /*-----------Media Queries Starts Here----------------*/
