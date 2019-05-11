@@ -79,7 +79,7 @@ export default {
       currentIndex: -1,
       currentSort: 'tag_name',
       currentSortDir: 'asc',
-      pageSize: 3,
+      pageSize: 10,
       currentPage: 1,
       selectedItem: ''
     }

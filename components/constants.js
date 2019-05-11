@@ -1,34 +1,36 @@
 export const CLIENT_STATUSES = [
-  'New',
-  'In Process',
-  'Update',
   'Cancelled',
-  'Rescheduled',
-  'Urgent',
-  'Report Sent',
+  'Complete',
+  'Complete Sent',
+  'In Process',
+  'Invisible',
+  'New',
   'New - Incomplete',
-  'Invisible'
+  'Scheduled',
+  'Update',
+  'Urgent'
 ]
 
 export const OPERATION_STATUSES = [
-  'New',
   'Deleted',
-  'Last min Cancellation',
-  'Completed'
+  'Last min Cancellation'
 ]
+
 export const QA_STATUSES = [
-  'QA 1',
-  'SOD',
-  'QA 2',
   'Deck QA',
+  'Participant Calendar QA',
   'Presenter Calendar QA',
-  'Participant Calendar QA'
+  'QA 1',
+  'QA 2',
+  'SOD'
 ]
 
 export const PRODUCTION_STATUSES = [
   'Producer Assigned',
   'Report Sent',
-  'Updated by ID'
+  'Unassigned',
+  'Producer Declined',
+  'Report Created'
 ]
 
 export const PEOPLE_ASSIGNED_ROLES = [

@@ -86,7 +86,7 @@ export default {
       selectedPersonId: '',
       currentSort: 'first_name',
       currentSortDir: 'asc',
-      pageSize: 3,
+      pageSize: 10,
       currentPage: 1,
       personsDict: [],
       people_assigned_roles

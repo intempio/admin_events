@@ -41,7 +41,8 @@
                 :value="status"
                 v-for="status in client_statuses"
                 v-bind:key="status"
-              >{{status}}</option>
+              >{{status}}
+              </option>
             </b-select>
           </div>
           <div class="history-wrap hist-left-margin">
@@ -54,15 +55,16 @@
                 <th></th>
               </tr>
               <tbody slot="table-body">
-                <tr v-for="client in event.client_status_hist" v-bind:key="client.user_name">
-                  <td>{{client.user_name}}</td>
-                  <td>{{client.client_status}}</td>
-                  <td>{{client.updated}}</td>
-                </tr>
+              <tr v-for="client in event.client_status_hist" v-bind:key="client.user_name">
+                <td>{{client.user_name}}</td>
+                <td>{{client.client_status}}</td>
+                <td>{{client.updated}}</td>
+              </tr>
               </tbody>
             </modal>
             <button class="history" @click="ClientStatusHistory">
-              <font-awesome-icon class="icon" icon="history"/>History
+              <font-awesome-icon class="icon" icon="history"/>
+              History
             </button>
           </div>
         </div>
@@ -74,7 +76,8 @@
                 :value="status"
                 v-for="status in operation_statuses"
                 v-bind:key="status"
-              >{{status}}</option>
+              >{{status}}
+              </option>
             </b-select>
           </div>
           <div class="history-wrap hist-left-margin">
@@ -90,15 +93,16 @@
                 <th></th>
               </tr>
               <tbody slot="table-body">
-                <tr v-for="id in event.operations_status_hist" v-bind:key="id.updated_by_id">
-                  <td>{{id.updated_by_id}}</td>
-                  <td>{{id.operations_status}}</td>
-                  <td>{{id.updated}}</td>
-                </tr>
+              <tr v-for="id in event.operations_status_hist" v-bind:key="id.updated_by_id">
+                <td>{{id.updated_by_id}}</td>
+                <td>{{id.operations_status}}</td>
+                <td>{{id.updated}}</td>
+              </tr>
               </tbody>
             </modal>
             <button class="history" @click="OpenOperationsStatusHistory">
-              <font-awesome-icon class="icon" icon="history"/>History
+              <font-awesome-icon class="icon" icon="history"/>
+              History
             </button>
           </div>
         </div>
@@ -123,15 +127,16 @@
                 <th></th>
               </tr>
               <tbody slot="table-body">
-                <tr v-for="qa in event.qa_status_hist" v-bind:key="qa.qa_status">
-                  <td>{{qa.updated}}</td>
-                  <td>{{qa.qa_status}}</td>
-                  <td>{{qa.updated}}</td>
-                </tr>
+              <tr v-for="qa in event.qa_status_hist" v-bind:key="qa.qa_status">
+                <td>{{qa.updated}}</td>
+                <td>{{qa.qa_status}}</td>
+                <td>{{qa.updated}}</td>
+              </tr>
               </tbody>
             </modal>
             <button class="history" @click="QaStatusHistory">
-              <font-awesome-icon class="icon" icon="history"/>History
+              <font-awesome-icon class="icon" icon="history"/>
+              History
             </button>
           </div>
         </div>
@@ -147,7 +152,8 @@
                 :value="status"
                 v-for="status in production_statuses"
                 v-bind:key="status"
-              >{{status}}</option>
+              >{{status}}
+              </option>
             </b-select>
           </div>
           <div class="history-wrap hist-left-margin">
@@ -163,18 +169,19 @@
                 <th></th>
               </tr>
               <tbody slot="table-body">
-                <tr
-                  v-for="prod in event.production_status_hist"
-                  v-bind:key="prod.production_status"
-                >
-                  <td>{{prod.updated}}</td>
-                  <td>{{prod.production_status}}</td>
-                  <td>{{prod.updated_by_id}}</td>
-                </tr>
+              <tr
+                v-for="prod in event.production_status_hist"
+                v-bind:key="prod.production_status"
+              >
+                <td>{{prod.updated}}</td>
+                <td>{{prod.production_status}}</td>
+                <td>{{prod.updated_by_id}}</td>
+              </tr>
               </tbody>
             </modal>
             <button class="history" @click="ProductionStatusHistory">
-              <font-awesome-icon class="icon" icon="history"/>History
+              <font-awesome-icon class="icon" icon="history"/>
+              History
             </button>
           </div>
         </div>
@@ -259,18 +266,19 @@
                 <th></th>
               </tr>
               <tbody slot="table-body">
-                <tr
-                  v-for="intnote in event.internal_notes_hist"
-                  v-bind:key="intnote.internal_notes"
-                >
-                  <td>{{intnote.updated}}</td>
-                  <td class="history-td-tb-2">{{intnote.internal_notes}}</td>
-                  <td>{{intnote.updated_by_id}}</td>
-                </tr>
+              <tr
+                v-for="intnote in event.internal_notes_hist"
+                v-bind:key="intnote.internal_notes"
+              >
+                <td>{{intnote.updated}}</td>
+                <td class="history-td-tb-2">{{intnote.internal_notes}}</td>
+                <td>{{intnote.updated_by_id}}</td>
+              </tr>
               </tbody>
             </modal>
             <button class="history" @click="InternalNotesHistory">
-              <font-awesome-icon class="icon" icon="history"/>History
+              <font-awesome-icon class="icon" icon="history"/>
+              History
             </button>
           </div>
         </div>
@@ -292,18 +300,19 @@
                 <th></th>
               </tr>
               <tbody slot="table-body">
-                <tr
-                  v-for="prodevent in event.producer_notes_hist"
-                  v-bind:key="prodevent.producer_status"
-                >
-                  <td>{{prodevent.updated}}</td>
-                  <td class="history-td-tb-2">{{prodevent.producer_notes}}</td>
-                  <td>{{prodevent.updated_by_id}}</td>
-                </tr>
+              <tr
+                v-for="prodevent in event.producer_notes_hist"
+                v-bind:key="prodevent.producer_status"
+              >
+                <td>{{prodevent.updated}}</td>
+                <td class="history-td-tb-2">{{prodevent.producer_notes}}</td>
+                <td>{{prodevent.updated_by_id}}</td>
+              </tr>
               </tbody>
             </modal>
             <button class="history" @click="ProducerNotesHistory">
-              <font-awesome-icon class="icon" icon="history"/>History
+              <font-awesome-icon class="icon" icon="history"/>
+              History
             </button>
           </div>
         </div>
@@ -326,18 +335,19 @@
                   <th></th>
                 </tr>
                 <tbody slot="table-body">
-                  <tr
-                    v-for="exnote in event.external_notes_hist"
-                    v-bind:key="exnote.external_notes"
-                  >
-                    <td>{{exnote.updated}}</td>
-                    <td class="history-td-tb-2">{{exnote.external_notes}}</td>
-                    <td>{{exnote.updated_by_id}}</td>
-                  </tr>
+                <tr
+                  v-for="exnote in event.external_notes_hist"
+                  v-bind:key="exnote.external_notes"
+                >
+                  <td>{{exnote.updated}}</td>
+                  <td class="history-td-tb-2">{{exnote.external_notes}}</td>
+                  <td>{{exnote.updated_by_id}}</td>
+                </tr>
                 </tbody>
               </modal>
               <button class="history" @click="ExternalNotesHistory">
-                <font-awesome-icon class="icon" icon="history"/>History
+                <font-awesome-icon class="icon" icon="history"/>
+                History
               </button>
             </div>
           </div>
@@ -346,7 +356,8 @@
             class="add_btn"
             id="showNotesBtn"
             v-show="isHidden"
-          >+ External Notes</button>
+          >+ External Notes
+          </button>
         </div>
       </div>
       <div class="form-row fifth-row">
@@ -362,187 +373,187 @@
 </template>
 
 <script>
-import Vue from 'vue'
-import VueCtkDateTimePicker from 'vue-ctk-date-time-picker'
-import 'vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css'
-import axios from 'axios'
-import modal from '../../../components/History.vue'
-import people from '../../../components/PeopleAssigned.vue'
-import statusupdatemodal from '../../../components/StatusUpdateModal.vue'
-import eventtag from '../../../components/Eventtag.vue'
-import clientheader from '../../../components/Header.vue'
-import { CLIENT_STATUSES } from '../../../components/constants.js'
-import { OPERATION_STATUSES } from '../../../components/constants.js'
-import { QA_STATUSES } from '../../../components/constants.js'
-import { PRODUCTION_STATUSES } from '../../../components/constants.js'
+  import Vue from 'vue'
+  import VueCtkDateTimePicker from 'vue-ctk-date-time-picker'
+  import 'vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css'
+  import axios from 'axios'
+  import modal from '../../../components/History.vue'
+  import people from '../../../components/PeopleAssigned.vue'
+  import statusupdatemodal from '../../../components/StatusUpdateModal.vue'
+  import eventtag from '../../../components/Eventtag.vue'
+  import clientheader from '../../../components/Header.vue'
+  import {CLIENT_STATUSES} from '../../../components/constants.js'
+  import {OPERATION_STATUSES} from '../../../components/constants.js'
+  import {QA_STATUSES} from '../../../components/constants.js'
+  import {PRODUCTION_STATUSES} from '../../../components/constants.js'
 
-Vue.component('VueCtkDateTimePicker', VueCtkDateTimePicker)
+  Vue.component('VueCtkDateTimePicker', VueCtkDateTimePicker)
 
-export default {
-  data() {
-    let client_statuses = CLIENT_STATUSES
-    if (process.env.CLIENT_STATUSES) {
-      client_statuses = process.env.CLIENT_STATUSES.split(',').map(item =>
-        item.trim()
-      )
-    }
-
-    let operation_statuses = OPERATION_STATUSES
-    if (process.env.OPERATION_STATUSES) {
-      operation_statuses = process.env.OPERATION_STATUSES.split(',').map(item =>
-        item.trim()
-      )
-    }
-
-    let qa_statuses = QA_STATUSES
-    if (process.env.QA_STATUSES) {
-      qa_statuses = process.env.QA_STATUSES.split(',').map(item => item.trim())
-    }
-
-    let production_statuses = PRODUCTION_STATUSES
-    if (process.env.PRODUCTION_STATUSES) {
-      production_statuses = process.env.PRODUCTION_STATUSES.split(',').map(
-        item => item.trim()
-      )
-    }
-
-    return {
-      value: null,
-      isHidden: true,
-      event: {},
-      projects: [],
-      clientid: null,
-      client_statuses,
-      operation_statuses,
-      qa_statuses,
-      production_statuses
-    }
-  },
-  watch: {
-    'event.client_status': function(val, oldVal) {
-      if (oldVal !== undefined) {
-        this.$refs.status_update_modal.open()
-      }
-    },
-
-    'event.operations_status': function(val, oldVal) {
-      if (oldVal !== undefined) {
-        this.onChange('operations_status')
-      }
-    },
-    'event.qa_status': function(val, oldVal) {
-      if (oldVal !== undefined) {
-        this.onChange('qa_status')
-      }
-    },
-    'event.production_status': function(val, oldVal) {
-      if (oldVal !== undefined) {
-        this.onChange('production_status')
-      }
-    },
-    'event.time_zone': function(val, oldVal) {
-      if (oldVal !== undefined) {
-        this.onChange('time_zone')
-      }
-    },
-    'event.producer_offset_minutes': function(val, oldVal) {
-      if (oldVal !== undefined) {
-        this.onChange('producer_offset_minutes')
-      }
-    }
-  },
-  methods: {
-    ClientStatusHistory: function(event) {
-      this.fetchEvent()
-      this.$refs.client_status_history.open()
-    },
-    OpenOperationsStatusHistory: function(id) {
-      this.fetchEvent()
-      this.$refs.operations_status_history.open()
-    },
-    QaStatusHistory: function(qa) {
-      this.fetchEvent()
-      this.$refs.qa_status_history.open()
-    },
-    ProductionStatusHistory: function(prod) {
-      this.fetchEvent()
-      this.$refs.production_status_history.open()
-    },
-    InternalNotesHistory: function(intnote) {
-      this.fetchEvent()
-      this.$refs.internal_notes_history.open()
-    },
-    ExternalNotesHistory: function(exnote) {
-      this.fetchEvent()
-      this.$refs.external_notes_history.open()
-    },
-    ProducerNotesHistory: function(prodnote) {
-      this.fetchEvent()
-      this.$refs.producer_notes_history.open()
-    },
-    onChange: async function(field_name) {
-      const accessToken = await this.$auth.getAccessToken()
-
-      if (!this.event[field_name]) return
-      const url = process.env.VUE_APP_API + '/api/v3/events/'
-      var data = {
-        event_id: this.event.event_id
+  export default {
+    data() {
+      let client_statuses = CLIENT_STATUSES
+      if (process.env.CLIENT_STATUSES) {
+        client_statuses = process.env.CLIENT_STATUSES.split(',').map(item =>
+          item.trim()
+        )
       }
 
-      data[field_name] = this.event[field_name]
-      axios.put(url, data, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/json'
+      let operation_statuses = OPERATION_STATUSES
+      if (process.env.OPERATION_STATUSES) {
+        operation_statuses = process.env.OPERATION_STATUSES.split(',').map(item =>
+          item.trim()
+        )
+      }
+
+      let qa_statuses = QA_STATUSES
+      if (process.env.QA_STATUSES) {
+        qa_statuses = process.env.QA_STATUSES.split(',').map(item => item.trim())
+      }
+
+      let production_statuses = PRODUCTION_STATUSES
+      if (process.env.PRODUCTION_STATUSES) {
+        production_statuses = process.env.PRODUCTION_STATUSES.split(',').map(
+          item => item.trim()
+        )
+      }
+
+      return {
+        value: null,
+        isHidden: true,
+        event: {},
+        projects: [],
+        clientid: null,
+        client_statuses,
+        operation_statuses,
+        qa_statuses,
+        production_statuses
+      }
+    },
+    watch: {
+      'event.client_status': function (val, oldVal) {
+        if (oldVal !== undefined) {
+          this.$refs.status_update_modal.open()
         }
-      })
-    },
+      },
 
-    onChangeTimeout: function(field_name) {
-      if (this.timeout) {
-        clearTimeout(this.timeout)
+      'event.operations_status': function (val, oldVal) {
+        if (oldVal !== undefined) {
+          this.onChange('operations_status')
+        }
+      },
+      'event.qa_status': function (val, oldVal) {
+        if (oldVal !== undefined) {
+          this.onChange('qa_status')
+        }
+      },
+      'event.production_status': function (val, oldVal) {
+        if (oldVal !== undefined) {
+          this.onChange('production_status')
+        }
+      },
+      'event.time_zone': function (val, oldVal) {
+        if (oldVal !== undefined) {
+          this.onChange('time_zone')
+        }
+      },
+      'event.producer_offset_minutes': function (val, oldVal) {
+        if (oldVal !== undefined) {
+          this.onChange('producer_offset_minutes')
+        }
       }
-
-      this.timeout = setTimeout(() => this.onChange(field_name), 1500)
     },
+    methods: {
+      ClientStatusHistory: function (event) {
+        this.fetchEvent()
+        this.$refs.client_status_history.open()
+      },
+      OpenOperationsStatusHistory: function (id) {
+        this.fetchEvent()
+        this.$refs.operations_status_history.open()
+      },
+      QaStatusHistory: function (qa) {
+        this.fetchEvent()
+        this.$refs.qa_status_history.open()
+      },
+      ProductionStatusHistory: function (prod) {
+        this.fetchEvent()
+        this.$refs.production_status_history.open()
+      },
+      InternalNotesHistory: function (intnote) {
+        this.fetchEvent()
+        this.$refs.internal_notes_history.open()
+      },
+      ExternalNotesHistory: function (exnote) {
+        this.fetchEvent()
+        this.$refs.external_notes_history.open()
+      },
+      ProducerNotesHistory: function (prodnote) {
+        this.fetchEvent()
+        this.$refs.producer_notes_history.open()
+      },
+      onChange: async function (field_name) {
+        const accessToken = await this.$auth.getAccessToken()
 
-    onChangeTimeoutLong: function(field_name) {
-      if (this.timeout) {
-        clearTimeout(this.timeout)
-      }
+        if (!this.event[field_name]) return
+        const url = process.env.VUE_APP_API + '/api/v3/events/'
+        var data = {
+          event_id: this.event.event_id
+        }
 
-      this.timeout = setTimeout(() => this.onChange(field_name), 5000)
-    },
-
-    fetchEvent: async function() {
-      const accessToken = await this.$auth.getAccessToken()
-
-      const url =
-        process.env.VUE_APP_API +
-        '/api/v3/events/' +
-        this.$route.params.event_id
-      axios
-        .get(url, {
+        data[field_name] = this.event[field_name]
+        axios.put(url, data, {
           headers: {
-            Authorization: `Bearer ${accessToken}`
+            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json'
           }
         })
-        .then(response => {
-          this.event = response.data['event_records'][0]
-          this.projects = response.data['project_list']
-          this.clientid = this.event.client_id
-        })
+      },
+
+      onChangeTimeout: function (field_name) {
+        if (this.timeout) {
+          clearTimeout(this.timeout)
+        }
+
+        this.timeout = setTimeout(() => this.onChange(field_name), 1500)
+      },
+
+      onChangeTimeoutLong: function (field_name) {
+        if (this.timeout) {
+          clearTimeout(this.timeout)
+        }
+
+        this.timeout = setTimeout(() => this.onChange(field_name), 5000)
+      },
+
+      fetchEvent: async function () {
+        const accessToken = await this.$auth.getAccessToken()
+
+        const url =
+          process.env.VUE_APP_API +
+          '/api/v3/events/' +
+          this.$route.params.event_id
+        axios
+          .get(url, {
+            headers: {
+              Authorization: `Bearer ${accessToken}`
+            }
+          })
+          .then(response => {
+            this.event = response.data['event_records'][0]
+            this.projects = response.data['project_list']
+            this.clientid = this.event.client_id
+          })
+      }
+    },
+    components: {
+      modal,
+      people,
+      statusupdatemodal,
+      eventtag,
+      clientheader
+    },
+    mounted: function () {
+      this.fetchEvent()
     }
-  },
-  components: {
-    modal,
-    people,
-    statusupdatemodal,
-    eventtag,
-    clientheader
-  },
-  mounted: function() {
-    this.fetchEvent()
   }
-}
 </script>
