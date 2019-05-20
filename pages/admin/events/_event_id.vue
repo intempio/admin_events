@@ -90,7 +90,7 @@
                 <th></th>
               </tr>
               <tbody slot="table-body">
-                <tr v-for="id in event.operations_status_hist" v-bind:key="id.updated_by_id">
+                <tr v-for="(id, i) in event.operations_status_hist" :key="i">
                   <td>{{id.updated_by_id}}</td>
                   <td>{{id.operations_status}}</td>
                   <td>{{id.updated}}</td>
@@ -188,12 +188,12 @@
               v-model="event.event_start"
               format="YYYY-MM-DD HH:mm"
               formatted="YYYY-MM-DD HH:mm"
-              noHeader="true"
-              noButtonNow="true"
+              :no-header=true
+              :no-button-now=true
               color="#0097e1"
               minute-interval="15"
               label
-              v-on:validate="onChange('event_start')"
+              @validate="onChange('event_start')"
             ></VueCtkDateTimePicker>
           </div>
           <div class="inputs-wrap">

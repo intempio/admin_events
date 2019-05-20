@@ -10,23 +10,24 @@
 
         <div class="modal-body">
           <div class="form-row">
-            <table border="0" class="history fixed_header">
+            <table border="0"
+                   class="history fixed_header">
               <thead>
-                <slot name="table-header">
-                  <tr>
-                    <th class="history-th-1">Date Time</th>
-                    <th class="history-th-2">User</th>
-                    <th class="history-th-3">Event Code</th>
-                  </tr>
-                </slot>
+              <slot name="table-header">
+                <tr>
+                  <th class="history-th-1">Date Time</th>
+                  <th class="history-th-2">User</th>
+                  <th class="history-th-3">Event Code</th>
+                </tr>
+              </slot>
               </thead>
               <slot name="table-body">
                 <tbody>
-                  <tr>
-                    <td>2018-05-30 13:00</td>
-                    <td>Michelle</td>
-                    <td>Event Code</td>
-                  </tr>
+                <tr>
+                  <td>2018-05-30 13:00</td>
+                  <td>Michelle</td>
+                  <td>Event Code</td>
+                </tr>
                 </tbody>
               </slot>
             </table>
@@ -44,21 +45,21 @@
 </template>
 
 <script>
-export default {
-  name: 'modal',
-  template: '#modal-template',
-  props: { clientStatusHist: Array },
-  data: function() {
-    return { show: false }
-  },
-  methods: {
-    open: function() {
-      this.show = true
+  export default {
+    name: 'modal',
+    template: '#modal-template',
+    props: {clientStatusHist: Array},
+    data: function () {
+      return {show: false}
     },
-    close: function() {
-      this.show = false
-    }
-  },
-  computed: {}
-}
+    methods: {
+      open: function () {
+        this.show = true
+      },
+      close: function () {
+        this.show = false
+      }
+    },
+    computed: {}
+  }
 </script>
