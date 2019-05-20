@@ -21,8 +21,8 @@
                 <VueCtkDateTimePicker
                   id="CtkDateTimePicker"
                   v-model="dateFrom"
-                  noHeader="true"
-                  noButtonNow="true"
+                  :no-header=true
+                  :no-button-now=true
                   color="#0097e1"
                   label="From"
                   only-date="true"
@@ -37,8 +37,8 @@
                 <VueCtkDateTimePicker
                   id="CtkDateTimePicker"
                   v-model="dateTo"
-                  noHeader="true"
-                  noButtonNow="true"
+                  :no-header=true
+                  :no-button-now=true
                   color="#0097e1"
                   label="To"
                   only-date="true"

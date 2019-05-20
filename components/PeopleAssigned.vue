@@ -52,9 +52,20 @@
             v-bind:key="person.person_id"
           >{{person.first_name}} {{person.last_name}}</option>
         </b-select>
+        <!--
         <b-select v-model="selectedRole" placeholder="Role" class="input-items">
           <option v-for="role in people_assigned_roles" v-bind:key="role" :value="role">{{role}}</option>
         </b-select>
+        -->
+        <div class="mselect-wrapper">
+          <model-select
+            :options="people_assigned_roles"
+            v-model="selectedRole"
+            placeholder="Role"
+            class="css-select"
+          ></model-select>
+        </div>
+
         <button class="add_btn" @click="add()">+ Add</button>
       </div>
     </div>
@@ -64,16 +75,24 @@
 <script>
 import axios from 'axios'
 import { PEOPLE_ASSIGNED_ROLES } from '../components/constants.js'
+import { ModelSelect } from 'vue-search-select'
 
 export default {
   name: 'people',
   template: '#people-assinged',
   props: { eventId: String },
   data: function() {
-    let people_assigned_roles = PEOPLE_ASSIGNED_ROLES
+    let people_assigned_roles = PEOPLE_ASSIGNED_ROLES.map(item => ({
+      value: item,
+      text: item
+    }))
+
     if (process.env.PEOPLE_ASSIGNED_ROLES) {
       people_assigned_roles = process.env.PEOPLE_ASSIGNED_ROLES.split(',').map(
-        item => item.trim()
+        item => ({
+          value: item.trim(),
+          text: item.trim()
+        })
       )
     }
 
@@ -89,7 +108,15 @@ export default {
       pageSize: 10,
       currentPage: 1,
       personsDict: [],
-      people_assigned_roles
+      people_assigned_roles,
+      options2: [
+        { value: '1', text: 'aa' },
+        { value: '2', text: 'ab' },
+        { value: '3', text: 'bc' },
+        { value: '4', text: 'cd' },
+        { value: '5', text: 'de' }
+      ],
+      item2: ''
     }
   },
   watch: {
@@ -225,6 +252,9 @@ export default {
     }
   },
 
+  components: {
+    ModelSelect
+  },
   computed: {
     sortedPeopleAssigned: function() {
       const peopleassigned =
