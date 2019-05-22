@@ -1,8 +1,8 @@
 {
   "name": "intempio",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Intempio SPA alpha version",
-  "author": "Lenara Anafieva",
+  "author": "Lenara Anafieva | KP",
   "private": true,
   "scripts": {
     "dev": "nuxt",
@@ -25,6 +25,7 @@
     "nuxt": "^2.6.1",
     "nuxt-buefy": "^0.3.2",
     "prettier": "^1.15.3",
+    "rxjs": "^6.5.2",
     "vue-burger-menu": "^1.0.9",
     "vue-ctk-date-time-picker": "^2.0.4",
     "vue-search-select": "^2.8.3"

@@ -1,5 +1,6 @@
 <template>
   <section>
+    <Spinner v-if="isLoading"></Spinner>
     <div class="head">
       <div class="header-admin">
         <img src="~/assets/operation.png" class="mobile_btn">
@@ -30,19 +31,22 @@
 
 <script>
 import { Push } from 'vue-burger-menu'
-import axios from 'axios'
-
+import {restService} from '../plugins/axios';
+import {utilsService} from '../services/utils-service';
+import Spinner from '../components/Spinner'
 export default {
   name: 'clientheader',
   props: { clientid: String },
   data: function() {
     return {
+      isLoading: false,
       clients: [],
       currentclient: '',
       isAuthenticated: false
     }
   },
   async created() {
+    utilsService.loading.subscribe(val => this.isLoading = val);
     try {
       await this.$auth.renewTokens()
     } catch (e) {
@@ -66,17 +70,10 @@ export default {
       this.profile = data.profile
     },
 
-    fetchClients: async function() {
-      const accessToken = await this.$auth.getAccessToken()
+    fetchClients: function() {
+      const url = '/api/v3/clients/'
 
-      const url = process.env.VUE_APP_API + '/api/v3/clients/'
-
-      axios
-        .get(url, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`
-          }
-        })
+      restService.get(url)
         .then(response => {
           this.clients = response.data
           this.currentclientname()
@@ -101,7 +98,8 @@ export default {
     }
   },
   components: {
-    Push
+    Push,
+    Spinner
   },
   mounted: function() {
     this.fetchClients()

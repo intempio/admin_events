@@ -52,8 +52,7 @@
 </template>
 
 <script>
-import axios from 'axios'
-import router from 'vue-router'
+import {restService} from '../plugins/axios';
 
 export default {
   name: 'EventsListClient',
@@ -83,20 +82,17 @@ export default {
       if (this.currentPage > 1) this.currentPage--
     },
 
-    clone: async function(event_id) {
-      const accessToken = await this.$auth.getAccessToken()
+    clone: function(event_id) {
 
-      const url = process.env.VUE_APP_API + '/api/v3/events/'
+      const url = '/api/v3/events/'
       var data = {
         event_id: event_id,
         clone: 'True'
       }
 
-      axios
-        .post(url, data, {
+      restService.post(url, data, {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${accessToken}`
           }
         })
         .then(response => {

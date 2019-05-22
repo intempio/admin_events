@@ -24,7 +24,7 @@ import addeventmodal from '../../../components/addeventpopup.vue'
 import clientheader from '../../../components/Header.vue'
 import VueCtkDateTimePicker from 'vue-ctk-date-time-picker'
 import 'vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css'
-import axios from 'axios'
+import {restService} from '../../../plugins/axios';
 
 Vue.component('VueCtkDateTimePicker', VueCtkDateTimePicker)
 
@@ -44,11 +44,8 @@ export default {
   },
 
   methods: {
-    fetchEvents: async function() {
-      const accessToken = await this.$auth.getAccessToken()
-
+    fetchEvents: function() {
       let url =
-        process.env.VUE_APP_API +
         '/api/v3/events/?clientID=' +
         this.$route.params.client_id
       if (this.search) {
@@ -63,12 +60,8 @@ export default {
         url += '&toDate=' + this.dateTo
       }
 
-      axios
-        .get(url, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`
-          }
-        })
+      restService
+        .get(url)
         .then(response => {
           this.events = response.data['records']
           if (this.events === null) {
@@ -78,22 +71,14 @@ export default {
         })
     },
 
-    fetchRecentEvents: async function() {
-      //console.log(process.env.VUE_APP_API)
-      const accessToken = await this.$auth.getAccessToken()
-
+    fetchRecentEvents: function() {
       let url =
-        process.env.VUE_APP_API +
         '/api/v3/events/?clientID=' +
         this.$route.params.client_id +
         '&recentUpdates=true'
 
-      axios
-        .get(url, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`
-          }
-        })
+      restService
+        .get(url)
         .then(response => {
           const events = response.data['records']
           if (events === null) {

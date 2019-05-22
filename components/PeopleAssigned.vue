@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import {restService} from '../plugins/axios';
 import { PEOPLE_ASSIGNED_ROLES } from '../components/constants.js'
 import { ModelSelect } from 'vue-search-select'
 
@@ -128,17 +128,11 @@ export default {
     }
   },
   methods: {
-    fetchPersons: async function() {
-      const accessToken = await this.$auth.getAccessToken()
+    fetchPersons: function() {
+      const url = '/api/v3/persons/'
 
-      const url = process.env.VUE_APP_API + '/api/v3/persons/'
-
-      axios
-        .get(url, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`
-          }
-        })
+      restService
+        .get(url)
         .then(response => {
           this.persons = response.data
           this.personsDict = this.persons.reduce(
@@ -158,40 +152,29 @@ export default {
         })
     },
 
-    fetchPeopleAssigned: async function(personsDict) {
-      const accessToken = await this.$auth.getAccessToken()
+    fetchPeopleAssigned: function(personsDict) {
+      const url = '/api/v3/eventpersons/?eventID=' + this.eventId
 
-      const url =
-        process.env.VUE_APP_API +
-        '/api/v3/eventpersons/?eventID=' +
-        this.eventId
-
-      axios
-        .get(url, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`
-          }
-        })
+      restService
+        .get(url)
         .then(response => {
           this.peopleAssigned = response.data
         })
     },
 
-    add: async function(field_name) {
-      const accessToken = await this.$auth.getAccessToken()
+    add: function(field_name) {
 
-      const url = process.env.VUE_APP_API + '/api/v3/eventpersons/'
+      const url = '/api/v3/eventpersons/'
       var data = {
         event_id: this.eventId,
         person_id: this.selectedPersonId,
         person_role: this.selectedRole
       }
 
-      axios
+      restService
         .post(url, data, {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${accessToken}`
           }
         })
         .then(response => {
@@ -205,22 +188,19 @@ export default {
         })
     },
 
-    remove: async function(index, person_id) {
-      const accessToken = await this.$auth.getAccessToken()
-
-      const url = process.env.VUE_APP_API + '/api/v3/eventpersons/'
+    remove: function(index, person_id) {
+      const url = '/api/v3/eventpersons/'
       var data = {
         event_id: this.eventId,
         person_id: person_id
       }
-      axios
+      restService
         .delete(
           url,
           { data },
           {
             headers: {
               'Content-Type': 'application/json',
-              Authorization: `Bearer ${accessToken}`
             }
           }
         )

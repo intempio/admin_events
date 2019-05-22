@@ -11,16 +11,13 @@
         <div class="modal-body">
           <div class="radio-wrap">
             <form>
-              <div class="field" v-for="(item, index) in Products" v-bind:key="item.product_id">
-                <input
-                  name="product"
-                  type="radio"
+              <div v-for="(item, index) in Products" v-bind:key="item.product_id">
+                <b-radio
                   v-model="selectedProduct[index]"
-                  :value="item.product_id"
-                  class="b-radio"
-                >
-                {{item.product_name}}
-                <br>
+                  name="product"
+                  :native-value="item.product_id">
+                  {{item.product_name}}
+                </b-radio>
               </div>
             </form>
           </div>
@@ -28,7 +25,8 @@
 
         <div class="modal-footer">
           <slot name="footer">
-            <button class="modal-button" @click="addEvent()">Next</button>
+            <button @click="show=false">Cancel</button>
+            <button class="clone ml-1" @click="addEvent()">Next</button>
           </slot>
         </div>
       </div>
@@ -37,80 +35,65 @@
 </template>
 
 <script>
-import axios from 'axios'
+  import {restService} from '../plugins/axios';
 
-export default {
-  name: 'addeventmodal',
-  template: '#modal-addevent-template',
-  props: { clientId: String },
-  data: function() {
-    return { show: false, Products: [], selectedProduct: [] }
-  },
-  watch: {
-    clientId: function() {
+  export default {
+    name: 'addeventmodal',
+    template: '#modal-addevent-template',
+    props: {clientId: String},
+    data: function () {
+      return {
+        show: false,
+        Products: [],
+        selectedProduct: []
+      }
+    },
+    watch: {
+      clientId: function () {
+        this.fetchProducts()
+      }
+    },
+    methods: {
+      open: function () {
+        this.show = true
+      },
+      close: function () {
+        this.show = false
+      },
+      fetchProducts: function () {
+        const url = '/api/v3/products/?clientID=' + this.clientId
+        restService.get(url).then(response => this.Products = response.data)
+      },
+      addEvent: function () {
+        const url = process.env.VUE_APP_API + '/api/v3/events/'
+        var data = {
+          client_id: this.clientId,
+          product_id: this.getProductId(this.selectedProduct)
+        }
+
+        restService
+          .post(url, data)
+          .then(response => {
+            this.$router.push(`/admin/events/${response.data.event_id}`)
+          })
+          .catch(function (error) {
+            console.log(error)
+          })
+          .then(function () {
+            // always executed
+          })
+      },
+
+      getProductId: function (selectedProduct) {
+        var i
+        for (i = 0; i < selectedProduct.length; i++) {
+          if (selectedProduct[i]) return selectedProduct[i]
+        }
+      }
+    },
+    computed: {},
+    mounted: function () {
       this.fetchProducts()
     }
-  },
-  methods: {
-    open: function() {
-      this.show = true
-    },
-    close: function() {
-      this.show = false
-    },
-    fetchProducts: async function() {
-      const accessToken = await this.$auth.getAccessToken()
-
-      const url =
-        process.env.VUE_APP_API + '/api/v3/products/?clientID=' + this.clientId
-
-      axios
-        .get(url, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`
-          }
-        })
-        .then(response => {
-          this.Products = response.data
-        })
-    },
-    addEvent: async function() {
-      const accessToken = await this.$auth.getAccessToken()
-
-      const url = process.env.VUE_APP_API + '/api/v3/events/'
-      var data = {
-        client_id: this.clientId,
-        product_id: this.getProductId(this.selectedProduct)
-      }
-
-      axios
-        .post(url, data, {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${accessToken}`
-          }
-        })
-        .then(response => {
-          this.$router.push(`/admin/events/${response.data.event_id}`)
-        })
-        .catch(function(error) {
-          console.log(error)
-        })
-        .then(function() {
-          // always executed
-        })
-    },
-
-    getProductId: function(selectedProduct) {
-      var i
-      for (i = 0; i < selectedProduct.length; i++) {
-        if (selectedProduct[i]) return selectedProduct[i]
-      }
-    }
-  },
-  computed: {},
-  mounted: function() {
-    this.fetchProducts()
   }
-}
 </script>

@@ -376,7 +376,6 @@
   import Vue from 'vue'
   import VueCtkDateTimePicker from 'vue-ctk-date-time-picker'
   import 'vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css'
-  import axios from 'axios'
   import modal from '../../../components/History.vue'
   import people from '../../../components/PeopleAssigned.vue'
   import statusupdatemodal from '../../../components/StatusUpdateModal.vue'
@@ -386,6 +385,7 @@
   import {OPERATION_STATUSES} from '../../../components/constants.js'
   import {QA_STATUSES} from '../../../components/constants.js'
   import {PRODUCTION_STATUSES} from '../../../components/constants.js'
+  import {restService} from '../../../plugins/axios';
 
   Vue.component('VueCtkDateTimePicker', VueCtkDateTimePicker)
 
@@ -491,9 +491,7 @@
         this.fetchEvent()
         this.$refs.producer_notes_history.open()
       },
-      onChange: async function (field_name) {
-        const accessToken = await this.$auth.getAccessToken()
-
+      onChange: function (field_name) {
         if (!this.event[field_name]) return
         const url = process.env.VUE_APP_API + '/api/v3/events/'
         var data = {
@@ -501,9 +499,8 @@
         }
 
         data[field_name] = this.event[field_name]
-        axios.put(url, data, {
+        restService.put(url, data, {
           headers: {
-            Authorization: `Bearer ${accessToken}`,
             'Content-Type': 'application/json'
           }
         })
@@ -526,18 +523,11 @@
       },
 
       fetchEvent: async function () {
-        const accessToken = await this.$auth.getAccessToken()
-
         const url =
-          process.env.VUE_APP_API +
           '/api/v3/events/' +
           this.$route.params.event_id
-        axios
-          .get(url, {
-            headers: {
-              Authorization: `Bearer ${accessToken}`
-            }
-          })
+        restService
+          .get(url)
           .then(response => {
             this.event = response.data['event_records'][0]
             this.projects = response.data['project_list']

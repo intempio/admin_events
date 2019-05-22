@@ -10,6 +10,8 @@
 
 <script>
 import clientheader from '../components/Header.vue'
+import Spinner from '../components/Spinner'
+
 export default {
   name: 'index',
   data() {
@@ -19,9 +21,9 @@ export default {
     }
   },
   components: {
-    clientheader
+    clientheader,
+    Spinner
   },
-
   mounted: function() {
     this.$router.push({
       path: '/admin/clients/cf72db35-82f9-4053-a7a0-96cecc516664'

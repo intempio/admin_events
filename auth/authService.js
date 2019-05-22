@@ -1,6 +1,8 @@
 import auth0 from 'auth0-js'
 import EventEmitter from 'events'
 import authConfig from '../auth_config.json'
+import 'rxjs';
+import {utilsService} from '../services/utils-service'
 
 const webAuth = new auth0.WebAuth({
   domain: authConfig.domain,
@@ -60,7 +62,8 @@ class AuthService extends EventEmitter {
     this.emit(loginEvent, {
       loggedIn: true,
       profile: authResult.idTokenPayload,
-      state: authResult.appState
+      state: authResult.appState,
+      token: authResult.idToken
     })
   }
 
@@ -87,6 +90,7 @@ class AuthService extends EventEmitter {
     this.idToken = null
     this.tokenExpiry = null
     this.profile = null
+    utilsService.setToken('');
 
     webAuth.logout({
       returnTo: window.location.origin

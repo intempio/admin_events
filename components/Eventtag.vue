@@ -61,10 +61,10 @@
 </template>
 
 <script>
-import axios from 'axios'
 import { CLIENT_ITEMS } from '../components/constants.js'
 import { CHECKLIST_ITEMS } from '../components/constants.js'
 import { PRODUCT_ITEMS } from '../components/constants.js'
+import {restService} from '../plugins/axios';
 
 export default {
   name: 'eventtag',
@@ -93,31 +93,20 @@ export default {
   },
 
   methods: {
-    fetchEventtag: async function() {
-      const accessToken = await this.$auth.getAccessToken()
-
+    fetchEventtag: function() {
       const url =
-        process.env.VUE_APP_API +
         '/api/v3/eventtags/?eventID=' +
         this.eventId +
         '&tagType=' +
         this.tagType
 
-      axios
-        .get(url, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`
-          }
-        })
-        .then(response => {
+      restService.get(url).then(response => {
           this.Eventtag = response.data
         })
     },
 
-    add: async function(field_name) {
-      const accessToken = await this.$auth.getAccessToken()
-
-      const url = process.env.VUE_APP_API + '/api/v3/eventtags/'
+    add: function(field_name) {
+      const url = '/api/v3/eventtags/'
       var data = {
         event_id: this.eventId,
         tag_type: this.tagType,
@@ -125,11 +114,9 @@ export default {
         tag_value: this.InputTagName
       }
 
-      axios
-        .post(url, data, {
+      restService.post(url, data, {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${accessToken}`
           }
         })
         .then(response => {
@@ -148,10 +135,8 @@ export default {
       this.$refs['tagv' + index][0].focus()
     },
 
-    onChange: async function(tag_value, tag_name) {
-      const accessToken = await this.$auth.getAccessToken()
-
-      const url = process.env.VUE_APP_API + '/api/v3/eventtags/'
+    onChange: function(tag_value, tag_name) {
+      const url = '/api/v3/eventtags/'
 
       var data = {
         event_id: this.eventId,
@@ -160,11 +145,10 @@ export default {
         tag_value: tag_value
       }
 
-      axios
+      restService
         .put(url, data, {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${accessToken}`
           }
         })
         .then(response => {

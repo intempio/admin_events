@@ -159,12 +159,12 @@
   import Vue from 'vue'
   import VueCtkDateTimePicker from 'vue-ctk-date-time-picker'
   import 'vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css'
-  import axios from 'axios'
   import modal from '../../../components/History.vue'
   import people from '../../../components/PeopleAssigned.vue'
   import statusupdatemodal from '../../../components/StatusUpdateModal.vue'
   import eventtag from '../../../components/Eventtag.vue'
   import clientheader from '../../../components/Header.vue'
+  import {restService} from '../../../plugins/axios';
 
   Vue.component('VueCtkDateTimePicker', VueCtkDateTimePicker)
 
@@ -240,19 +240,16 @@
         this.fetchEvent()
         this.$refs.producer_notes_history.open()
       },
-      onChange: async function (field_name) {
-        const accessToken = await this.$auth.getAccessToken()
-
+      onChange: function (field_name) {
         if (!this.event[field_name]) return
-        const url = process.env.VUE_APP_API + '/api/v3/events/'
+        const url = '/api/v3/events/'
         var data = {
           event_id: this.event.event_id
         }
 
         data[field_name] = this.event[field_name]
-        axios.put(url, data, {
+        restService.put(url, data, {
           headers: {
-            Authorization: `Bearer ${accessToken}`,
             'Content-Type': 'application/json'
           }
         })
