@@ -16,7 +16,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(item, index) in sortedEventtags" v-bind:key="item.tag_name">
+        <tr v-for="(item, index) in sortedEventtags" v-bind:key="index">
           <td>{{item.tag_name}}</td>
           <td>
             <div v-show="index != currentIndex">
@@ -27,6 +27,7 @@
               v-show="index == currentIndex"
               v-model="item.tag_value"
               @blur="onChange(item.tag_value, item.tag_name), currentIndex=-1"
+              @keyup.enter="onChange(item.tag_value, item.tag_name), currentIndex=-1"
               :ref="'tagv'+index"
             >
           </td>
@@ -109,16 +110,12 @@ export default {
       const url = '/api/v3/eventtags/'
       var data = {
         event_id: this.eventId,
-        tag_type: this.tagType,
+        tag_type: this.tagType.charAt(0).toUpperCase() + this.tagType.slice(1),
         tag_name: this.selectedItem,
         tag_value: this.InputTagName
       }
 
-      restService.post(url, data, {
-          headers: {
-            'Content-Type': 'application/json',
-          }
-        })
+      restService.post(url, data)
         .then(response => {
           this.fetchEventtag()
         })
@@ -137,20 +134,15 @@ export default {
 
     onChange: function(tag_value, tag_name) {
       const url = '/api/v3/eventtags/'
-
       var data = {
         event_id: this.eventId,
-        tag_type: this.tagType,
+        tag_type: this.tagType.charAt(0).toUpperCase() + this.tagType.slice(1),
         tag_name: tag_name,
         tag_value: tag_value
       }
 
       restService
-        .put(url, data, {
-          headers: {
-            'Content-Type': 'application/json',
-          }
-        })
+        .put(url, data)
         .then(response => {
           this.fetchEventtag()
         })

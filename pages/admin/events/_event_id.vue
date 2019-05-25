@@ -93,11 +93,11 @@
                 <th></th>
               </tr>
               <tbody slot="table-body">
-                <tr v-for="(id, i) in event.operations_status_hist" :key="i">
-                  <td>{{id.updated_by_id}}</td>
-                  <td>{{id.operations_status}}</td>
-                  <td>{{id.updated}}</td>
-                </tr>
+              <tr v-for="(id, i) in event.operations_status_hist" :key="i">
+                <td>{{id.updated_by_id}}</td>
+                <td>{{id.operations_status}}</td>
+                <td>{{id.updated}}</td>
+              </tr>
               </tbody>
             </modal>
             <button class="history" @click="OpenOperationsStatusHistory">
@@ -423,6 +423,7 @@
         event: {},
         projects: [],
         clientid: null,
+        isDataPatched: false,
         client_statuses,
         operation_statuses,
         qa_statuses,
@@ -431,33 +432,33 @@
     },
     watch: {
       'event.client_status': function (val, oldVal) {
-        if (oldVal !== undefined) {
+        if (this.isDataPatched) {
           this.$refs.status_update_modal.open()
         }
       },
 
-      'event.operations_status': function (val, oldVal) {
-        if (oldVal !== undefined) {
+      'event.operations_status': function () {
+        if (this.isDataPatched) {
           this.onChange('operations_status')
         }
       },
-      'event.qa_status': function (val, oldVal) {
-        if (oldVal !== undefined) {
+      'event.qa_status': function () {
+        if (this.isDataPatched) {
           this.onChange('qa_status')
         }
       },
-      'event.production_status': function (val, oldVal) {
-        if (oldVal !== undefined) {
+      'event.production_status': function () {
+        if (this.isDataPatched) {
           this.onChange('production_status')
         }
       },
-      'event.time_zone': function (val, oldVal) {
-        if (oldVal !== undefined) {
+      'event.time_zone': function () {
+        if (this.isDataPatched) {
           this.onChange('time_zone')
         }
       },
-      'event.producer_offset_minutes': function (val, oldVal) {
-        if (oldVal !== undefined) {
+      'event.producer_offset_minutes': function () {
+        if (this.isDataPatched) {
           this.onChange('producer_offset_minutes')
         }
       }
@@ -492,18 +493,16 @@
         this.$refs.producer_notes_history.open()
       },
       onChange: function (field_name) {
-        if (!this.event[field_name]) return
-        const url = process.env.VUE_APP_API + '/api/v3/events/'
+        if (!this.event[field_name]) return;
+        const url = process.env.VUE_APP_API + '/api/v3/events/';
         var data = {
           event_id: this.event.event_id
-        }
+        };
 
         data[field_name] = this.event[field_name]
-        restService.put(url, data, {
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        })
+        restService.put(url, data).then(() => {
+          console.log('K1 success');
+        }).catch(err => console.log(err));
       },
 
       onChangeTimeout: function (field_name) {
@@ -522,17 +521,16 @@
         this.timeout = setTimeout(() => this.onChange(field_name), 5000)
       },
 
-      fetchEvent: async function () {
-        const url =
-          '/api/v3/events/' +
-          this.$route.params.event_id
-        restService
-          .get(url)
-          .then(response => {
-            this.event = response.data['event_records'][0]
-            this.projects = response.data['project_list']
-            this.clientid = this.event.client_id
-          })
+      fetchEvent: function () {
+        const url = '/api/v3/events/' + this.$route.params.event_id;
+        restService.get(url).then(response => {
+          this.event = response.data['event_records'][0]
+          this.projects = response.data['project_list']
+          this.clientid = this.event.client_id
+          setTimeout(() => {
+            this.isDataPatched = true;
+          });
+        }).catch(err => console.log(err));
       }
     },
     components: {
