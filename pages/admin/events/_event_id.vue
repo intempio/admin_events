@@ -500,9 +500,22 @@
         };
 
         data[field_name] = this.event[field_name]
-        restService.put(url, data).then(() => {
-          console.log('K1 success');
-        }).catch(err => console.log(err));
+        restService.put(url, data)
+          .then(() => {
+          //   this.$toast.open({
+          //     message: `Updated successfully`,
+          //     position: 'is-bottom',
+          //     type: 'is-success'
+          //   })
+          })
+          .catch(err => {
+            this.$toast.open({
+              message: `Error saving: ${error}`,
+              position: 'is-bottom',
+              type: 'is-danger'
+            });
+            console.log(err)
+          });
       },
 
       onChangeTimeout: function (field_name) {
@@ -517,20 +530,28 @@
         if (this.timeout) {
           clearTimeout(this.timeout)
         }
-
         this.timeout = setTimeout(() => this.onChange(field_name), 5000)
       },
 
       fetchEvent: function () {
         const url = '/api/v3/events/' + this.$route.params.event_id;
-        restService.get(url).then(response => {
-          this.event = response.data['event_records'][0]
-          this.projects = response.data['project_list']
-          this.clientid = this.event.client_id
-          setTimeout(() => {
-            this.isDataPatched = true;
+        restService.get(url)
+          .then(response => {
+            this.event = response.data['event_records'][0]
+            this.projects = response.data['project_list']
+            this.clientid = this.event.client_id
+            setTimeout(() => {
+              this.isDataPatched = true;
+            });
+          })
+          .catch(err => {
+            this.$toast.open({
+              message: `Error fetching event: ${err}`,
+              position: 'is-bottom',
+              type: 'is-danger'
+            });
+            console.log(err);
           });
-        }).catch(err => console.log(err));
       }
     },
     components: {

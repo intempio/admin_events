@@ -90,16 +90,17 @@ export default {
         clone: 'True'
       }
 
-      restService.post(url, data, {
-          headers: {
-            'Content-Type': 'application/json',
-          }
-        })
+      restService.post(url, data)
         .then(response => {
           this.$router.push(`/events/${response.data.event_id}`)
         })
         .catch(function(error) {
-          console.log(error)
+          console.log(error);
+          this.$toast.open({
+            message: `Error fetching event: ${error}`,
+            position: 'is-bottom',
+            type: 'is-danger'
+          })
         })
         .then(function() {
           // always executed even with catched errors

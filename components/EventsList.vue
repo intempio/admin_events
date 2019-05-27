@@ -114,19 +114,17 @@ export default {
       }
 
       restService
-        .post(url, data, {
-          headers: {
-            'Content-Type': 'application/json',
-          }
-        })
+        .post(url, data)
         .then(response => {
           this.$router.push(`/admin/events/${response.data.event_id}`)
         })
         .catch(function(error) {
-          console.log(error)
-        })
-        .then(function() {
-          // always executed even with catched errors
+          console.log(error);
+          this.$toast.open({
+            message: `Error: ${error}`,
+            position: 'is-bottom',
+            type: 'is-danger'
+          })
         })
     }
   },

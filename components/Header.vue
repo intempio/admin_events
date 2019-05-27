@@ -75,8 +75,15 @@ export default {
 
       restService.get(url)
         .then(response => {
-          this.clients = response.data
-          this.currentclientname()
+          this.clients = response.data;
+          this.currentclientname();
+        })
+        .catch(err => {
+          this.$toast.open({
+            message: `Error fetching clients: ${err}`,
+            position: 'is-bottom',
+            type: 'is-danger'
+          })
         })
     },
     currentclientname: function() {

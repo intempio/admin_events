@@ -104,6 +104,13 @@ export default {
       restService.get(url).then(response => {
           this.Eventtag = response.data
         })
+        .catch(err => {
+          this.$toast.open({
+            message: `Error getting event tag: ${err}`,
+            position: 'is-bottom',
+            type: 'is-danger'
+          })
+        })
     },
 
     add: function(field_name) {
@@ -117,18 +124,25 @@ export default {
 
       restService.post(url, data)
         .then(response => {
-          this.fetchEventtag()
+          this.fetchEventtag();
+          this.$toast.open({
+            message: `Added successfully`,
+            position: 'is-bottom',
+            type: 'is-success'
+          })
         })
         .catch(function(error) {
-          console.log(error)
-        })
-        .then(function() {
-          // always executed
-        })
+          console.log(error);
+          this.$toast.open({
+            message: `Saving error: ${error}`,
+            position: 'is-bottom',
+            type: 'is-danger'
+          })
+        });
     },
 
     edit: function(index) {
-      this.currentIndex = index
+      this.currentIndex = index;
       this.$refs['tagv' + index][0].focus()
     },
 
@@ -144,13 +158,20 @@ export default {
       restService
         .put(url, data)
         .then(response => {
-          this.fetchEventtag()
+          this.fetchEventtag();
+          this.$toast.open({
+            message: `Updated successfully`,
+            position: 'is-bottom',
+            type: 'is-success'
+          })
         })
         .catch(function(error) {
-          console.log(error)
-        })
-        .then(function() {
-          // always executed
+          console.log(error);
+          this.$toast.open({
+            message: `Error: ${error}`,
+            position: 'is-bottom',
+            type: 'is-danger'
+          })
         })
     },
 

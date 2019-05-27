@@ -62,7 +62,15 @@
       },
       fetchProducts: function () {
         const url = '/api/v3/products/?clientID=' + this.clientId
-        restService.get(url).then(response => this.Products = response.data)
+        restService.get(url)
+          .then(response => this.Products = response.data)
+          .catch(err => {
+            this.$toast.open({
+              message: `Cannot fetch product list: ${err}`,
+              position: 'is-bottom',
+              type: 'is-danger'
+            })
+          })
       },
       addEvent: function () {
         const url = process.env.VUE_APP_API + '/api/v3/events/'
@@ -77,10 +85,12 @@
             this.$router.push(`/admin/events/${response.data.event_id}`)
           })
           .catch(function (error) {
-            console.log(error)
-          })
-          .then(function () {
-            // always executed
+            console.log(error);
+            this.$toast.open({
+              message: `Error: ${error}`,
+              position: 'is-bottom',
+              type: 'is-danger'
+            })
           })
       },
 

@@ -1,17 +1,22 @@
 import axios from 'axios'
 import {utilsService} from '../services/utils-service';
 
+const LOADER_EXCEPTIONS = [process.env.VUE_APP_API + '/api/v3/events/'];
+
 export const restService = axios.create({
   baseURL: process.env.VUE_APP_API,
   headers: {
     Authorization: `Bearer ${utilsService.getToken()}`
   }
 });
+
 let requestCount = 0;
 
 restService.interceptors.request.use((req) => {
-  requestCount++;
-  utilsService.setLoading(true);
+  if (!LOADER_EXCEPTIONS.includes(req.url)) {
+    requestCount++;
+    utilsService.setLoading(true);
+  }
   return req;
 });
 

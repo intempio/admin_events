@@ -14,7 +14,11 @@ export const utilsService = new Vue({
       this.token = token;
     },
     getToken() {
-      return this.token;
+      return new Promise(resolve => {
+        setTimeout(() => {
+          resolve(this.token)
+        }, 150)
+      })
     }
   }
 });
