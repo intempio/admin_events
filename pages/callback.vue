@@ -1,21 +1,17 @@
 <template>
-  <div>
-    <p>Loading...</p>
-  </div>
+  <loginComponent mode="loading"></loginComponent>
 </template>
 
 <script>
-  import {utilsService} from '../services/utils-service';
+  import loginComponent from '../components/Login';
 
   export default {
-    methods: {
-      handleLoginEvent(data) {
-        utilsService.setToken(data.token);
-        this.$router.push(data.state ? data.state.target || '/' : '/')
-      }
-    },
-    created() {
-      this.$auth.handleAuthentication()
+    name: 'callback',
+    components: {loginComponent},
+    mounted() {
+      this.$auth.handleAuthentication().then(() => {
+        this.$router.push('/');
+      });
     }
   }
 </script>

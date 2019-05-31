@@ -2,7 +2,7 @@ import auth0 from 'auth0-js'
 import EventEmitter from 'events'
 import authConfig from '../auth_config.json'
 import 'rxjs';
-import {utilsService} from '../services/utils-service'
+import {authService} from '../services/auth-service'
 
 const webAuth = new auth0.WebAuth({
   domain: authConfig.domain,
@@ -11,18 +11,17 @@ const webAuth = new auth0.WebAuth({
   audience: authConfig.audience, // add the audience
   responseType: 'token id_token', // request 'token' as well as 'id_token'
   scope: 'openid profile email'
-})
+});
+
 const localStorageKey = 'loggedIn'
 const loginEvent = 'loginEvent'
 
 class AuthService extends EventEmitter {
-  idToken = null
-  profile = null
-  tokenExpiry = null
-
-  // Add fields here to store the Access Token and the expiry time
-  accessToken = null
-  accessTokenExpiry = null
+  idToken = null;
+  profile = null;
+  tokenExpiry = null;
+  accessToken = null;
+  accessTokenExpiry = null;
 
   // Starts the user login flow
   login(customState) {
@@ -49,15 +48,13 @@ class AuthService extends EventEmitter {
     this.idToken = authResult.idToken
     this.profile = authResult.idTokenPayload
     this.tokenExpiry = new Date(this.profile.exp * 1000)
-
-    // NEW - Save the Access Token and expiry time in memory
     this.accessToken = authResult.accessToken
 
     // Convert expiresIn to milliseconds and add the current time
     // (expiresIn is a relative timestamp, but an absolute time is desired)
     this.accessTokenExpiry = new Date(Date.now() + authResult.expiresIn * 1000)
 
-    localStorage.setItem(localStorageKey, 'true')
+    authService.setSession(authResult);
 
     this.emit(loginEvent, {
       loggedIn: true,
@@ -85,25 +82,25 @@ class AuthService extends EventEmitter {
   }
 
   logOut() {
-    localStorage.removeItem(localStorageKey)
-
     this.idToken = null
     this.tokenExpiry = null
     this.profile = null
-    utilsService.setToken('');
+    authService.terminateSession();
 
     webAuth.logout({
-      returnTo: window.location.origin
+      returnTo: window.location.origin + '/login'
     })
 
     this.emit(loginEvent, { loggedIn: false })
   }
 
   isAuthenticated() {
-    return (
-      Date.now() < this.tokenExpiry &&
-      localStorage.getItem(localStorageKey) === 'true'
-    )
+    const user = JSON.parse(localStorage.getItem('user'));
+    const userRoles = JSON.parse(localStorage.getItem('user_roles'));
+    if (user) {
+      this.profile = user;
+    }
+    return !!this.profile;
   }
 
   // ... other methods

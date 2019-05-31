@@ -436,7 +436,6 @@
           this.$refs.status_update_modal.open()
         }
       },
-
       'event.operations_status': function () {
         if (this.isDataPatched) {
           this.onChange('operations_status')
@@ -502,19 +501,18 @@
         data[field_name] = this.event[field_name]
         restService.put(url, data)
           .then(() => {
-          //   this.$toast.open({
-          //     message: `Updated successfully`,
-          //     position: 'is-bottom',
-          //     type: 'is-success'
-          //   })
+            this.$toast.open({
+              message: `Updated successfully`,
+              position: 'is-bottom',
+              type: 'is-success'
+            })
           })
-          .catch(err => {
+          .catch(error => {
             this.$toast.open({
               message: `Error saving: ${error}`,
               position: 'is-bottom',
               type: 'is-danger'
             });
-            console.log(err)
           });
       },
 

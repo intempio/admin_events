@@ -3,17 +3,18 @@
     <Spinner v-if="isLoading"></Spinner>
     <div class="head">
       <div class="header-admin">
-        <img src="~/assets/operation.png" class="mobile_btn">
+        <!--<div>-->
+          <!--<img src="~/assets/operation.png" class="mobile_btn">-->
+        <!--</div>-->
         <span>Operations Admin</span>
       </div>
       <div v-if="!isAuthenticated">
         <a @click="login" class="login-style">Login</a>
       </div>
+      <div class="header-projects">{{currentclient}}</div>
       <div v-if="isAuthenticated">
         <a @click="logout" class="login-style">Logout</a>
       </div>
-
-      <div class="header-projects">{{currentclient}}</div>
     </div>
     <div class="menu-wrap">
       <template>
@@ -32,7 +33,7 @@
 <script>
 import { Push } from 'vue-burger-menu'
 import {restService} from '../plugins/axios';
-import {utilsService} from '../services/utils-service';
+import {authService} from '../services/auth-service';
 import Spinner from '../components/Spinner'
 export default {
   name: 'clientheader',
@@ -45,13 +46,9 @@ export default {
       isAuthenticated: false
     }
   },
-  async created() {
-    utilsService.loading.subscribe(val => this.isLoading = val);
-    try {
-      await this.$auth.renewTokens()
-    } catch (e) {
-      console.log(e)
-    }
+  created() {
+    authService.loading.subscribe(val => this.isLoading = val);
+    authService.authenticated.subscribe(val => this.isAuthenticated = val);
   },
   watch: {
     clientid: function() {
@@ -65,13 +62,8 @@ export default {
     logout() {
       this.$auth.logOut()
     },
-    handleLoginEvent(data) {
-      this.isAuthenticated = data.loggedIn
-      this.profile = data.profile
-    },
-
     fetchClients: function() {
-      const url = '/api/v3/clients/'
+      const url = '/api/v3/clients/';
 
       restService.get(url)
         .then(response => {
@@ -113,3 +105,14 @@ export default {
   }
 }
 </script>
+<style scoped>
+  .header-admin {
+    margin-left: 50px;
+    display: flex;
+    align-items: center;
+  }
+
+  .header-projects {
+    text-transform: uppercase;
+  }
+</style>

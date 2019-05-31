@@ -65,6 +65,10 @@ module.exports = {
     // See https://github.com/nuxt-community/axios-module#options
   },
 
+  router: {
+    middleware: ['routerGuard']
+  },
+
   /*
    ** Build configuration
    */
