@@ -25,7 +25,7 @@ export const authService = new Vue({
     setSession(data) {
       this.token = data.idToken;
       localStorage.setItem('loggedIn', 'true');
-      localStorage.setItem('token', data.idToken);
+      localStorage.setItem('token', data.accessToken);
       localStorage.setItem('expiry', JSON.stringify(data.tokenExpiry));
       localStorage.setItem('user', JSON.stringify(data.idTokenPayload));
       localStorage.setItem('user_roles', JSON.stringify(data.idTokenPayload['http://localhost:8081/' + 'user_roles']));

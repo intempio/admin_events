@@ -19,6 +19,7 @@
   .spinner-container {
     height: 100vh;
     position: fixed;
+    top: 0;
     width: 100%;
     display: flex;
     align-items: center;

@@ -18,20 +18,20 @@
     </div>
     <div class="menu-wrap">
       <template>
-        <Push noOverlay width="200">
+        <Slide noOverlay width="190">
           <div v-for="(item) in clients" v-bind:key="item.client_name" class="popup-menu-item">
             <router-link :id="item.client_name" :to="'/admin/clients/' + item.client_id">
               <span>{{item.client_name}}</span>
             </router-link>
           </div>
-        </Push>
+        </Slide>
       </template>
     </div>
   </section>
 </template>
 
 <script>
-import { Push } from 'vue-burger-menu'
+import { Slide } from 'vue-burger-menu'
 import {restService} from '../plugins/axios';
 import {authService} from '../services/auth-service';
 import Spinner from '../components/Spinner'
@@ -97,7 +97,7 @@ export default {
     }
   },
   components: {
-    Push,
+    Slide,
     Spinner
   },
   mounted: function() {

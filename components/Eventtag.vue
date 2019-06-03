@@ -1,5 +1,5 @@
 <template id = 'eventtag'>
-  <div class="checklists width">
+  <div class="checklists width pl-0 pr-2">
     <h2 class="colored">{{title}}</h2>
     <table class="assignee-list">
       <thead>
