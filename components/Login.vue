@@ -5,9 +5,12 @@
       <div v-if="mode === 'signup'">
         <h5 class="mb-3">Please sign in to continue</h5>
       </div>
-      <b-button type="is-primary" outlined inverted @click="logIn" v-if="mode === 'signup'">
+      <!--<b-button type="is-primary" outlined inverted @click="logIn" v-if="mode === 'signup'">-->
+        <!--SIGN IN-->
+      <!--</b-button>-->
+      <button class="temporary-button" @click="logIn" v-if="mode === 'signup'">
         SIGN IN
-      </b-button>
+      </button>
       <h3 v-if="mode !== 'signup'">Loading...</h3>
     </div>
   </div>
@@ -47,5 +50,15 @@
 
   h1 {
     font-size: 32px;
+  }
+
+  .temporary-button {
+    outline: 1px solid white;
+    font-size: 18px;
+    padding: 10px 24px;
+  }
+
+  .temporary-button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
   }
 </style>
