@@ -386,6 +386,7 @@
   import {QA_STATUSES} from '../../../components/constants.js'
   import {PRODUCTION_STATUSES} from '../../../components/constants.js'
   import {restService} from '../../../plugins/axios';
+  import isEqual from 'lodash.isequal'
 
   Vue.component('VueCtkDateTimePicker', VueCtkDateTimePicker)
 
@@ -421,6 +422,7 @@
         value: null,
         isHidden: true,
         event: {},
+        eventOld: {},
         projects: [],
         clientid: null,
         isDataPatched: false,
@@ -432,31 +434,31 @@
     },
     watch: {
       'event.client_status': function (val, oldVal) {
-        if (this.isDataPatched) {
+        if (this.isDataPatched && !isEqual(this.event, this.eventOld)) {
           this.$refs.status_update_modal.open()
         }
       },
-      'event.operations_status': function () {
+      'event.operations_status': function (val, oldVal) {
         if (this.isDataPatched) {
           this.onChange('operations_status')
         }
       },
-      'event.qa_status': function () {
+      'event.qa_status': function (val, oldVal) {
         if (this.isDataPatched) {
           this.onChange('qa_status')
         }
       },
-      'event.production_status': function () {
+      'event.production_status': function (val, oldVal) {
         if (this.isDataPatched) {
           this.onChange('production_status')
         }
       },
-      'event.time_zone': function () {
+      'event.time_zone': function (val, oldVal) {
         if (this.isDataPatched) {
           this.onChange('time_zone')
         }
       },
-      'event.producer_offset_minutes': function () {
+      'event.producer_offset_minutes': function (val, oldVal) {
         if (this.isDataPatched) {
           this.onChange('producer_offset_minutes')
         }
@@ -493,6 +495,7 @@
       },
       onChange: function (field_name) {
         if (!this.event[field_name]) return;
+        if (isEqual(this.event, this.eventOld)) return;
         const url = process.env.VUE_APP_API + '/api/v3/events/';
         var data = {
           event_id: this.event.event_id
@@ -505,7 +508,11 @@
               message: `Updated successfully`,
               position: 'is-bottom',
               type: 'is-success'
-            })
+            });
+            this.eventOld = JSON.parse(JSON.stringify(this.event));
+            if (field_name === 'client_status') {
+              this.fetchEvent();
+            }
           })
           .catch(error => {
             this.$toast.open({
@@ -513,6 +520,7 @@
               position: 'is-bottom',
               type: 'is-danger'
             });
+            this.event = JSON.parse(JSON.stringify(this.eventOld));
           });
       },
 
@@ -532,10 +540,12 @@
       },
 
       fetchEvent: function () {
+        this.isDataPatched = false;
         const url = '/api/v3/events/' + this.$route.params.event_id;
         restService.get(url)
           .then(response => {
-            this.event = response.data['event_records'][0]
+            this.event = response.data['event_records'][0];
+            this.eventOld = JSON.parse(JSON.stringify(response.data['event_records'][0]))
             this.projects = response.data['project_list']
             this.clientid = this.event.client_id
             setTimeout(() => {

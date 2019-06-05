@@ -1,7 +1,7 @@
 import axios from 'axios'
 import {authService} from '../services/auth-service';
 
-const LOADER_EXCEPTIONS = [process.env.VUE_APP_API + '/api/v3/events/'];
+const LOADER_EXCEPTIONS = [];
 
 export const restService = axios.create({
   baseURL: process.env.VUE_APP_API,
@@ -23,6 +23,14 @@ restService.interceptors.request.use((req) => {
 });
 
 restService.interceptors.response.use(req => {
+  reqCountSub();
+  return req;
+}, error => {
+  reqCountSub();
+  return Promise.reject(error.response.data);
+});
+
+const reqCountSub = () => {
   requestCount--;
   if (requestCount <= 0) {
     timeout = setTimeout(() => {
@@ -30,6 +38,4 @@ restService.interceptors.response.use(req => {
       requestCount = 0;
     }, 300);
   }
-  return req;
-});
-
+};

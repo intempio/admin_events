@@ -38,7 +38,7 @@ class AuthService extends EventEmitter {
           reject(err)
         } else {
           this.localLogin(authResult)
-          resolve(authResult.idToken)
+          resolve(authResult.accessToken)
         }
       })
     })
@@ -84,6 +84,7 @@ class AuthService extends EventEmitter {
 
   logOut() {
     this.idToken = null
+    this.accessToken = null
     this.tokenExpiry = null
     this.profile = null
     authService.terminateSession();

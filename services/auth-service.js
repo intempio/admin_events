@@ -23,7 +23,7 @@ export const authService = new Vue({
       return this.token;
     },
     setSession(data) {
-      this.token = data.idToken;
+      this.token = data.accessToken;
       localStorage.setItem('loggedIn', 'true');
       localStorage.setItem('token', data.accessToken);
       localStorage.setItem('expiry', JSON.stringify(data.tokenExpiry));
