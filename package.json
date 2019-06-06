@@ -1,6 +1,6 @@
 {
   "name": "intempio",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "Intempio SPA alpha version",
   "author": "Lenara Anafieva | KP",
   "private": true,
@@ -39,5 +39,8 @@
     "eslint-plugin-vue": "^4.0.0",
     "nodemon": "^1.11.0",
     "webpack-bundle-analyzer": "^3.3.2"
+  },
+  "engines": {
+    "node": ">= 8.9.4"
   }
 }
