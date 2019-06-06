@@ -4,7 +4,7 @@
     <div class="head">
       <div class="header-admin">
         <!--<div>-->
-          <!--<img src="~/assets/operation.png" class="mobile_btn">-->
+        <!--<img src="~/assets/operation.png" class="mobile_btn">-->
         <!--</div>-->
         <span>Operations Admin</span>
       </div>
@@ -24,6 +24,9 @@
               <span>{{item.client_name}}</span>
             </router-link>
           </div>
+          <div style="position: absolute; bottom: 8%">
+            <span style="font-size: 14px">Version: {{appVersion}}</span>
+          </div>
         </Slide>
       </template>
     </div>
@@ -31,79 +34,83 @@
 </template>
 
 <script>
-import { Slide } from 'vue-burger-menu'
-import {restService} from '../plugins/axios';
-import {authService} from '../services/auth-service';
-import Spinner from '../components/Spinner'
-export default {
-  name: 'clientheader',
-  props: { clientid: String },
-  data: function() {
-    return {
-      isLoading: false,
-      clients: [],
-      currentclient: '',
-      isAuthenticated: false
-    }
-  },
-  created() {
-    authService.loading.subscribe(val => this.isLoading = val);
-    authService.authenticated.subscribe(val => this.isAuthenticated = val);
-  },
-  watch: {
-    clientid: function() {
-      this.currentclientname()
-    }
-  },
-  methods: {
-    login() {
-      this.$auth.login()
-    },
-    logout() {
-      this.$auth.logOut()
-    },
-    fetchClients: function() {
-      const url = '/api/v3/clients/';
+  import {Slide} from 'vue-burger-menu'
+  import {restService} from '../plugins/axios';
+  import {authService} from '../services/auth-service';
+  import Spinner from '../components/Spinner'
+  import * as packageJson from '../package.json';
 
-      restService.get(url)
-        .then(response => {
-          this.clients = response.data;
-          this.currentclientname();
-        })
-        .catch(err => {
-          this.$toast.open({
-            message: `Error fetching clients: ${err}`,
-            position: 'is-bottom',
-            type: 'is-danger'
-          })
-        })
-    },
-    currentclientname: function() {
-      //debugger
-      let filteredclient
-      if (this.clientid == undefined || this.clients == []) {
-        this.currentclient = ''
-      } else {
-        filteredclient = this.clients.filter(
-          client => client.client_id === this.clientid
-        )
-        //console.log(this.clientid)
-        //console.log(this.clients)
-        //console.log(filteredclient)
-        if (filteredclient[0] === undefined) return
-        //debugger
-        this.currentclient = filteredclient[0].client_name
+  export default {
+    name: 'clientheader',
+    props: {clientid: String},
+    data: function () {
+      return {
+        isLoading: false,
+        clients: [],
+        currentclient: '',
+        isAuthenticated: false,
+        appVersion: ''
       }
+    },
+    created() {
+      this.appVersion = packageJson.version;
+      authService.loading.subscribe(val => this.isLoading = val);
+      authService.authenticated.subscribe(val => this.isAuthenticated = val);
+    },
+    watch: {
+      clientid: function () {
+        this.currentclientname()
+      }
+    },
+    methods: {
+      login() {
+        this.$auth.login()
+      },
+      logout() {
+        this.$auth.logOut()
+      },
+      fetchClients: function () {
+        const url = '/api/v3/clients/';
+
+        restService.get(url)
+          .then(response => {
+            this.clients = response.data;
+            this.currentclientname();
+          })
+          .catch(err => {
+            this.$toast.open({
+              message: `Error fetching clients: ${err}`,
+              position: 'is-bottom',
+              type: 'is-danger'
+            })
+          })
+      },
+      currentclientname: function () {
+        //debugger
+        let filteredclient
+        if (this.clientid == undefined || this.clients == []) {
+          this.currentclient = ''
+        } else {
+          filteredclient = this.clients.filter(
+            client => client.client_id === this.clientid
+          )
+          //console.log(this.clientid)
+          //console.log(this.clients)
+          //console.log(filteredclient)
+          if (filteredclient[0] === undefined) return
+          //debugger
+          this.currentclient = filteredclient[0].client_name
+        }
+      }
+    },
+    components: {
+      Slide,
+      Spinner
+    },
+    mounted: function () {
+      this.fetchClients()
     }
-  },
-  components: {
-    Slide,
-    Spinner
-  },
-  mounted: function() {
-    this.fetchClients()
   }
-}
 </script>
 <style scoped>
   .header-admin {
