@@ -29,7 +29,9 @@
     "rxjs": "^6.5.2",
     "vue-burger-menu": "^1.0.9",
     "vue-ctk-date-time-picker": "^2.0.4",
-    "vue-search-select": "^2.8.3"
+    "vue-search-select": "^2.8.3",
+    "vuetify": "^0.5.6"
+
   },
   "devDependencies": {
     "babel-eslint": "^8.2.1",
