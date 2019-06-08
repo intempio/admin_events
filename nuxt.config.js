@@ -57,6 +57,11 @@ module.exports = {
     '@nuxtjs/axios',
     // Doc: https://buefy.github.io/#/documentation
     'nuxt-buefy',
+  ],
+  vuetify: {
+    //  theme: { }
+  },
+  devModules: [
     '@nuxtjs/vuetify'
   ],
   /*
