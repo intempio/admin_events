@@ -46,6 +46,14 @@ body, #app {
   flex-direction: column;
 }
 
+.primary {
+  background-color: #0097e1;
+}
+
+.secondary {
+  background-color: #74bd44;;
+}
+
 .content table th,
 .content table td {
   color: #363636;
@@ -216,7 +224,7 @@ tbody tr:nth-child(even) td {
 }
 thead {
   background: #ccc;
-  color: #fff;
+  color: #434343;
 }
 .content table th {
   vertical-align: middle;
@@ -343,6 +351,7 @@ select {
   padding: 6px 12px;
   background: #74bd44;
   font-size: 13px;
+  min-width: 66px;
 }
 table.assignee td {
   width: 49.7%;
@@ -417,6 +426,8 @@ h2.colored {
 .wrap-pagination-add {
   display: flex;
   flex-direction: row;
+  margin-top: 10px;
+  align-items: center;
 }
 .add-new-record {
   width: 100%;
@@ -425,10 +436,10 @@ h2.colored {
   justify-content: space-between;
 }
 .input-items {
-  width: 38%;
+  width: 42%;
 }
 .pagination-wrap {
-  width: 18%;
+  width: 20%;
 }
 
 /*VueCtkDateTimePicker*/
@@ -474,9 +485,9 @@ h2.colored {
   margin-top: 5%;
 }
 .history {
-  width: 80px;
   font-size: 11px;
   padding: 9px 11px;
+  margin-bottom: 2px;
 }
 
 .history-wrap {

@@ -1,5 +1,5 @@
 <template id="people-assinged">
-  <div class="assignee width pl-0 pr-2">
+  <div class="assignee pl-0 pr-2">
     <h2 class="colored">People Assigned</h2>
     <table class="assignee-list">
       <thead>

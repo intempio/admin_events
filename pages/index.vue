@@ -1,7 +1,6 @@
 <template>
   <section>
     <clientheader></clientheader>
-
     <section class="main-content" id="page-wrap">
       <div id="wrap"></div>
     </section>
