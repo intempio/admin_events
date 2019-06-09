@@ -42,7 +42,7 @@ module.exports = {
   /*
    ** Global CSS
    */
-  css: ['~/css/main.css', '@fortawesome/fontawesome-svg-core/styles.css'],
+  css: ['~/css/main.scss', '@fortawesome/fontawesome-svg-core/styles.css', 'assets/styles.scss'],
 
   /*
    ** Plugins to load before mounting the App

@@ -5,18 +5,18 @@
 
     <div class="container-fluid mt-5" style="padding-top: 30px">
       <div class="row">
-        <div class="col-10 m-auto">
+        <div class="col-xl-10 col-lg-12 m-auto">
           <b-card border-variant="primary">
             <div class="row align-items-center">
               <div class="col-2">
                 <span class="font-weight-bold">Event Code:</span>
                 {{event.event_code}}
               </div>
-              <div class="col-5">
+              <div class="col-4">
                 <span class="font-weight-bold">Project:</span>
                 {{event.project_id}}
               </div>
-              <div class="col-5">
+              <div class="col-6">
                 <div class="row d-flex align-items-center">
                   <div class="col-12 d-flex align-items-center">
                     <div style="min-width: 100px;">
@@ -28,7 +28,7 @@
                       name="event_name"
                       placeholder="Event Name"
                       class="input input-hidden"
-                      @input="onChangeTimeout('event_name')"
+                      @input="onChange"
                     >
                   </div>
                 </div>
@@ -39,24 +39,27 @@
       </div>
 
       <div class="row mt-3">
-        <div class="col-10 m-auto">
+        <div class="col-xl-10 col-lg-12 m-auto">
           <b-card border-variant="primary"
                   header="Event details"
-                  header-bg-variant="primary"
-                  header-text-variant="white">
+                  header-text-variant="white"
+                  class="custom-card">
             <div class="row">
               <div class="col-6">
                 <div class="row">
                   <div class="col-12">
-                    <statusupdatemodal
-                      ref="status_update_modal"
-                      :saveCallback="onChange"
-                      fieldName="client_status"
-                    ></statusupdatemodal>
+                    <!--<statusupdatemodal-->
+                    <!--ref="status_update_modal"-->
+                    <!--:saveCallback="onChange"-->
+                    <!--fieldName="client_status"-->
+                    <!--&gt;</statusupdatemodal>-->
                     <div class="d-flex">
                       <div class="col-10 pr-0">
                         <label class="">Client Status:</label>
-                        <b-select v-model="event.client_status" placeholder="Client Status">
+                        <b-select v-model="event.client_status"
+                                  placeholder="Client Status"
+                                  @input="onChange"
+                        >
                           <option
                             :value="status"
                             v-for="status in client_statuses"
@@ -92,11 +95,14 @@
                   <div class="col-12 d-flex">
                     <div class="col-10 pr-0">
                       <label class="">Operation Status:</label>
-                      <b-select v-model="event.operations_status" placeholder="Operations Status">
+                      <b-select v-model="event.operations_status"
+                                placeholder="Operations Status"
+                                @input="onChange"
+                      >
                         <option
                           :value="status"
                           v-for="status in operation_statuses"
-                          v-bind:key="status"
+                          :key="status"
                         >{{status}}
                         </option>
                       </b-select>
@@ -133,9 +139,9 @@
                       <b-select
                         v-model="event.qa_status"
                         placeholder="QA Status"
-                        @input="onChange('qa_status')"
+                        @input="onChange"
                       >
-                        <option :value="status" v-for="status in qa_statuses" v-bind:key="status">{{status}}</option>
+                        <option :value="status" v-for="status in qa_statuses" :key="status">{{status}}</option>
                       </b-select>
                     </div>
                     <div class="col-2 d-flex align-items-end">
@@ -167,7 +173,7 @@
                       <b-select
                         v-model="event.production_status"
                         placeholder="Production Status"
-                        @input="onChange('production_status')"
+                        @input="onChange"
                       >
                         <option
                           :value="status"
@@ -222,14 +228,16 @@
                       color="#0097e1"
                       minute-interval="15"
                       label
-                      @validate="onChange('event_start')"
+                      @input="onChange"
                     ></VueCtkDateTimePicker>
                   </div>
 
                   <div class="col-12">
                     <label>Time zone:</label>
                     <b-select v-model="event.time_zone"
-                              placeholder="Time zone">
+                              placeholder="Time zone"
+                              @input="onChange"
+                    >
                       <option value="EST" selected>EST</option>
                       <option value="GMT">GMT</option>
                       <option value="CEST">CEST</option>
@@ -244,7 +252,7 @@
                       name="duration"
                       placeholder="Duration"
                       class="input"
-                      @input="onChangeTimeout('duration_minutes')"
+                      @input="onChange"
                     >
                   </div>
                 </div>
@@ -256,7 +264,7 @@
                   <b-select
                     v-model="event.producer_offset_minutes"
                     placeholder="Producer offset"
-                    @input="onChange('producer_offset_minutes')"
+                    @input="onChange"
                   >
                     <option value="0">0</option>
                     <option value="60" selected>60</option>
@@ -272,13 +280,13 @@
                     name="prod_count"
                     placeholder="Producer count"
                     class="input"
-                    @input="onChangeTimeout('producer_count')"
+                    @input="onChange"
                   >
                 </div>
               </div>
             </div>
 
-            <div class="row" style="margin-bottom: 68px;">
+            <div class="row" :style="{'margin-bottom': isEventChanged || isEventSaved ? '68px' : ''}">
               <div class="col-12">
                 <div class="row">
                   <div class="col-6">
@@ -290,7 +298,7 @@
                           placeholder="Internal notes"
                           class="input"
                           rows="2"
-                          @input="onChangeTimeoutLong('internal_notes')"
+                          @input="onChange"
                         >event.internal_notes
                         </b-form-textarea>
                       </div>
@@ -323,7 +331,7 @@
 
                   <div class="col-6 d-flex align-items-end">
                     <button
-                      @click="isHidden = !isHidden"
+                      @click="toggleExternalNotes()"
                       class="history secondary"
                       id="showNotesBtn"
                     >{{isHidden ? 'Add External Notes' : 'Remove External Notes'}}
@@ -341,7 +349,7 @@
                           placeholder="Producer notes"
                           class="input"
                           rows="2"
-                          @input="onChangeTimeoutLong('producer_notes')"
+                          @input="onChange"
                         >event.producer_notes_hist
                         </b-form-textarea>
                       </div>
@@ -381,7 +389,7 @@
                           placeholder="External notes"
                           class="input"
                           rows="2"
-                          @input="onChangeTimeoutLong('external_notes')"
+                          @input="onChange"
                         >event.external_notes
                         </b-form-textarea>
                       </div>
@@ -414,21 +422,24 @@
                 </div>
               </div>
             </div>
-            <div class="notification primary">
-              <div class="d-flex justify-content-center align-items-center">
-                <span class="text-white mr-3">Save changes:</span>
-                <b-button type="is-primary" inverted outlined>Save</b-button>
+            <div class="notification warning" v-if="isEventChanged">
+              <div class="d-flex justify-content-end align-items-center mr-3">
+                <span class="mr-3">Event details have been changed.</span>
+                <b-button outline class="discard-changes mr-2" @click="discardEventChanges()">Discard</b-button>
+                <b-button class="save-changes" @click="saveEventDetails()">Save</b-button>
               </div>
             </div>
-            <!--<div class="notification secondary">-->
-            <!--<span>No changes to save</span>-->
-            <!--</div>-->
+            <div class="notification success" v-if="!isEventChanged && isEventSaved">
+              <div class="d-flex justify-content-end align-items-center h-100">
+                <span class="mr-3">Changes saved successfully!</span>
+              </div>
+            </div>
           </b-card>
         </div>
       </div>
 
       <div class="row" style="margin-top: 32px;">
-        <div class="col-10 m-auto">
+        <div class="col-xl-10 col-lg-12 m-auto">
           <div class="row">
             <div class="col-6">
               <people :event-id="event.event_id"></people>
@@ -440,7 +451,7 @@
         </div>
       </div>
       <div class="row mt-3 mb-5">
-        <div class="col-10 m-auto">
+        <div class="col-xl-10 col-lg-12 m-auto">
           <div class="row">
             <div class="col-6">
               <eventtag :event-id="event.event_id" tag-type="product" title="Product"></eventtag>
@@ -472,6 +483,7 @@
   import {PRODUCTION_STATUSES} from '../../../components/constants.js'
   import {restService} from '../../../plugins/axios';
   import isEqual from 'lodash.isequal'
+  import {EventObject} from './event';
 
   Vue.component('VueCtkDateTimePicker', VueCtkDateTimePicker)
 
@@ -506,47 +518,17 @@
       return {
         value: null,
         isHidden: true,
-        event: {},
-        eventOld: {},
+        event: new EventObject,
+        eventOld: new EventObject,
         projects: [],
         clientid: null,
         isDataPatched: false,
         client_statuses,
         operation_statuses,
         qa_statuses,
-        production_statuses
-      }
-    },
-    watch: {
-      'event.client_status': function (val, oldVal) {
-        if (this.isDataPatched && !isEqual(this.event, this.eventOld)) {
-          this.$refs.status_update_modal.open()
-        }
-      },
-      'event.operations_status': function (val, oldVal) {
-        if (this.isDataPatched) {
-          this.onChange('operations_status')
-        }
-      },
-      'event.qa_status': function (val, oldVal) {
-        if (this.isDataPatched) {
-          this.onChange('qa_status')
-        }
-      },
-      'event.production_status': function (val, oldVal) {
-        if (this.isDataPatched) {
-          this.onChange('production_status')
-        }
-      },
-      'event.time_zone': function (val, oldVal) {
-        if (this.isDataPatched) {
-          this.onChange('time_zone')
-        }
-      },
-      'event.producer_offset_minutes': function (val, oldVal) {
-        if (this.isDataPatched) {
-          this.onChange('producer_offset_minutes')
-        }
+        production_statuses,
+        isEventChanged: false,
+        isEventSaved: false
       }
     },
     methods: {
@@ -578,26 +560,28 @@
         this.fetchEvent()
         this.$refs.producer_notes_history.open()
       },
-      onChange: function (field_name) {
-        if (!this.event[field_name]) return;
-        if (isEqual(this.event, this.eventOld)) return;
+      onChange: function () {
+        this.isEventChanged = !isEqual(this.event, this.eventOld);
+        console.log('OLD');
+        console.log(this.eventOld);
+        console.log('NEW');
+        console.log(this.event);
+      },
+      saveEventDetails() {
         const url = process.env.VUE_APP_API + '/api/v3/events/';
-        var data = {
-          event_id: this.event.event_id
-        };
-
-        data[field_name] = this.event[field_name]
-        restService.put(url, data)
+        restService.put(url, this.event)
           .then(() => {
-            this.$toast.open({
-              message: `Updated successfully`,
-              position: 'is-bottom',
-              type: 'is-success'
-            });
-            this.eventOld = JSON.parse(JSON.stringify(this.event));
-            if (field_name === 'client_status') {
-              this.fetchEvent();
-            }
+            // this.$toast.open({
+            //   message: `Updated successfully`,
+            //   position: 'is-bottom',
+            //   type: 'is-success'
+            // });
+            this.isEventChanged = false;
+            this.isEventSaved = true;
+            this.fetchEvent();
+            setTimeout(() => {
+              this.isEventSaved = false;
+            }, 3500);
           })
           .catch(error => {
             this.$toast.open({
@@ -605,10 +589,19 @@
               position: 'is-bottom',
               type: 'is-danger'
             });
-            this.event = JSON.parse(JSON.stringify(this.eventOld));
+            // this.event = JSON.parse(JSON.stringify(this.eventOld));
           });
       },
-
+      discardEventChanges() {
+        this.fetchEvent();
+      },
+      toggleExternalNotes() {
+        this.isHidden = !this.isHidden;
+        if (this.isHidden) {
+          this.event.external_notes = '';
+          this.onChange();
+        }
+      },
       onChangeTimeout: function (field_name) {
         if (this.timeout) {
           clearTimeout(this.timeout)
@@ -617,24 +610,35 @@
         this.timeout = setTimeout(() => this.onChange(field_name), 1500)
       },
 
-      onChangeTimeoutLong: function (field_name) {
-        if (this.timeout) {
-          clearTimeout(this.timeout)
-        }
-        this.timeout = setTimeout(() => this.onChange(field_name), 5000)
-      },
+      // onChangeTimeoutLong: function (field_name) {
+      //   if (this.timeout) {
+      //     clearTimeout(this.timeout)
+      //   }
+      //   this.timeout = setTimeout(() => this.onChange(field_name), 5000)
+      // },
 
       fetchEvent: function () {
         this.isDataPatched = false;
         const url = '/api/v3/events/' + this.$route.params.event_id;
         restService.get(url)
           .then(response => {
-            this.event = response.data['event_records'][0];
-            this.eventOld = JSON.parse(JSON.stringify(response.data['event_records'][0]))
-            this.projects = response.data['project_list']
-            this.clientid = this.event.client_id
+            const data = response.data['event_records'][0];
+            for (let key in data) {
+              if (data.hasOwnProperty(key)) {
+                if (!data[key] || data[key] === 'none') {
+                  data[key] = "";
+                } else {
+                  data[key] = data[key].toString();
+                }
+                this.event[key] = data[key];
+                this.eventOld[key] = data[key];
+              }
+            }
+            this.projects = response.data['project_list'];
+            this.clientid = this.event.client_id;
             setTimeout(() => {
               this.isDataPatched = true;
+              this.isEventChanged = false;
             });
           })
           .catch(err => {
@@ -659,7 +663,9 @@
     }
   }
 </script>
-<style>
+<style lang="scss">
+  @import "../../../css/variables";
+
   .input-hidden {
     border: none;
     box-shadow: none;
@@ -684,12 +690,39 @@
     text-align: center;
   }
 
-  .notification.primary {
+  .notification {
     position: absolute;
     bottom: 1px;
     left: 1px;
+    height: 56px;
     width: calc(100% - 2px);
     padding: 10px !important;
-    background-color: #9cc5f0;
+    color: white;
   }
+
+  .notification.success {
+    background-color: $color_secondary;
+    color: white;
+  }
+
+  .notification.warning {
+    background-color: $color_warning;
+  }
+
+  .save-changes {
+    background-color: $color_secondary;
+    color: white;
+  }
+
+  .discard-changes {
+    background-color: darken($color_warning, 5%);
+    color: white;
+  }
+
+  .custom-card {
+    .card-header {
+      background-color: $color_primary;
+    }
+  }
+
 </style>

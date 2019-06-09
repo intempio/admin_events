@@ -1,3 +1,5 @@
+@import "variables.scss";
+
 * {
   margin: 0;
   padding: 0;
@@ -51,7 +53,7 @@ body, #app {
 }
 
 .secondary {
-  background-color: #74bd44;;
+  background-color: #74bd44;
 }
 
 .content table th,
@@ -439,7 +441,7 @@ h2.colored {
   width: 42%;
 }
 .pagination-wrap {
-  width: 20%;
+  min-width: 85px;
 }
 
 /*VueCtkDateTimePicker*/
@@ -487,7 +489,7 @@ h2.colored {
 .history {
   font-size: 11px;
   padding: 9px 11px;
-  margin-bottom: 2px;
+  margin-bottom: 1px;
 }
 
 .history-wrap {

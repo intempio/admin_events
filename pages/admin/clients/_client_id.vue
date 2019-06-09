@@ -1,77 +1,81 @@
 <template>
   <section>
     <clientheader :clientid="this.$route.params.client_id"></clientheader>
-    <section class="main-content content main" id="page-wrap">
-      <div id="wrap">
-        <h2>Recent Updates:</h2>
+    <div class="col-xl-10 col-lg-12 m-auto">
 
-        <events-list :events="recentEvents"></events-list>
+      <section class="main-content content main" id="page-wrap">
+        <div id="wrap">
+          <h2>Recent Updates:</h2>
 
-        <div class="filter-container" style="margin-bottom: 25px">
-          <div class="search-input-field-name cleartext-wrap">
-            <input
-              type="text"
-              class="filter-item search-input input"
-              placeholder="Search"
-              v-model="search"
-            >
+          <events-list :events="recentEvents"></events-list>
 
-            <div class="inputs-wrap from">
-              <div class="date-time-picker-wrap">
-                <VueCtkDateTimePicker
-                  id="CtkDateTimePicker"
-                  v-model="dateFrom"
-                  :no-header=true
-                  :no-button-now=true
-                  color="#0097e1"
-                  label="From"
-                  :only-date=true
-                  formatted="YYYY-MM-DD"
-                  format="YYYY-MM-DD"
-                ></VueCtkDateTimePicker>
+          <div class="filter-container" style="margin-bottom: 25px">
+            <div class="search-input-field-name cleartext-wrap">
+              <input
+                type="text"
+                class="filter-item search-input input"
+                placeholder="Search"
+                v-model="search"
+              >
+
+              <div class="inputs-wrap from">
+                <div class="date-time-picker-wrap">
+                  <VueCtkDateTimePicker
+                    id="CtkDateTimePicker"
+                    v-model="dateFrom"
+                    :no-header=true
+                    :no-button-now=true
+                    color="#0097e1"
+                    label="From"
+                    :only-date=true
+                    formatted="YYYY-MM-DD"
+                    format="YYYY-MM-DD"
+                  ></VueCtkDateTimePicker>
+                </div>
               </div>
+
+              <div class="inputs-wrap from">
+                <div class="date-time-picker-wrap">
+                  <VueCtkDateTimePicker
+                    id="CtkDateTimePicker"
+                    v-model="dateTo"
+                    :no-header=true
+                    :no-button-now=true
+                    color="#0097e1"
+                    label="To"
+                    :only-date=true
+                    formatted="YYYY-MM-DD"
+                    format="YYYY-MM-DD"
+                  ></VueCtkDateTimePicker>
+                </div>
+              </div>
+
+              <button @click="onSearch()" class="search-icon">
+                <font-awesome-icon icon="search"/>
+              </button>
+
+              <button
+                class="search-icon clear"
+                v-show="this.search || (this.dateFrom && this.dateTo)"
+                @click="search = '', dateFrom='', dateTo='', onSearch()"
+              >
+                <font-awesome-icon icon="times-circle"/>
+              </button>
             </div>
 
-            <div class="inputs-wrap from">
-              <div class="date-time-picker-wrap">
-                <VueCtkDateTimePicker
-                  id="CtkDateTimePicker"
-                  v-model="dateTo"
-                  :no-header=true
-                  :no-button-now=true
-                  color="#0097e1"
-                  label="To"
-                  :only-date=true
-                  formatted="YYYY-MM-DD"
-                  format="YYYY-MM-DD"
-                ></VueCtkDateTimePicker>
-              </div>
-            </div>
+            <addeventmodal ref="add_event_modal" :client-id="this.$route.params.client_id"></addeventmodal>
 
-            <button @click="onSearch()" class="search-icon">
-              <font-awesome-icon icon="search"/>
-            </button>
-
-            <button
-              class="search-icon clear"
-              v-show="this.search || (this.dateFrom && this.dateTo)"
-              @click="search = '', dateFrom='', dateTo='', onSearch()"
-            >
-              <font-awesome-icon icon="times-circle"/>
+            <button class="add_btn" @click="AddEventModal">
+              <font-awesome-icon class="icon" icon="calendar-plus"/>
+              Add
             </button>
           </div>
 
-          <addeventmodal ref="add_event_modal" :client-id="this.$route.params.client_id"></addeventmodal>
-
-          <button class="add_btn" @click="AddEventModal">
-            <font-awesome-icon class="icon" icon="calendar-plus"/>
-            Add
-          </button>
+          <events-list :events="events" :fetchEvents="fetchEvents"></events-list>
         </div>
+      </section>
+    </div>
 
-        <events-list :events="events" :fetchEvents="fetchEvents"></events-list>
-      </div>
-    </section>
   </section>
 </template>
 
