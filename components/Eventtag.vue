@@ -1,5 +1,5 @@
 <template id = 'eventtag'>
-  <div class="checklists pl-0 pr-2">
+  <div class="checklists pl-0">
     <h2 class="colored">{{title}}</h2>
     <table class="assignee-list">
       <thead>
@@ -45,16 +45,22 @@
         <button @click="nextPage">&raquo;</button>
       </div>
       <div class="add-new-record">
-        <b-select v-model="selectedItem" placeholder="Items" class="eventtag-select">
-          <option :value="item" v-for="item in items" v-bind:key="item">{{item}}</option>
-        </b-select>
-        <input
-          v-model="InputTagName"
-          type="text"
-          name="url"
-          placeholder="input text here"
-          class="input input-items"
-        >
+        <div class="row">
+          <div class="col pr-0">
+            <b-select v-model="selectedItem" placeholder="Items">
+              <option :value="item" v-for="item in items" v-bind:key="item">{{item}}</option>
+            </b-select>
+          </div>
+          <div class="col pl-2 pr-4">
+            <input
+              v-model="InputTagName"
+              type="text"
+              name="url"
+              placeholder="input text here"
+              class="input input-items w-100"
+            >
+          </div>
+        </div>
         <button class="add_btn" @click="add()">+ Add</button>
       </div>
     </div>

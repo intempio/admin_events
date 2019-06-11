@@ -4,14 +4,14 @@
       <div class="modal-container">
         <div class="modal-header">
           <slot name="header">
-            <h2 class="colored">History</h2>
+            <h2>History</h2>
           </slot>
         </div>
 
         <div class="modal-body">
           <div class="form-row">
             <table border="0"
-                   class="history fixed_header">
+                   class="fixed_header">
               <thead>
               <slot name="table-header">
                 <tr>
@@ -63,3 +63,8 @@
     computed: {}
   }
 </script>
+<style>
+  h2 {
+    font-weight: bold;
+  }
+</style>

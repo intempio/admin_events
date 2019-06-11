@@ -69,12 +69,11 @@
                     </div>
                     <div class="d-flex col-1 p-0 d-flex align-items-end">
                       <modal :client-status-hist="event.client_status_hist" ref="client_status_history">
-                        <h2 slot="header" class="colored">Client status history</h2>
+                        <h2 slot="header">Client status history</h2>
                         <tr slot="table-header">
-                          <th class="history-th-1">Person</th>
-                          <th class="history-th-2">Status</th>
-                          <th class="history-th-3">Last updated</th>
-                          <th></th>
+                          <th>Person</th>
+                          <th>Status</th>
+                          <th>Last updated</th>
                         </tr>
                         <tbody slot="table-body">
                         <tr v-for="client in event.client_status_hist" v-bind:key="client.user_name">
@@ -110,12 +109,11 @@
                         :operations_status_hist="event.operations_status_hist"
                         ref="operations_status_history"
                       >
-                        <h2 slot="header" class="colored">Operations status history</h2>
+                        <h2 slot="header">Operations status history</h2>
                         <tr slot="table-header">
-                          <th class="history-th-1">ID</th>
-                          <th class="history-th-2">Operations status</th>
-                          <th class="history-th-3">Updated</th>
-                          <th></th>
+                          <th>ID</th>
+                          <th>Operations status</th>
+                          <th>Updated</th>
                         </tr>
                         <tbody slot="table-body">
                         <tr v-for="(id, i) in event.operations_status_hist" :key="i">
@@ -144,12 +142,11 @@
                     </div>
                     <div class="col-1 p-0 d-flex align-items-end">
                       <modal :qa-status-hist="event.qa_status_hist" ref="qa_status_history">
-                        <h2 slot="header" class="colored">QA status history</h2>
+                        <h2 slot="header">QA status history</h2>
                         <tr slot="table-header">
-                          <th class="history-th-1">Updated</th>
-                          <th class="history-th-2">QA status</th>
-                          <th class="history-th-3">Last updated</th>
-                          <th></th>
+                          <th>Updated</th>
+                          <th>QA status</th>
+                          <th>Last updated</th>
                         </tr>
                         <tbody slot="table-body">
                         <tr v-for="qa in event.qa_status_hist" v-bind:key="qa.qa_status">
@@ -186,12 +183,11 @@
                         :production-status-hist="event.production_status_hist"
                         ref="production_status_history"
                       >
-                        <h2 slot="header" class="colored">Production status history</h2>
+                        <h2 slot="header">Production status history</h2>
                         <tr slot="table-header">
-                          <th class="history-th-1">Updated</th>
-                          <th class="history-th-2">Production status</th>
-                          <th class="history-th-3">Updated by ID</th>
-                          <th></th>
+                          <th>Updated</th>
+                          <th>Production status</th>
+                          <th>Updated by ID</th>
                         </tr>
                         <tbody slot="table-body">
                         <tr
@@ -296,12 +292,11 @@
                   </div>
                   <div class="col-2 pl-2 d-flex align-items-end">
                     <modal :internal-notes-hist="event.internal_notes_hist" ref="internal_notes_history">
-                      <h2 slot="header" class="colored">Internal notes history</h2>
+                      <h2 slot="header">Internal notes history</h2>
                       <tr slot="table-header">
-                        <th class="history-th-1">Updated</th>
-                        <th class="history-th-2">Internal notes</th>
-                        <th class="history-th-3">Updated by ID</th>
-                        <th></th>
+                        <th>Updated</th>
+                        <th>Internal notes</th>
+                        <th>Updated by ID</th>
                       </tr>
                       <tbody slot="table-body">
                       <tr
@@ -334,12 +329,11 @@
                   </div>
                   <div class="col-2 pl-2 d-flex align-items-end">
                     <modal :producer_notes_hist="event.producer_notes_hist" ref="producer_notes_history">
-                      <h2 slot="header" class="colored">Producer notes history</h2>
+                      <h2 slot="header">Producer notes history</h2>
                       <tr slot="table-header">
-                        <th class="history-th-1">Updated</th>
-                        <th class="history-th-2">Producer notes</th>
-                        <th class="history-th-3">Updated by ID</th>
-                        <th></th>
+                        <th>Updated</th>
+                        <th>Producer notes</th>
+                        <th>Updated by ID</th>
                       </tr>
                       <tbody slot="table-body">
                       <tr
@@ -382,12 +376,11 @@
                   </div>
                   <div class="col-2 pl-2 d-flex align-items-end">
                     <modal :external-notes-hist="event.external_notes_hist" ref="external_notes_history">
-                      <h2 slot="header" class="colored">External Notes history</h2>
+                      <h2 slot="header">External Notes history</h2>
                       <tr slot="table-header">
-                        <th class="history-th-1">Updated</th>
-                        <th class="history-th-2">External Notes</th>
-                        <th class="history-th-3">Updated by ID</th>
-                        <th></th>
+                        <th>Updated</th>
+                        <th>External Notes</th>
+                        <th>Updated by ID</th>
                       </tr>
                       <tbody slot="table-body">
                       <tr
@@ -424,7 +417,7 @@
         </div>
       </div>
 
-      <div class="row" style="margin-top: 32px;">
+      <div class="row" style="margin-top: 26px;">
         <div class="col-xl-10 col-lg-12 m-auto">
           <div class="row">
             <div class="col-6">

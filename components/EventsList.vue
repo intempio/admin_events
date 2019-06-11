@@ -27,7 +27,7 @@
             Client Status
             <font-awesome-icon icon="caret-down" size="lg"/>
           </th>
-          <th>Actions</th>
+          <th style="min-width: 154px;">Actions</th>
         </tr>
       </thead>
       <tbody>

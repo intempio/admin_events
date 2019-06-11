@@ -84,7 +84,7 @@
           .then(response => {
             this.$router.push(`/admin/events/${response.data.event_id}`)
           })
-          .catch(function (error) {
+          .catch(error => {
             console.log(error);
             this.$toast.open({
               message: `Error: ${error}`,
