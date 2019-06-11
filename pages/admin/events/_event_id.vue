@@ -521,8 +521,6 @@
     methods: {
       openHistoryModal(name) {
         this.fetchEvent();
-        console.log('this.event');
-        console.log(this.event);
         this.$refs[name].open();
       },
       onChange: function () {
@@ -532,7 +530,7 @@
         const data = {};
         forOwn(this.event, (val, key) => {
           if (typeof val !== 'object') {
-            if (this.eventOld[key] !== val) {
+            if (this.eventOld[key] !== val || key === 'event_id' || key === 'client_id') {
               data[key] = val;
             }
           }
@@ -565,21 +563,6 @@
           this.onChange();
         }
       },
-      onChangeTimeout: function (field_name) {
-        if (this.timeout) {
-          clearTimeout(this.timeout)
-        }
-
-        this.timeout = setTimeout(() => this.onChange(field_name), 1500)
-      },
-
-      // onChangeTimeoutLong: function (field_name) {
-      //   if (this.timeout) {
-      //     clearTimeout(this.timeout)
-      //   }
-      //   this.timeout = setTimeout(() => this.onChange(field_name), 5000)
-      // },
-
       fetchEvent: function () {
         this.isDataPatched = false;
         const url = '/api/v3/events/' + this.$route.params.event_id;
