@@ -11,11 +11,9 @@ export const restService = axios.create({
 });
 
 let requestCount = 0;
-let timeout;
 
 restService.interceptors.request.use((req) => {
   if (!LOADER_EXCEPTIONS.includes(req.url)) {
-    clearTimeout(timeout);
     requestCount++;
     authService.setLoading(true);
   }
@@ -33,9 +31,7 @@ restService.interceptors.response.use(req => {
 const reqCountSub = () => {
   requestCount--;
   if (requestCount <= 0) {
-    timeout = setTimeout(() => {
-      authService.setLoading(false);
-      requestCount = 0;
-    }, 300);
+    authService.setLoading(false);
+    requestCount = 0;
   }
 };

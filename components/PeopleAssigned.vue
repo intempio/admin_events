@@ -1,5 +1,5 @@
 <template id="people-assinged">
-  <div class="assignee pl-0 pr-2">
+  <div class="assignee pl-0">
     <h2 class="colored">People Assigned</h2>
     <table class="assignee-list">
       <thead>
@@ -46,28 +46,28 @@
         <button @click="nextPage">&raquo;</button>
       </div>
       <div class="add-new-record">
-        <b-select v-model="selectedPersonId" placeholder="Person" class="eventtag-select">
-          <option
-            :value="person.person_id"
-            v-for="person in persons"
-            v-bind:key="person.person_id"
-          >{{person.first_name}} {{person.last_name}}
-          </option>
-        </b-select>
-        <!--
-        <b-select v-model="selectedRole" placeholder="Role" class="input-items">
-          <option v-for="role in people_assigned_roles" v-bind:key="role" :value="role">{{role}}</option>
-        </b-select>
-        -->
-        <div class="mselect-wrapper">
-          <model-select
-            :options="people_assigned_roles"
-            v-model="selectedRole"
-            placeholder="Role"
-            class="css-select"
-          ></model-select>
+        <div class="row">
+          <div class="col-6 pr-0">
+            <b-select v-model="selectedPersonId" placeholder="Person">
+              <option
+                :value="person.person_id"
+                v-for="person in persons"
+                v-bind:key="person.person_id"
+              >{{person.first_name}} {{person.last_name}}
+              </option>
+            </b-select>
+          </div>
+          <div class="col-6 pl-0">
+            <b-autocomplete
+              v-model="selectedRole"
+              class="px-2"
+              placeholder="Role"
+              :keep-first="true"
+              :open-on-focus="true"
+              :data="people_assigned_roles">
+            </b-autocomplete>
+          </div>
         </div>
-
         <button class="add_btn" @click="add()">+ Add</button>
       </div>
     </div>
@@ -146,7 +146,7 @@
             )
             this.fetchPeopleAssigned()
           })
-          .catch(function (error) {
+          .catch(error => {
             console.log(error);
             this.$toast.open({
               message: `Error: ${error}`,
@@ -178,19 +178,24 @@
 
       add: function (field_name) {
 
-        const url = '/api/v3/eventpersons/'
+        const url = '/api/v3/eventpersons/';
         var data = {
           event_id: this.eventId,
           person_id: this.selectedPersonId,
           person_role: this.selectedRole
-        }
+        };
 
         restService
           .post(url, data)
-          .then(response => {
+          .then(() => {
+            this.$toast.open({
+              message: `Added successfully`,
+              position: 'is-bottom',
+              type: 'is-success'
+            });
             this.fetchPeopleAssigned()
           })
-          .catch(function (error) {
+          .catch(error => {
             console.log(error);
             this.$toast.open({
               message: `Error: ${error}`,
@@ -216,7 +221,7 @@
               type: 'is-success'
             })
           })
-          .catch(function (error) {
+          .catch(error => {
             console.log(error);
             this.$toast.open({
               message: `Error: ${error}`,
