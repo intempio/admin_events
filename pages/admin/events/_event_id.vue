@@ -85,7 +85,7 @@
                           </tr>
                           </tbody>
                         </modal>
-                        <button class="history" @click="ClientStatusHistory">
+                        <button class="history" @click="openHistoryModal('client_status_history')">
                           History
                         </button>
                       </div>
@@ -127,7 +127,7 @@
                         </tr>
                         </tbody>
                       </modal>
-                      <button class="history" @click="OpenOperationsStatusHistory">
+                      <button class="history" @click="openHistoryModal('operations_status_history')">
                         History
                       </button>
                     </div>
@@ -161,7 +161,7 @@
                         </tr>
                         </tbody>
                       </modal>
-                      <button class="history" @click="QaStatusHistory">
+                      <button class="history" @click="openHistoryModal('qa_status_history')">
                         History
                       </button>
                     </div>
@@ -206,7 +206,7 @@
                         </tr>
                         </tbody>
                       </modal>
-                      <button class="history" @click="ProductionStatusHistory">
+                      <button class="history" @click="openHistoryModal('production_status_history')">
                         History
                       </button>
                     </div>
@@ -322,7 +322,7 @@
                           </tr>
                           </tbody>
                         </modal>
-                        <button class="history" @click="InternalNotesHistory">
+                        <button class="history" @click="openHistoryModal('internal_notes_history')">
                           History
                         </button>
                       </div>
@@ -373,7 +373,7 @@
                           </tr>
                           </tbody>
                         </modal>
-                        <button class="history" @click="ProducerNotesHistory">
+                        <button class="history" @click="openHistoryModal('producer_notes_history')">
                           History
                         </button>
                       </div>
@@ -413,7 +413,7 @@
                           </tr>
                           </tbody>
                         </modal>
-                        <button class="history" @click="ExternalNotesHistory">
+                        <button class="history" @click="openHistoryModal('external_notes_history')">
                           History
                         </button>
                       </div>
@@ -532,40 +532,14 @@
       }
     },
     methods: {
-      ClientStatusHistory: function (event) {
-        this.fetchEvent()
-        this.$refs.client_status_history.open()
-      },
-      OpenOperationsStatusHistory: function (id) {
-        this.fetchEvent()
-        this.$refs.operations_status_history.open()
-      },
-      QaStatusHistory: function (qa) {
-        this.fetchEvent()
-        this.$refs.qa_status_history.open()
-      },
-      ProductionStatusHistory: function (prod) {
-        this.fetchEvent()
-        this.$refs.production_status_history.open()
-      },
-      InternalNotesHistory: function (intnote) {
-        this.fetchEvent()
-        this.$refs.internal_notes_history.open()
-      },
-      ExternalNotesHistory: function (exnote) {
-        this.fetchEvent()
-        this.$refs.external_notes_history.open()
-      },
-      ProducerNotesHistory: function (prodnote) {
-        this.fetchEvent()
-        this.$refs.producer_notes_history.open()
+      openHistoryModal(name) {
+        this.fetchEvent();
+        console.log('this.event');
+        console.log(this.event);
+        this.$refs[name].open();
       },
       onChange: function () {
         this.isEventChanged = !isEqual(this.event, this.eventOld);
-        console.log('OLD');
-        console.log(this.eventOld);
-        console.log('NEW');
-        console.log(this.event);
       },
       saveEventDetails() {
         const url = process.env.VUE_APP_API + '/api/v3/events/';
@@ -626,8 +600,8 @@
             for (let key in data) {
               if (data.hasOwnProperty(key)) {
                 if (!data[key] || data[key] === 'none') {
-                  data[key] = "";
-                } else {
+                  data[key] = '';
+                } else if (typeof data[key] !== 'object') {
                   data[key] = data[key].toString();
                 }
                 this.event[key] = data[key];
