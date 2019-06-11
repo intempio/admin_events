@@ -56,6 +56,11 @@ body, #app {
   background-color: #74bd44;
 }
 
+label {
+  margin: 0;
+  padding: 0;
+}
+
 .content table th,
 .content table td {
   color: #363636;
@@ -440,6 +445,10 @@ h2.colored {
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
+
+  .row {
+    width: 100%;
+  }
 }
 .input-items {
   width: 42%;

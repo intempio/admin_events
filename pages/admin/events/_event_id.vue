@@ -610,7 +610,7 @@
     box-shadow: none;
   }
 
-  label {
+  .custom-card label {
     font-size: 13px;
     margin-top: 8px;
     margin-bottom: 0 !important;

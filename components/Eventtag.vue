@@ -1,42 +1,46 @@
-<template id = 'eventtag'>
+<template id='eventtag'>
   <div class="checklists pl-0">
     <h2 class="colored">{{title}}</h2>
     <table class="assignee-list">
       <thead>
-        <tr>
-          <td class="tbl-sort" @click="sort('tag_name')">
-            Items
-            <font-awesome-icon icon="caret-down" size="lg"/>
-          </td>
-          <td class="tbl-sort" @click="sort('tag_value')">
-            Content
-            <font-awesome-icon icon="caret-down" size="lg"/>
-          </td>
-          <td>Action</td>
-        </tr>
+      <tr>
+        <td class="tbl-sort" @click="sort('tag_name')">
+          Items
+          <font-awesome-icon icon="caret-down" size="lg"/>
+        </td>
+        <td class="tbl-sort" @click="sort('tag_value')">
+          Content
+          <font-awesome-icon icon="caret-down" size="lg"/>
+        </td>
+        <td>Action</td>
+      </tr>
       </thead>
       <tbody>
-        <tr v-for="(item, index) in sortedEventtags" v-bind:key="index">
-          <td>{{item.tag_name}}</td>
-          <td>
-            <div v-show="index != currentIndex">
-              <label>{{item.tag_value}}</label>
-            </div>
-
-            <input
-              v-show="index == currentIndex"
-              v-model="item.tag_value"
-              @blur="onChange(item.tag_value, item.tag_name), currentIndex=-1"
-              @keyup.enter="onChange(item.tag_value, item.tag_name), currentIndex=-1"
-              :ref="'tagv'+index"
-            >
-          </td>
-          <td>
-            <a @click="edit(index)">
-              <font-awesome-icon icon="edit"/>Edit
-            </a>
-          </td>
-        </tr>
+      <tr v-for="(item, index) in sortedEventtags" v-bind:key="index">
+        <td>{{item.tag_name}}</td>
+        <td>
+          <div v-show="index != currentIndex">
+            <label>{{item.tag_value}}</label>
+          </div>
+          <input
+            id="descriptionEdit"
+            v-if="index == currentIndex"
+            ref="descriptionEdit"
+            v-model="item.tag_value"
+            @keyup.enter="onChange(item.tag_value, item.tag_name), currentIndex=-1"
+          >
+        </td>
+        <td>
+          <a @click="edit(index, item.tag_value)" v-if="index != currentIndex">
+            <font-awesome-icon class="mr-1" icon="edit"/>
+            Edit
+          </a>
+          <a @click="onChange(item.tag_value, item.tag_name), currentIndex=-1" v-else>
+            <font-awesome-icon class="mr-1" icon="save"/>
+            Save
+          </a>
+        </td>
+      </tr>
       </tbody>
     </table>
     <div class="wrap-pagination-add">
@@ -68,182 +72,188 @@
 </template>
 
 <script>
-import { CLIENT_ITEMS } from '../components/constants.js'
-import { CHECKLIST_ITEMS } from '../components/constants.js'
-import { PRODUCT_ITEMS } from '../components/constants.js'
-import {restService} from '../plugins/axios';
+  import {CLIENT_ITEMS} from '../components/constants.js'
+  import {CHECKLIST_ITEMS} from '../components/constants.js'
+  import {PRODUCT_ITEMS} from '../components/constants.js'
+  import {restService} from '../plugins/axios';
 
-export default {
-  name: 'eventtag',
-  template: '#eventtag',
-  props: { eventId: String, tagType: String, title: String },
-  data: function() {
-    return {
-      Eventtag: [],
-      isHidden: false,
-      show: true,
-      InputTagName: '',
-      currentIndex: -1,
-      currentSort: 'tag_name',
-      currentSortDir: 'asc',
-      pageSize: 10,
-      currentPage: 1,
-      selectedItem: ''
-    }
-  },
-  watch: {
-    eventId: function(val) {
-      if (val !== undefined) {
-        this.fetchEventtag()
+  export default {
+    name: 'eventtag',
+    template: '#eventtag',
+    props: {eventId: String, tagType: String, title: String},
+    data: function () {
+      return {
+        Eventtag: [],
+        isHidden: false,
+        show: true,
+        InputTagName: '',
+        currentIndex: -1,
+        currentSort: 'tag_name',
+        currentSortDir: 'asc',
+        pageSize: 10,
+        currentPage: 1,
+        selectedItem: '',
+        oldDescriptionValue: ''
       }
-    }
-  },
+    },
+    watch: {
+      eventId: function (val) {
+        if (val !== undefined) {
+          this.fetchEventtag()
+        }
+      }
+    },
 
-  methods: {
-    fetchEventtag: function() {
-      const url =
-        '/api/v3/eventtags/?eventID=' +
-        this.eventId +
-        '&tagType=' +
-        this.tagType
+    methods: {
+      fetchEventtag: function () {
+        const url =
+          '/api/v3/eventtags/?eventID=' +
+          this.eventId +
+          '&tagType=' +
+          this.tagType
 
-      restService.get(url).then(response => {
+        restService.get(url).then(response => {
           this.Eventtag = response.data
         })
-        .catch(err => {
-          this.$toast.open({
-            message: `Error getting event tag: ${err}`,
-            position: 'is-bottom',
-            type: 'is-danger'
+          .catch(err => {
+            this.$toast.open({
+              message: `Error getting event tag: ${err}`,
+              position: 'is-bottom',
+              type: 'is-danger'
+            })
           })
-        })
-    },
+      },
 
-    add: function(field_name) {
-      const url = '/api/v3/eventtags/'
-      var data = {
-        event_id: this.eventId,
-        tag_type: this.tagType.charAt(0).toUpperCase() + this.tagType.slice(1),
-        tag_name: this.selectedItem,
-        tag_value: this.InputTagName
-      }
-
-      restService.post(url, data)
-        .then(response => {
-          this.fetchEventtag();
-          this.$toast.open({
-            message: `Added successfully`,
-            position: 'is-bottom',
-            type: 'is-success'
-          })
-        })
-        .catch(function(error) {
-          console.log(error);
-          this.$toast.open({
-            message: `Saving error: ${error}`,
-            position: 'is-bottom',
-            type: 'is-danger'
-          })
-        });
-    },
-
-    edit: function(index) {
-      this.currentIndex = index;
-      this.$refs['tagv' + index][0].focus()
-    },
-
-    onChange: function(tag_value, tag_name) {
-      const url = '/api/v3/eventtags/'
-      var data = {
-        event_id: this.eventId,
-        tag_type: this.tagType.charAt(0).toUpperCase() + this.tagType.slice(1),
-        tag_name: tag_name,
-        tag_value: tag_value
-      }
-
-      restService
-        .put(url, data)
-        .then(response => {
-          this.fetchEventtag();
-          this.$toast.open({
-            message: `Updated successfully`,
-            position: 'is-bottom',
-            type: 'is-success'
-          })
-        })
-        .catch(function(error) {
-          console.log(error);
-          this.$toast.open({
-            message: `Error: ${error}`,
-            position: 'is-bottom',
-            type: 'is-danger'
-          })
-        })
-    },
-
-    sort: function(s) {
-      //if s == current sort, reverse
-      if (s === this.currentSort) {
-        this.currentSortDir = this.currentSortDir === 'asc' ? 'desc' : 'asc'
-      }
-      this.currentSort = s
-    },
-    nextPage: function() {
-      if (this.currentPage * this.pageSize < this.Eventtag.length)
-        this.currentPage++
-    },
-    prevPage: function() {
-      if (this.currentPage > 1) this.currentPage--
-    }
-  },
-  computed: {
-    sortedEventtags: function() {
-      const eventtags = this.Eventtag == null ? [] : this.Eventtag
-
-      return eventtags
-        .sort((a, b) => {
-          let modifier = 1
-          if (this.currentSortDir === 'desc') modifier = -1
-          if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier
-          if (a[this.currentSort] > b[this.currentSort]) return 1 * modifier
-          return 0
-        })
-        .filter((event, index) => {
-          let start = (this.currentPage - 1) * this.pageSize
-          let end = this.currentPage * this.pageSize
-          if (index >= start && index < end) return true
-        })
-    },
-
-    items: function() {
-      if (this.tagType === 'checklist') {
-        if (process.env.CHECKLIST_ITEMS) {
-          const checklist_env = process.env.CHECKLIST_ITEMS.split(',').map(
-            item => item.trim()
-          )
-          return checklist_env
+      add: function (field_name) {
+        const url = '/api/v3/eventtags/'
+        var data = {
+          event_id: this.eventId,
+          tag_type: this.tagType.charAt(0).toUpperCase() + this.tagType.slice(1),
+          tag_name: this.selectedItem,
+          tag_value: this.InputTagName
         }
-        return CHECKLIST_ITEMS
-      }
-      if (this.tagType === 'product') {
-        if (process.env.PRODUCT_ITEMS) {
-          const product_env = process.env.PRODUCT_ITEMS.split(',').map(item =>
-            item.trim()
-          )
-          return product_env
+
+        restService.post(url, data)
+          .then(response => {
+            this.fetchEventtag();
+            this.$toast.open({
+              message: `Added successfully`,
+              position: 'is-bottom',
+              type: 'is-success'
+            })
+          })
+          .catch(function (error) {
+            console.log(error);
+            this.$toast.open({
+              message: `Saving error: ${error}`,
+              position: 'is-bottom',
+              type: 'is-danger'
+            })
+          });
+      },
+      edit: function (index, oldValue) {
+        this.currentIndex = index;
+        this.oldDescriptionValue = oldValue;
+        setTimeout(() => {
+          if (!!this.$refs.descriptionEdit[0]) {
+            this.$refs.descriptionEdit[0].focus();
+          }
+        }, 50)
+      },
+      onChange: function (tag_value, tag_name) {
+        if (this.oldDescriptionValue !== tag_value) {
+          const url = '/api/v3/eventtags/';
+          var data = {
+            event_id: this.eventId,
+            tag_type: this.tagType.charAt(0).toUpperCase() + this.tagType.slice(1),
+            tag_name: tag_name,
+            tag_value: tag_value
+          };
+
+          restService
+            .put(url, data)
+            .then(response => {
+              this.fetchEventtag();
+              this.$toast.open({
+                message: `Updated successfully`,
+                position: 'is-bottom',
+                type: 'is-success'
+              })
+            })
+            .catch(function (error) {
+              console.log(error);
+              this.$toast.open({
+                message: `Error: ${error}`,
+                position: 'is-bottom',
+                type: 'is-danger'
+              })
+            })
         }
-        return PRODUCT_ITEMS
-      }
-      if (this.tagType === 'client') {
-        if (process.env.CLIENT_ITEMS) {
-          const client_env = process.env.CLIENT_ITEMS.split(',').map(item =>
-            item.trim()
-          )
-          return client_env
+      },
+
+      sort: function (s) {
+        //if s == current sort, reverse
+        if (s === this.currentSort) {
+          this.currentSortDir = this.currentSortDir === 'asc' ? 'desc' : 'asc'
         }
-        return CLIENT_ITEMS
+        this.currentSort = s
+      },
+      nextPage: function () {
+        if (this.currentPage * this.pageSize < this.Eventtag.length)
+          this.currentPage++
+      },
+      prevPage: function () {
+        if (this.currentPage > 1) this.currentPage--
+      }
+    },
+    computed: {
+      sortedEventtags: function () {
+        const eventtags = this.Eventtag == null ? [] : this.Eventtag
+
+        return eventtags
+          .sort((a, b) => {
+            let modifier = 1
+            if (this.currentSortDir === 'desc') modifier = -1
+            if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier
+            if (a[this.currentSort] > b[this.currentSort]) return 1 * modifier
+            return 0
+          })
+          .filter((event, index) => {
+            let start = (this.currentPage - 1) * this.pageSize
+            let end = this.currentPage * this.pageSize
+            if (index >= start && index < end) return true
+          })
+      },
+
+      items: function () {
+        if (this.tagType === 'checklist') {
+          if (process.env.CHECKLIST_ITEMS) {
+            const checklist_env = process.env.CHECKLIST_ITEMS.split(',').map(
+              item => item.trim()
+            )
+            return checklist_env
+          }
+          return CHECKLIST_ITEMS
+        }
+        if (this.tagType === 'product') {
+          if (process.env.PRODUCT_ITEMS) {
+            const product_env = process.env.PRODUCT_ITEMS.split(',').map(item =>
+              item.trim()
+            )
+            return product_env
+          }
+          return PRODUCT_ITEMS
+        }
+        if (this.tagType === 'client') {
+          if (process.env.CLIENT_ITEMS) {
+            const client_env = process.env.CLIENT_ITEMS.split(',').map(item =>
+              item.trim()
+            )
+            return client_env
+          }
+          return CLIENT_ITEMS
+        }
       }
     }
   }
-}
 </script>
