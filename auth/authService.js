@@ -25,6 +25,7 @@ class AuthService extends EventEmitter {
 
   // Starts the user login flow
   login(customState) {
+    console.log('login fn');
     webAuth.authorize({
       appState: customState
     })
@@ -37,7 +38,7 @@ class AuthService extends EventEmitter {
         if (err) {
           reject(err)
         } else {
-          this.localLogin(authResult)
+          this.localLogin(authResult);
           resolve(authResult.accessToken)
         }
       })
@@ -45,14 +46,15 @@ class AuthService extends EventEmitter {
   }
 
   localLogin(authResult) {
-    this.idToken = authResult.idToken
-    this.profile = authResult.idTokenPayload
-    this.tokenExpiry = new Date(this.profile.exp * 1000)
-    this.accessToken = authResult.accessToken
+    console.log('local login');
+    this.idToken = authResult.idToken;
+    this.profile = authResult.idTokenPayload;
+    this.tokenExpiry = new Date(this.profile.exp * 1000);
+    this.accessToken = authResult.accessToken;
 
     // Convert expiresIn to milliseconds and add the current time
     // (expiresIn is a relative timestamp, but an absolute time is desired)
-    this.accessTokenExpiry = new Date(Date.now() + authResult.expiresIn * 1000)
+    this.accessTokenExpiry = new Date(Date.now() + authResult.expiresIn * 1000);
 
     authService.setSession(authResult);
 
@@ -74,7 +76,7 @@ class AuthService extends EventEmitter {
         if (err) {
           reject(err)
         } else {
-          this.localLogin(authResult)
+          this.localLogin(authResult);
           resolve(authResult)
         }
       })
@@ -90,15 +92,18 @@ class AuthService extends EventEmitter {
 
     webAuth.logout({
       returnTo: window.location.origin + '/login'
-    })
+    });
 
     this.emit(loginEvent, { loggedIn: false })
   }
 
   isAuthenticated() {
+    console.log('=========== isAuthenticated ===========');
+    const expiry = localStorage.getItem('expiry');
+    console.log(expiry);
     const user = JSON.parse(localStorage.getItem('user'));
     const userRoles = JSON.parse(localStorage.getItem('user_roles'));
-    if (user) {
+    if (user && expiry < Date.now()) {
       this.profile = user;
     }
     return !!this.profile;

@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import {BehaviorSubject} from 'rxjs';
+import * as moment from 'moment';
 
 export const authService = new Vue({
   data: {
@@ -26,16 +27,18 @@ export const authService = new Vue({
       this.token = data.accessToken;
       localStorage.setItem('loggedIn', 'true');
       localStorage.setItem('token', data.accessToken);
-      localStorage.setItem('expiry', JSON.stringify(data.tokenExpiry));
+      localStorage.setItem('expiry', JSON.stringify(data.idTokenPayload.exp));
       localStorage.setItem('user', JSON.stringify(data.idTokenPayload));
       localStorage.setItem('user_roles', JSON.stringify(data.idTokenPayload['http://localhost:8081/' + 'user_roles']));
       this.authenticated.next(true);
     },
     restoreSession() {
+      console.log('restore session');
       const user = JSON.parse(localStorage.getItem('user'));
       const userRoles = JSON.parse(localStorage.getItem('user_roles'));
       const token = localStorage.getItem('token');
-      if (user && userRoles && token) {
+      const expiry = localStorage.getItem('expiry');
+      if (user && userRoles && token && moment.unix(Number(expiry)).isAfter(moment())) {
         this.user = user;
         this.userRoles = userRoles;
         this.token = token;
