@@ -28,14 +28,16 @@
   }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+  @import "../css/variables";
+
   .c-container {
     height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     clip-path: polygon(100% 0, 100% 43%, 0 97%, 0 50%);
-    background-color: #0097e1;
+    background-color: $color_primary;
     font-size: 18px;
   }
 

@@ -11,12 +11,12 @@
 
           <div class="filter-container" style="margin-bottom: 25px">
             <div class="search-input-field-name cleartext-wrap">
-              <input
+              <b-form-input
                 type="text"
                 class="filter-item search-input input"
                 placeholder="Search"
                 v-model="search"
-              >
+              ></b-form-input>
 
               <div class="inputs-wrap from">
                 <div class="date-time-picker-wrap">

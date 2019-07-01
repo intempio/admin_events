@@ -58,14 +58,15 @@
             </b-select>
           </div>
           <div class="col-6 pl-0">
-            <b-autocomplete
-              v-model="selectedRole"
-              class="px-2"
-              placeholder="Role"
-              :keep-first="true"
-              :open-on-focus="true"
-              :data="people_assigned_roles">
-            </b-autocomplete>
+            <div class="px-2">
+              <b-form-input list="input-with-list"
+                            v-model="selectedRole"
+                            placeholder="Role"
+              ></b-form-input>
+              <datalist id="input-with-list">
+                <option v-for="role in people_assigned_roles">{{ role.value }}</option>
+              </datalist>
+            </div>
           </div>
         </div>
         <button class="add_btn" @click="add()">+ Add</button>

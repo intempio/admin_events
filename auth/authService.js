@@ -3,6 +3,7 @@ import EventEmitter from 'events'
 import authConfig from '../auth_config.json'
 import 'rxjs';
 import {authService} from '../services/auth-service'
+import * as moment from 'moment'
 
 const webAuth = new auth0.WebAuth({
   domain: authConfig.domain,
@@ -25,7 +26,6 @@ class AuthService extends EventEmitter {
 
   // Starts the user login flow
   login(customState) {
-    console.log('login fn');
     webAuth.authorize({
       appState: customState
     })
@@ -46,7 +46,6 @@ class AuthService extends EventEmitter {
   }
 
   localLogin(authResult) {
-    console.log('local login');
     this.idToken = authResult.idToken;
     this.profile = authResult.idTokenPayload;
     this.tokenExpiry = new Date(this.profile.exp * 1000);
@@ -98,12 +97,10 @@ class AuthService extends EventEmitter {
   }
 
   isAuthenticated() {
-    console.log('=========== isAuthenticated ===========');
     const expiry = localStorage.getItem('expiry');
-    console.log(expiry);
     const user = JSON.parse(localStorage.getItem('user'));
     const userRoles = JSON.parse(localStorage.getItem('user_roles'));
-    if (user && expiry < Date.now()) {
+    if (user && moment.unix(Number(expiry)).isAfter(moment())) {
       this.profile = user;
     }
     return !!this.profile;

@@ -253,26 +253,26 @@
 
                   <div class="col-12">
                     <label>Producer count:</label>
-                    <input
+                    <b-form-input
                       v-model="event.producer_count"
                       type="text"
                       name="prod_count"
                       placeholder="Producer count"
                       class="input"
                       @input="onChange"
-                    >
+                    ></b-form-input>
                   </div>
 
                   <div class="col-12">
                     <label>Duration (minutes):</label>
-                    <input
+                    <b-form-input
                       v-model="event.duration_minutes"
                       type="text"
                       name="duration"
                       placeholder="Duration"
                       class="input"
                       @input="onChange"
-                    >
+                    ></b-form-input>
                   </div>
                 </div>
               </div>

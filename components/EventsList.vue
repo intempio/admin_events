@@ -1,6 +1,6 @@
 <template>
   <div class="events-list">
-    <table border="1">
+    <table border="1" class="w-100">
       <thead>
         <tr>
           <th class="tbl-sort" @click="sort('contact')">

@@ -33,7 +33,6 @@ export const authService = new Vue({
       this.authenticated.next(true);
     },
     restoreSession() {
-      console.log('restore session');
       const user = JSON.parse(localStorage.getItem('user'));
       const userRoles = JSON.parse(localStorage.getItem('user_roles'));
       const token = localStorage.getItem('token');

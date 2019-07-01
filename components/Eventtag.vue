@@ -56,13 +56,13 @@
             </b-select>
           </div>
           <div class="col pl-2 pr-4">
-            <input
+            <b-form-input
               v-model="InputTagName"
               type="text"
               name="url"
               placeholder="input text here"
               class="input input-items w-100"
-            >
+            ></b-form-input>
           </div>
         </div>
         <button class="add_btn" @click="add()">+ Add</button>
