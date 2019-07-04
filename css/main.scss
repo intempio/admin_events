@@ -18,6 +18,10 @@ body, #app {
   min-height: 100vh;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .column {
   padding: 5px 0;
 }
@@ -856,7 +860,7 @@ input.filter-item.search-input {
 }
 
 .modal-body {
-  margin: 20px 0;
+  //margin: 20px 0;
 }
 
 .modal-footer {

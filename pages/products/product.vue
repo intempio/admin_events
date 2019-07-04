@@ -1,367 +1,357 @@
 <template>
-  <div class="main">
-    <clientheader :clientid="clientid"></clientheader>
+  <section>
+    <div class="main">
+      <clientheader :clientid="clientid ? clientid : ''" :sidebarOff="true"></clientheader>
 
-    <div class="container-fluid mt-5" style="padding-top: 30px">
-      <div class="row">
-        <div class="col-12">
-          <div class="half notif">{{ notif }}</div>
-          <div class="half">
-            <div class="search-cont">
-              <input
-                type="text"
-                v-model="search"
-                placeholder="Search"
-              />
+      <div class="container-fluid mt-5" style="padding-top: 30px">
+        <div class="row">
+          <div class="col-xl-10 col-lg-12 m-auto">
+            <div class="row d-flex justify-content-end">
+              <div class="col-5 my-2">
+                <b-form-input
+                  type="text"
+                  v-model="search"
+                  placeholder="Search"
+                ></b-form-input>
+              </div>
             </div>
-          </div>
-          <table
-            border="0"
-            class="person_tbl"
-          >
-            <thead>
-
-            <tr>
-              <th>Client Name</th>
-              <th
-                @click="sort('product_name')"
-                style="cursor:pointer"
-              >
-                Product Name <img
-                src="~/assets/sort.png"
-                class="tbl-sort"
-              />
-              </th>
-
-              <th
-                @click="sort('product_description')"
-                style="cursor:pointer"
-              >
-                Product Description
-                <img
-                  src="~/assets/sort.png"
-                  class="tbl-sort"
-                />
-              </th>
-
-              <th colspan="2">
-                Actions
-                <ul class="sub-heading">
-                  <li>Edit Actions</li>
-                  <li>List Actions</li>
-                </ul>
-              </th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr></tr>
-            <tr
-              v-for="(product, index) in filteredItems"
-              v-bind:key="index"
+            <div class="half notif">{{ notif }}</div>
+            <table
+              border="0"
+              class="person_tbl w-100"
             >
-              <td><img
-                src="./../../assets/edit.png"
-                v-b-modal.modalUpdate
-                @click="editProduct(product)"
-              /> {{ product.client_name }}
-              </td>
-              <td class="prod_name">{{ product.product_name }}</td>
-              <td>{{ product.product_description }}</td>
-              <td>
-                <b-button
-                  v-b-modal.modalClient
-                  variant="primary"
-                  @click="showClient(product)"
-                >
-                  Client
-                </b-button>
-                <b-button
-                  v-b-modal.modalEdit
-                  variant="primary"
-                  @click="showModal(product)"
-                >
-                  Product
-                </b-button>
-                <b-button
-                  v-b-modal.modalChecklist
-                  variant="primary"
-                  @click="showChecklist(product)"
-                >
-                  Checklist
-                </b-button>
-              </td>
-              <td>
-                <div>
-                  <b-button @click="actionClone(product)">
-                    Clone
-                  </b-button>
-                  <b-button @click="actionDelete(product)">
-                    Delete
-                  </b-button>
-                </div>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-          <div class="pagination">
-            <button @click="prevPage">&laquo;</button>
-            <button @click="nextPage">&raquo;</button>
-          </div>
-          <b-modal
-            id="modalUpdate"
-            ref="modalUpdate"
-            title="Product Update"
-            @ok="handleUpdate"
-          >
-            <b-form @submit.stop.prevent="sendData">
-              <table class="tblProdUpdate">
-                <thead>
-                <tr>
-                  <td></td>
-                  <td></td>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                  <td>Product Name</td>
-                  <td>
-                    <b-form-group>
-                      <b-form-input
-                        type="text"
-                        v-model="updateModal.product_name"
-                        placeholder="Product Name"
-                      >
-                      </b-form-input>
-                    </b-form-group>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Product Description</td>
-                  <td>
-                    <b-form-group>
-                      <b-form-input
-                        type="text"
-                        v-model="updateModal.product_description"
-                        placeholder="Product Description"
-                      >
-                      </b-form-input>
-                    </b-form-group>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Client Name</td>
-                  <td>
-                    <b-form-group>
-                      <b-form-select
-                        :options="clientOptions"
-                        v-model="updateModal.client_id"
-                        placeholder="updateModal.client_name"
-                      >
-                      </b-form-select>
-                    </b-form-group>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Client ID</td>
-                  <td>
-                    <b-form-group>
-                      <b-form-input
-                        type="text"
-                        v-model="updateModal.client_id"
-                        placeholder="Client ID"
-                      >
-                      </b-form-input>
-                    </b-form-group>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Duration Minutes</td>
-                  <td>
-                    <b-form-group>
-                      <b-form-input
-                        type="text"
-                        v-model="updateModal.duration_minutes"
-                        placeholder="Duration Minutes"
-                      >
-                      </b-form-input>
-                    </b-form-group>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Producer Offset Minutes</td>
-                  <td>
-                    <b-form-group>
-                      <b-form-input
-                        type="text"
-                        v-model="updateModal.producer_offset_minutes"
-                        placeholder="Producer Offset Minutes"
-                      >
-                      </b-form-input>
-                    </b-form-group>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Producer Count</td>
-                  <td>
-                    <b-form-group>
-                      <b-form-input
-                        type="text"
-                        v-model="updateModal.producer_count"
-                        placeholder="Producer Count"
-                      >
-                      </b-form-input>
-                    </b-form-group>
-                  </td>
-                </tr>
-                </tbody>
-              </table>
-              <span class="notif">{{ notif }}</span>
-            </b-form>
-          </b-modal>
-          <b-modal
-            id="modalClient"
-            ref="modalClient"
-            title="Edit Client"
-          >
-            <table>
               <thead>
+
               <tr>
-                <th>Items</th>
-                <th>Content</th>
-                <th>Action</th>
+                <th>Client Name</th>
+                <th
+                  @click="sort('product_name')"
+                  style="cursor:pointer"
+                >
+                  Product Name
+                  <font-awesome-icon icon="caret-down"/>
+                </th>
+
+                <th
+                  @click="sort('product_description')"
+                  style="cursor:pointer"
+                >
+                  Product Description
+                  <font-awesome-icon icon="caret-down"/>
+                </th>
+
+                <th colspan="2">
+                  <div class="d-block text-center">
+                    <div>
+                      <span>Actions</span>
+                    </div>
+                    <div class="d-flex justify-content-around">
+                      <div>Edit Actions</div>
+                      <div>List Actions</div>
+                    </div>
+                  </div>
+                </th>
               </tr>
               </thead>
               <tbody>
+              <tr></tr>
               <tr
-                v-for="(client, index) in clientModal"
+                v-for="(product, index) in filteredItems"
                 v-bind:key="index"
               >
-                <td class="hidden">
-                  <b-form-input
-                    type="text"
-                    v-model="client.product_id"
-                  ></b-form-input>
+                <td><img
+                  src="./../../assets/edit.png"
+                  v-b-modal.modalUpdate
+                  @click="editProduct(product)"
+                /> {{ product.client_name }}
                 </td>
-                <td>
-                  <b-form-input
-                    disabled
-                    type="text"
-                    v-model="client.tag_name"
-                  ></b-form-input>
-                </td>
-                <td>
-                  <b-form-input
-                    type="text"
-                    v-model="client.tag_value"
-                  ></b-form-input>
-                </td>
+                <td class="prod_name">{{ product.product_name }}</td>
+                <td>{{ product.product_description }}</td>
                 <td>
                   <b-button
-                    type="submit"
+                    v-b-modal.modalClient
                     variant="primary"
-                    @click="updateClient(client)"
-                  >UPDATE
+                    @click="showClient(product)"
+                  >
+                    Client
                   </b-button>
+                  <b-button
+                    v-b-modal.modalEdit
+                    variant="primary"
+                    @click="showModal(product)"
+                  >
+                    Product
+                  </b-button>
+                  <b-button
+                    v-b-modal.modalChecklist
+                    variant="primary"
+                    @click="showChecklist(product)"
+                  >
+                    Checklist
+                  </b-button>
+                </td>
+                <td>
+                  <div>
+                    <b-button @click="actionClone(product)">
+                      Clone
+                    </b-button>
+                    <b-button @click="actionDelete(product)">
+                      Delete
+                    </b-button>
+                  </div>
                 </td>
               </tr>
               </tbody>
             </table>
-            <div class="modAdd">
-              <table>
+            <div class="py-4">
+              <button @click="prevPage">&laquo;</button>
+              <button @click="nextPage">&raquo;</button>
+            </div>
+            <b-modal
+              id="modalUpdate"
+              ref="modalUpdate"
+              title="Product Update"
+              @ok="handleUpdate"
+            >
+              <b-form @submit.stop.prevent="sendData">
+                <table class="tblProdUpdate modal-tbl">
+                  <thead>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td>Product Name</td>
+                    <td>
+                      <b-form-group>
+                        <b-form-input
+                          type="text"
+                          v-model="updateModal.product_name"
+                          placeholder="Product Name"
+                        >
+                        </b-form-input>
+                      </b-form-group>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Product Description</td>
+                    <td>
+                      <b-form-group>
+                        <b-form-input
+                          type="text"
+                          v-model="updateModal.product_description"
+                          placeholder="Product Description"
+                        >
+                        </b-form-input>
+                      </b-form-group>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Client Name</td>
+                    <td>
+                      <b-form-group>
+                        <b-form-select
+                          :options="clientOptions"
+                          v-model="updateModal.client_id"
+                          placeholder="updateModal.client_name"
+                        >
+                        </b-form-select>
+                      </b-form-group>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Client ID</td>
+                    <td>
+                      <b-form-group>
+                        <b-form-input
+                          type="text"
+                          v-model="updateModal.client_id"
+                          placeholder="Client ID"
+                        >
+                        </b-form-input>
+                      </b-form-group>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Duration Minutes</td>
+                    <td>
+                      <b-form-group>
+                        <b-form-input
+                          type="text"
+                          v-model="updateModal.duration_minutes"
+                          placeholder="Duration Minutes"
+                        >
+                        </b-form-input>
+                      </b-form-group>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Producer Offset Minutes</td>
+                    <td>
+                      <b-form-group>
+                        <b-form-input
+                          type="text"
+                          v-model="updateModal.producer_offset_minutes"
+                          placeholder="Producer Offset Minutes"
+                        >
+                        </b-form-input>
+                      </b-form-group>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Producer Count</td>
+                    <td>
+                      <b-form-group>
+                        <b-form-input
+                          type="text"
+                          v-model="updateModal.producer_count"
+                          placeholder="Producer Count"
+                        >
+                        </b-form-input>
+                      </b-form-group>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+                <span class="notif">{{ notif }}</span>
+              </b-form>
+            </b-modal>
+            <b-modal
+              id="modalClient"
+              ref="modalClient"
+              title="Edit Client"
+            >
+              <table class="modal-tbl">
                 <thead>
                 <tr>
-                  <th></th>
+                  <th>Items</th>
+                  <th>Content</th>
+                  <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
+                <tr
+                  v-for="(client, index) in clientModal"
+                  v-bind:key="index"
+                >
                   <td class="hidden">
-                    <b-form-input type="text"></b-form-input>
+                    <b-form-input
+                      type="text"
+                      v-model="client.product_id"
+                    ></b-form-input>
                   </td>
                   <td>
                     <b-form-input
+                      disabled
                       type="text"
-                      v-model="tag_name"
+                      v-model="client.tag_name"
                     ></b-form-input>
                   </td>
                   <td>
                     <b-form-input
                       type="text"
-                      v-model="tag_value"
+                      v-model="client.tag_value"
                     ></b-form-input>
                   </td>
                   <td>
                     <b-button
                       type="submit"
                       variant="primary"
-                      @click="addClient()"
-                    >+ ADD
+                      @click="updateClient(client)"
+                    >UPDATE
                     </b-button>
                   </td>
                 </tr>
                 </tbody>
               </table>
-            </div>
-            <div class="notif">{{ tag_notif }}</div>
-          </b-modal>
-          <!-- Modal Component -->
-          <b-modal
-            id="modalEdit"
-            ref="modal"
-            title="Edit Product"
-          >
-            <table>
-              <thead>
-              <tr>
-                <th>Items</th>
-                <th>Content</th>
-                <th>Action</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr
-                v-for="(product, index) in productModal"
-                v-bind:key="index"
-              >
-                <td class="hidden">
-                  <b-form-input
-                    type="text"
-                    v-model="product.product_id"
-                  ></b-form-input>
-                </td>
-                <td>
-                  <b-form-input
-                    disabled
-                    type="text"
-                    v-model="product.tag_name"
-                  ></b-form-input>
-                </td>
-                <td>
-                  <b-form-input
-                    type="text"
-                    v-model="product.tag_value"
-                  ></b-form-input>
-                </td>
-                <td>
-                  <b-button
-                    type="submit"
-                    variant="primary"
-                    @click="updateProduct(product)"
-                  >UPDATE
-                  </b-button>
-                </td>
-              </tr>
-              </tbody>
-            </table>
-            <div class="modAdd">
-              <table>
+              <div class="modAdd">
+                <table class="modal-tbl">
+                  <thead>
+                  <tr>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td class="hidden">
+                      <b-form-input type="text"></b-form-input>
+                    </td>
+                    <td>
+                      <b-form-input
+                        type="text"
+                        v-model="tag_name"
+                      ></b-form-input>
+                    </td>
+                    <td>
+                      <b-form-input
+                        type="text"
+                        v-model="tag_value"
+                      ></b-form-input>
+                    </td>
+                    <td>
+                      <b-button
+                        type="submit"
+                        variant="primary"
+                        @click="addClient()"
+                      >+ ADD
+                      </b-button>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="notif">{{ tag_notif }}</div>
+            </b-modal>
+            <!-- Modal Component -->
+            <b-modal
+              id="modalEdit"
+              ref="modal"
+              title="Edit Product"
+            >
+              <table class="modal-tbl">
                 <thead>
                 <tr>
-                  <th></th>
+                  <th>Items</th>
+                  <th>Content</th>
+                  <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
+                <tr
+                  v-for="(product, index) in productModal"
+                  v-bind:key="index"
+                >
+                  <td class="hidden">
+                    <b-form-input
+                      type="text"
+                      v-model="product.product_id"
+                    ></b-form-input>
+                  </td>
+                  <td>
+                    <b-form-input
+                      disabled
+                      type="text"
+                      v-model="product.tag_name"
+                    ></b-form-input>
+                  </td>
+                  <td>
+                    <b-form-input
+                      type="text"
+                      v-model="product.tag_value"
+                    ></b-form-input>
+                  </td>
+                  <td>
+                    <b-button
+                      type="submit"
+                      variant="primary"
+                      @click="updateProduct(product)"
+                    >UPDATE
+                    </b-button>
+                  </td>
+                </tr>
+                <tr class="add">
                   <td class="hidden">
                     <b-form-input type="text"></b-form-input>
                   </td>
@@ -380,7 +370,8 @@
                   <td>
                     <b-button
                       type="submit"
-                      variant="primary"
+                      class="w-100"
+                      variant="secondary"
                       @click="addProduct()"
                     >+ ADD
                     </b-button>
@@ -388,106 +379,109 @@
                 </tr>
                 </tbody>
               </table>
-            </div>
-            <div class="notif">{{ tag_notif }}</div>
-          </b-modal>
+              <div class="notif">{{ tag_notif }}</div>
+            </b-modal>
 
-          <b-modal
-            id="modalChecklist"
-            ref="modalChecklist"
-            title="Edit Checklist"
-          >
-            <table>
-              <thead>
-              <tr>
-                <th>Items</th>
-                <th>Content</th>
-                <th>Action</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr
-                v-for="(checklist, index) in checklistModal"
-                v-bind:key="index"
-              >
-                <td class="hidden">
-                  <b-form-input
-                    type="text"
-                    v-model="checklist.product_id"
-                  ></b-form-input>
-                </td>
-                <td>
-                  <b-form-input
-                    disabled
-                    type="text"
-                    v-model="checklist.tag_name"
-                  ></b-form-input>
-                </td>
-                <td>
-                  <b-form-input
-                    type="text"
-                    v-model="checklist.tag_value"
-                  ></b-form-input>
-                </td>
-                <td>
-                  <b-button
-                    type="submit"
-                    variant="primary"
-                    @click="updateChecklist(checklist)"
-                  >UPDATE
-                  </b-button>
-                </td>
-              </tr>
-              </tbody>
-            </table>
-            <div class="modAdd">
-              <table>
+            <b-modal
+              id="modalChecklist"
+              ref="modalChecklist"
+              title="Edit Checklist"
+            >
+              <table class="modal-tbl">
                 <thead>
                 <tr>
-                  <th></th>
+                  <th>Items</th>
+                  <th>Content</th>
+                  <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
+                <tr
+                  v-for="(checklist, index) in checklistModal"
+                  v-bind:key="index"
+                >
                   <td class="hidden">
-                    <b-form-input type="text"></b-form-input>
+                    <b-form-input
+                      type="text"
+                      v-model="checklist.product_id"
+                    ></b-form-input>
                   </td>
                   <td>
                     <b-form-input
+                      disabled
                       type="text"
-                      v-model="check_tag_name"
+                      v-model="checklist.tag_name"
                     ></b-form-input>
                   </td>
                   <td>
                     <b-form-input
                       type="text"
-                      v-model="check_tag_value"
+                      v-model="checklist.tag_value"
                     ></b-form-input>
                   </td>
                   <td>
                     <b-button
                       type="submit"
                       variant="primary"
-                      @click="addChecklist()"
-                    >+ ADD
+                      @click="updateChecklist(checklist)"
+                    >UPDATE
                     </b-button>
                   </td>
                 </tr>
                 </tbody>
               </table>
-            </div>
-            <div class="notif">{{ tag_notif }}</div>
-          </b-modal>
+              <div class="modAdd">
+                <table class="modal-tbl">
+                  <thead>
+                  <tr>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td class="hidden">
+                      <b-form-input type="text"></b-form-input>
+                    </td>
+                    <td>
+                      <b-form-input
+                        type="text"
+                        v-model="check_tag_name"
+                      ></b-form-input>
+                    </td>
+                    <td>
+                      <b-form-input
+                        type="text"
+                        v-model="check_tag_value"
+                      ></b-form-input>
+                    </td>
+                    <td>
+                      <b-button
+                        type="submit"
+                        variant="primary"
+                        @click="addChecklist()"
+                      >+ ADD
+                      </b-button>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="notif">{{ tag_notif }}</div>
+            </b-modal>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>
   import axios from 'axios';
+  import clientheader from '../../components/Header.vue'
 
   export default {
+    components: {clientheader},
+    props: ['clientid'],
     data() {
       return {
         date: [], //for the daterange
@@ -881,38 +875,63 @@
     display: none;
   }
 
-  table.person_tbl {
-    width: 100%;
-    font-size: 14px;
+  /*table.person_tbl {*/
+  /*  width: 100%;*/
+  /*  font-size: 14px;*/
+  /*}*/
+
+  /*table.person_tbl td,*/
+  /*table.person_tbl th {*/
+  /*  border: 0;*/
+  /*  padding: 0.5rem;*/
+  /*}*/
+
+  /*table.person_tbl th {*/
+  /*  border-bottom: 2px solid #dee2e6;*/
+  /*  border-top: 1px solid #dee2e6;*/
+  /*  text-align: center;*/
+  /*}*/
+
+  /*  table.person_tbl tbody tr:nth-of-type(odd) {
+      background-color: rgba(0, 0, 0, 0.05);
+    }*/
+
+  /*table.person_tbl tbody td {*/
+  /*  border-top: 1px solid #dee2e6;*/
+  /*  text-align: center;*/
+  /*}*/
+
+  .person_tbl {
+
+    td, th {
+      padding: 10px;
+    }
+
+
+    td.id {
+      display: none;
+    }
   }
 
-  table.person_tbl td,
-  table.person_tbl th {
-    border: 0;
-    padding: 0.5rem;
-  }
+  .modal-tbl {
+    td, th {
+      padding: 4px 8px;
+    }
 
-  table.person_tbl th {
-    border-bottom: 2px solid #dee2e6;
-    border-top: 1px solid #dee2e6;
-    text-align: center;
-  }
+    td {
+      background-color: white;
+    }
 
-  table.person_tbl tbody tr:nth-of-type(odd) {
-    background-color: rgba(0, 0, 0, 0.05);
-  }
+    tbody {
+      tr:first-of-type td {
+        padding-top: 20px;
+      }
 
-  table.person_tbl tbody td {
-    border-top: 1px solid #dee2e6;
-    text-align: center;
-  }
+      tr.add td {
+        padding-top: 20px;
+      }
+    }
 
-  table.person_tbl td.id {
-    display: none;
-  }
-
-  .pagination {
-    margin-top: 20px;
   }
 
   button,
@@ -982,48 +1001,36 @@
     height: 150px;
   }
 
-  .form-control {
-    font-size: 14px;
-    border-radius: 0;
-  }
+  /*.form-control {*/
+  /*  font-size: 14px;*/
+  /*  border-radius: 0;*/
+  /*}*/
 
-  .half {
-    width: 49.7%;
-    display: inline-block;
-    vertical-align: top;
-    padding: 20px 0;
-  }
+  /*.half {*/
+  /*  width: 49.7%;*/
+  /*  display: inline-block;*/
+  /*  vertical-align: top;*/
+  /*  padding: 20px 0;*/
+  /*}*/
 
   .search-cont {
     display: inline-block;
     width: 79%;
   }
 
-  .search-cont input {
-    width: 100%;
-    border: solid 1px #dee2e6;
-    padding: 5px 10px;
-    font-size: 13px;
-  }
+  /*.search-cont input {*/
+  /*  width: 100%;*/
+  /*  border: solid 1px #dee2e6;*/
+  /*  padding: 5px 10px;*/
+  /*  font-size: 13px;*/
+  /*}*/
 
-  td.prod_name {
-    text-align: left !important;
-  }
+  /*td.prod_name {*/
+  /*  text-align: left !important;*/
+  /*}*/
 
   td.prod_name img {
     padding-right: 10px;
   }
-
-  /*ul.sub-heading li {*/
-  /*  width: 59%;*/
-  /*  display: inline-block;*/
-  /*  font-size: 14px;*/
-  /*  list-style-type: none;*/
-  /*  font-weight: normal;*/
-  /*}*/
-
-  /*ul.sub-heading li:last-child {*/
-  /*  width: 40%;*/
-  /*}*/
 
 </style>

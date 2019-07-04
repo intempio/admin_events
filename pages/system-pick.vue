@@ -15,9 +15,11 @@
               </router-link>
             </div>
             <div class="col-4">
-              <div class="circle">
-                <span>Products</span>
-              </div>
+              <router-link to="/products/product">
+                <div class="circle">
+                  <span>Products</span>
+                </div>
+              </router-link>
             </div>
             <div class="col-4">
               <div class="circle disabled">
