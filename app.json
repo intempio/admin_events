@@ -1,0 +1,45 @@
+{
+  "name": "admin_events",
+  "scripts": {},
+  "env": {
+    "ADMINIUM_URL": {
+      "required": true
+    },
+    "CHECKLIST_ITEMS": {
+      "required": true
+    },
+    "CLIENT_ITEMS": {
+      "required": true
+    },
+    "HOST": {
+      "required": true
+    },
+    "NODE_ENV": {
+      "required": true
+    },
+    "NPM_CONFIG_PRODUCTION": {
+      "required": true
+    },
+    "PEOPLE_ASSIGNED_ROLES": {
+      "required": true
+    },
+    "PRODUCT_ITEMS": {
+      "required": true
+    },
+    "VUE_APP_API": {
+      "required": true
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1
+    }
+  },
+  "addons": [],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ],
+  "stack": "heroku-18"
+}
