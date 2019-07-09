@@ -539,11 +539,7 @@
             }, 3500);
           })
           .catch(error => {
-            this.$toast.open({
-              message: `Error saving: ${error}`,
-              position: 'is-bottom',
-              type: 'is-danger'
-            });
+            this.$toast.error(`Error: ${error}`)
           });
       },
       discardEventChanges() {
@@ -581,12 +577,7 @@
             });
           })
           .catch(err => {
-            this.$toast.open({
-              message: `Error fetching event: ${err}`,
-              position: 'is-bottom',
-              type: 'is-danger'
-            });
-            console.log(err);
+            this.$toast.error(`Error: ${error}`)
           });
       }
     },

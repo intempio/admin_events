@@ -57,8 +57,12 @@ module.exports = {
     '@nuxtjs/axios',
     // Doc: https://buefy.github.io/#/documentation
     // 'nuxt-buefy',
-    'bootstrap-vue/nuxt'
+    'bootstrap-vue/nuxt',
+    '@nuxtjs/toast',
   ],
+  toast: {
+    position: 'bottom-center',
+  },
   /*
    ** Axios module configuration
    */

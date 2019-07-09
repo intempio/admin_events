@@ -255,11 +255,7 @@
           //   type: 'is-success'
           // })
         }).catch(err => {
-          this.$toast.open({
-            message: `Saving error: ${err}`,
-            position: 'is-bottom',
-            type: 'is-danger'
-          })
+          this.$toast.error(`Error: ${error}`)
         })
       },
 

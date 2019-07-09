@@ -1,0 +1,117 @@
+button.btn-secondary {
+  background: #74bd44;
+}
+
+.hidden {
+  visibility: hidden;
+  display: none;
+}
+
+.person_tbl {
+
+  td, th {
+    padding: 10px;
+  }
+
+
+  td.id {
+    display: none;
+  }
+}
+
+.modal-tbl {
+  td, th {
+    padding: 4px 8px;
+  }
+
+  td {
+    background-color: white;
+  }
+
+  tbody {
+    tr:first-of-type td {
+      padding-top: 20px;
+    }
+
+    tr.add td {
+      padding-top: 20px;
+    }
+  }
+
+}
+
+button,
+button.btn.btn-primary {
+  border: 0;
+  margin-right: 10px;
+  padding: 5px 30px;
+  color: #fff;
+  font-size: 13px;
+  background: #0097e1;
+  cursor: pointer !important;
+  border-radius: 0;
+}
+
+.modAdd {
+  background: #f1f1f1;
+  margin-top: 30px;
+}
+
+button.btn.btn-secondary {
+  border: 0;
+  margin-right: 10px;
+  padding: 5px 20px;
+  font-size: 13px;
+  cursor: pointer !important;
+  border-radius: 0;
+}
+
+button.btn.btn-danger {
+  border: 0;
+  margin-right: 10px;
+  padding: 5px 30px;
+  color: #fff;
+  font-size: 13px;
+  cursor: pointer !important;
+  border-radius: 0;
+}
+
+button.close {
+  border: 0;
+  box-shadow: none;
+  right: -9px;
+  background: #0097e1 !important;
+  opacity: 0.9 !important;
+  text-align: center;
+  margin: 0 !important;
+  padding: 0 0 2px !important;
+  width: 28px;
+  font-weight: normal;
+  font-size: 16px;
+  border-radius: 50%;
+}
+
+span.notif {
+  padding: 20px 0;
+  font-style: italic;
+  color: green;
+  font-size: 13px;
+}
+
+button:hover,
+button.btn.btn-primary:hover {
+  opacity: 0.7;
+}
+
+textarea.form-control {
+  height: 150px;
+}
+
+.search-cont {
+  display: inline-block;
+  width: 79%;
+}
+
+td.prod_name img {
+  padding-right: 10px;
+}

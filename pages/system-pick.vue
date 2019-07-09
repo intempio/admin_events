@@ -22,9 +22,11 @@
               </router-link>
             </div>
             <div class="col-4">
-              <div class="circle disabled">
-                <span>People</span>
-              </div>
+              <router-link to="/people/people">
+                <div class="circle">
+                  <span>People</span>
+                </div>
+              </router-link>
             </div>
           </div>
 

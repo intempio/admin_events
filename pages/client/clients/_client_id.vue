@@ -69,11 +69,7 @@
             }
           })
           .catch(error => {
-            this.$toast.open({
-              message: `Error: ${error}`,
-              position: 'is-bottom',
-              type: 'is-danger'
-            })
+            this.$toast.error(`Error: ${error}`)
           })
       },
 
@@ -92,11 +88,7 @@
             }
           })
           .catch(error => {
-            this.$toast.open({
-              message: `Error: ${error}`,
-              position: 'is-bottom',
-              type: 'is-danger'
-            })
+            this.$toast.error(`Error: ${error}`)
           })
       },
 

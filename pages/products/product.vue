@@ -476,8 +476,8 @@
 </template>
 
 <script>
-  import axios from 'axios';
   import clientheader from '../../components/Header.vue'
+  import {restService} from '../../plugins/axios';
 
   export default {
     components: {clientheader},
@@ -527,50 +527,51 @@
       this.onLoadData();
     },
     methods: {
-      async addItem(field) {
-        let url = process.env.VUE_APP_API + '/api/v3/producttags';
-        var data = {
-          product_id: this.product_id,
-          tag_type: this.tagType,
-          tag_name: this.selectedItem,
-          tag_value: this.InputTagName
+      // async addItem(field) {
+      //   let url = '/api/v3/producttags';
+      //   var data = {
+      //     product_id: this.product_id,
+      //     tag_type: this.tagType,
+      //     tag_name: this.selectedItem,
+      //     tag_value: this.InputTagName
+      //   };
+      //   let response = axios
+      //     .post(url, data, {
+      //       headers: {
+      //         'Content-Type': 'application/json'
+      //       }
+      //     })
+      //     .then(response => {
+      //       this.fetchEvenag();
+      //     })
+      //     .catch(function (error) {
+      //       console.log(error);
+      //     })
+      //     .then(function () {
+      //       // always executed
+      //     });
+      // },
+      actionDelete(product) {
+        let del_url = '/api/v3/products/';
+        let data_delete = {
+          product_id: product.product_id
         };
-        let response = axios
-          .post(url, data, {
-            headers: {
-              'Content-Type': 'application/json'
-            }
+
+        restService.delete(del_url, {data: data_delete})
+          .then(() => {
+            this.notif = 'Product has been deleted!';
+            setTimeout(function () {
+              window.location.reload();
+            }, 1000);
           })
-          .then(response => {
-            this.fetchEvenag();
-          })
-          .catch(function (error) {
-            console.log(error);
-          })
-          .then(function () {
-            // always executed
+          .catch(error => {
+            this.$toast.error(`Error: ${error}`)
           });
-      },
-      async actionDelete(product) {
-        let del_url = process.env.VUE_APP_API + '/api/v3/products/';
-        try {
-          let productData = product;
-          let data_delete = {
-            product_id: productData.product_id
-          };
-          let response = axios.delete(del_url, {data: data_delete});
-          this.notif = 'Product has been deleted!';
-          setTimeout(function () {
-            window.location.reload();
-          }, 1000);
-        } catch (e) {
-          window.alert('Error logging in' + e);
-        }
       },
       async editProduct(data) {
         this.updateModal = data;
-        let url = process.env.VUE_APP_API + '/api/v3/clients/';
-        let response = await axios.get(url);
+        let url = '/api/v3/clients/';
+        let response = await restService.get(url);
         this.prodData = response.data;
         let i;
         let clientOption = [];
@@ -584,7 +585,7 @@
       },
       async sendData() {
         try {
-          let update_url = process.env.VUE_APP_API + '/api/v3/products/';
+          let update_url = '/api/v3/products/';
           let data = {
             product_id: this.updateModal.product_id,
             product_name: this.updateModal.product_name,
@@ -592,7 +593,7 @@
             client_id: this.updateModal.client_id,
             duration_minutes: this.updateModal.duration_minutes
           };
-          let response = await axios.put(update_url, data);
+          let response = await restService.put(update_url, data);
           console.log(response);
           this.notif = 'Successfully Submitted!';
           this.$refs.modalUpdate.hide();
@@ -605,8 +606,8 @@
       async actionClone(product) {
         try {
           let productData = product;
-          let clone_url = process.env.VUE_APP_API + '/api/v3/products/';
-          let response = axios.post(clone_url, {
+          let clone_url = '/api/v3/products/';
+          let response = restService.post(clone_url, {
             product_id: productData.product_id,
             product_name: productData.product_name,
             clone: 'True'
@@ -616,7 +617,7 @@
             window.location.reload();
           }, 1000);
         } catch (e) {
-          window.alert('Error logging in' + e);
+          this.$toast.error(`Error: ${error}`)
         }
       },
       async submit() {
@@ -627,8 +628,8 @@
             client_id: this.client_id,
             duration_minutes: this.duration_minutes
           };
-          let sub_url = process.env.VUE_APP_API + '/api/v3/products/';
-          let response = await axios.post(sub_url, data);
+          let sub_url = '/api/v3/products/';
+          let response = await restService.post(sub_url, data);
           this.product_name = '';
           this.product_description = '';
           this.client_id = '';
@@ -639,13 +640,13 @@
           this.onLoadData();
           this.notif = '';
         } catch (e) {
-          window.alert('Error logging in');
+          this.$toast.error(`Error: ${error}`)
         }
       },
       async onLoadData() {
         try {
-          let load_url = process.env.VUE_APP_API + '/api/v3/products/';
-          let response = await axios.get(load_url);
+          let load_url = '/api/v3/products/';
+          let response = await restService.get(load_url);
           this.products = response.data;
           // console.log(this.products);
         } catch (e) {
@@ -658,7 +659,7 @@
           let productid = product['product_id'];
           let turl =
             '/api/v3/producttags/?productID=' + productid + '&tagType=Product';
-          let response = await axios.get(process.env.VUE_APP_API + turl);
+          let response = await restService.get(turl);
           this.productModal = response.data;
         } catch (e) {
           console.log('Error in function handleSubmit' + e);
@@ -670,7 +671,7 @@
           let productid = product['product_id'];
           let turl =
             '/api/v3/producttags/?productID=' + productid + '&tagType=Client';
-          let response = await axios.get(process.env.VUE_APP_API + turl);
+          let response = await restService.get(turl);
           this.clientModal = response.data;
         } catch (e) {
           console.log('Error in function handleSubmit' + e);
@@ -682,7 +683,7 @@
           let productid = product['product_id'];
           let turl =
             '/api/v3/producttags/?productID=' + productid + '&tagType=Checklist';
-          let response = await axios.get(process.env.VUE_APP_API + turl);
+          let response = await restService.get(turl);
           this.checklistModal = response.data;
           if (this.checklistModal > 0) {
             let i;
@@ -723,7 +724,7 @@
           };
           console.log('data' + data.tag_value);
           let pt_url = '/api/v3/producttags/';
-          let response = await axios.post(process.env.VUE_APP_API + pt_url, data);
+          let response = await restService.post(pt_url, data);
           this.tag_notif = 'Successfully submitted!';
         } catch (e) {
           console.log('Error in function handleSubmit' + e);
@@ -738,12 +739,12 @@
             tag_value: this.pro_tag_value
           };
           let pt_url = '/api/v3/producttags/';
-          let response = await axios.post(process.env.VUE_APP_API + pt_url, data);
+          let response = await restService.post(pt_url, data);
           this.pro_tag_name = '';
           this.pro_tag_value = '';
           this.tag_notif = 'Successfully submitted!';
         } catch (e) {
-          window.alert('Error logging in' + e);
+          this.$toast.error(`Error: ${error}`)
         }
       },
       async updateClient(client) {
@@ -756,7 +757,7 @@
           };
           console.log('data' + data.tag_value);
           let pt_url = '/api/v3/producttags/';
-          let response = await axios.post(process.env.VUE_APP_API + pt_url, data);
+          let response = await restService.post(pt_url, data);
           this.tag_notif = 'Successfully submitted!';
         } catch (e) {
           console.log('Error in function handleSubmit' + e);
@@ -771,10 +772,10 @@
             tag_value: this.tag_value
           };
           let pt_url = '/api/v3/producttags/';
-          let response = await axios.post(process.env.VUE_APP_API + pt_url, data);
+          let response = await restService.post(pt_url, data);
           this.tag_notif = 'Successfully submitted!';
         } catch (e) {
-          window.alert('Error logging in' + e);
+          this.$toast.error(`Error: ${error}`)
         }
       },
       async updateChecklist(checklist) {
@@ -787,7 +788,7 @@
           };
           console.log('data' + data.tag_value);
           let pt_url = '/api/v3/producttags/';
-          let response = await axios.post(process.env.VUE_APP_API + pt_url, data);
+          let response = await restService.post(pt_url, data);
           this.tag_name = '';
           this.tag_value = '';
           this.tag_notif = 'Successfully submitted!';
@@ -805,12 +806,12 @@
           };
           console.log(data);
           let pt_url = '/api/v3/producttags/';
-          let response = await axios.post(process.env.VUE_APP_API + pt_url, data);
+          let response = await restService.post(pt_url, data);
           this.check_tag_name = '';
           this.check_tag_value = '';
           this.tag_notif = 'Successfully submitted!';
         } catch (e) {
-          window.alert('Error logging in' + e);
+          this.$toast.error(`Error: ${error}`)
         }
       },
       sort: function (s) {
@@ -865,172 +866,5 @@
   };
 </script>
 <style lang="scss">
-
-  button.btn-secondary {
-    background: #74bd44;
-  }
-
-  .hidden {
-    visibility: hidden;
-    display: none;
-  }
-
-  /*table.person_tbl {*/
-  /*  width: 100%;*/
-  /*  font-size: 14px;*/
-  /*}*/
-
-  /*table.person_tbl td,*/
-  /*table.person_tbl th {*/
-  /*  border: 0;*/
-  /*  padding: 0.5rem;*/
-  /*}*/
-
-  /*table.person_tbl th {*/
-  /*  border-bottom: 2px solid #dee2e6;*/
-  /*  border-top: 1px solid #dee2e6;*/
-  /*  text-align: center;*/
-  /*}*/
-
-  /*  table.person_tbl tbody tr:nth-of-type(odd) {
-      background-color: rgba(0, 0, 0, 0.05);
-    }*/
-
-  /*table.person_tbl tbody td {*/
-  /*  border-top: 1px solid #dee2e6;*/
-  /*  text-align: center;*/
-  /*}*/
-
-  .person_tbl {
-
-    td, th {
-      padding: 10px;
-    }
-
-
-    td.id {
-      display: none;
-    }
-  }
-
-  .modal-tbl {
-    td, th {
-      padding: 4px 8px;
-    }
-
-    td {
-      background-color: white;
-    }
-
-    tbody {
-      tr:first-of-type td {
-        padding-top: 20px;
-      }
-
-      tr.add td {
-        padding-top: 20px;
-      }
-    }
-
-  }
-
-  button,
-  button.btn.btn-primary {
-    border: 0;
-    margin-right: 10px;
-    padding: 5px 30px;
-    color: #fff;
-    font-size: 13px;
-    background: #0097e1;
-    cursor: pointer !important;
-    border-radius: 0;
-  }
-
-  .modAdd {
-    background: #f1f1f1;
-    margin-top: 30px;
-  }
-
-  button.btn.btn-secondary {
-    border: 0;
-    margin-right: 10px;
-    padding: 5px 20px;
-    font-size: 13px;
-    cursor: pointer !important;
-    border-radius: 0;
-  }
-
-  button.btn.btn-danger {
-    border: 0;
-    margin-right: 10px;
-    padding: 5px 30px;
-    color: #fff;
-    font-size: 13px;
-    cursor: pointer !important;
-    border-radius: 0;
-  }
-
-  button.close {
-    border: 0;
-    box-shadow: none;
-    right: -9px;
-    background: #0097e1 !important;
-    opacity: 0.9 !important;
-    text-align: center;
-    margin: 0 !important;
-    padding: 0 0 2px !important;
-    width: 28px;
-    font-weight: normal;
-    font-size: 16px;
-    border-radius: 50%;
-  }
-
-  span.notif {
-    padding: 20px 0;
-    font-style: italic;
-    color: green;
-    font-size: 13px;
-  }
-
-  button:hover,
-  button.btn.btn-primary:hover {
-    opacity: 0.7;
-  }
-
-  textarea.form-control {
-    height: 150px;
-  }
-
-  /*.form-control {*/
-  /*  font-size: 14px;*/
-  /*  border-radius: 0;*/
-  /*}*/
-
-  /*.half {*/
-  /*  width: 49.7%;*/
-  /*  display: inline-block;*/
-  /*  vertical-align: top;*/
-  /*  padding: 20px 0;*/
-  /*}*/
-
-  .search-cont {
-    display: inline-block;
-    width: 79%;
-  }
-
-  /*.search-cont input {*/
-  /*  width: 100%;*/
-  /*  border: solid 1px #dee2e6;*/
-  /*  padding: 5px 10px;*/
-  /*  font-size: 13px;*/
-  /*}*/
-
-  /*td.prod_name {*/
-  /*  text-align: left !important;*/
-  /*}*/
-
-  td.prod_name img {
-    padding-right: 10px;
-  }
-
+  @import "../../css/people-products";
 </style>
