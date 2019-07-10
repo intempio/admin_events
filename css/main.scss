@@ -140,7 +140,7 @@ tr {
   border: #333 solid 1px !important;
 }
 
-button {
+button:not(.datepicker-day) {
   background: #0097e1;
   border: 0;
   padding: 4px 15px;
@@ -1108,10 +1108,6 @@ input.filter-item.search-input {
   padding: 7px 10px;
 }
 
-.modal-body table.tblProdUpdate {
-  margin: 0 25px;
-}
-
 .modal-body table.tblProdUpdate td:first-child {
   width: 3%;
 }
@@ -1120,12 +1116,14 @@ input.filter-item.search-input {
   width: 1%;
 }
 
-table.tblProdUpdate .form-group {
-  margin: 0.3rem 0;
-}
+table.tblProdUpdate {
+  tbody tr td:first-of-type {
+    text-align: right;
+  }
 
-table.tblProdUpdate .form-group {
-  margin: 0.3rem 0;
+  .form-group {
+    margin: 0.3rem 0;
+  }
 }
 
 /*----Modal-----*/

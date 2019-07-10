@@ -144,6 +144,11 @@
                       </div>
                     </td>
                   </tr>
+                  <tr v-if="!filteredItems.length">
+                    <td colspan="7" class="py-3">
+                      <span>No results. Try changing the search query.</span>
+                    </td>
+                  </tr>
                   </tbody>
                 </table>
                 <div class="pagination mb-5">
@@ -359,18 +364,19 @@
           });
       },
       searchPersons: function () {
-        var self = this;
-        return this.persons.filter(function (persons) {
-          return (
-            persons.last_name.toLowerCase().indexOf(self.search.toLowerCase()) >=
-            0
-          );
+        return this.persons.filter(person => {
+          const results = Object.values(person).reduce((prev, val) => {
+            if (typeof val === 'string' || typeof val === 'number') {
+              const text = val.toString().toLowerCase();
+              return [...prev, text.includes(this.search.toLowerCase())];
+            }
+          }, []);
+          return results.some(e => !!e);
         });
       }
     },
     computed: {
       filteredItems: function () {
-        let items = this.items;
         if (this.search.length > 0) {
           return this.searchPersons();
         }

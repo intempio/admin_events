@@ -5,7 +5,7 @@
 
       <div class="container-fluid mt-5" style="padding-top: 30px">
         <div class="row">
-          <div class="col-xl-10 col-lg-12 m-auto">
+          <div class="col-xl-11 col-lg-12 m-auto">
             <div class="row d-flex justify-content-end">
               <div class="col-5 my-2">
                 <b-form-input
@@ -40,16 +40,8 @@
                   <font-awesome-icon icon="caret-down"/>
                 </th>
 
-                <th colspan="2">
-                  <div class="d-block text-center">
-                    <div>
-                      <span>Actions</span>
-                    </div>
-                    <div class="d-flex justify-content-around">
-                      <div>Edit Actions</div>
-                      <div>List Actions</div>
-                    </div>
-                  </div>
+                <th class="text-center" style="width: 280px;">
+                  <span>Actions</span>
                 </th>
               </tr>
               </thead>
@@ -68,34 +60,39 @@
                 <td class="prod_name">{{ product.product_name }}</td>
                 <td>{{ product.product_description }}</td>
                 <td>
-                  <b-button
-                    v-b-modal.modalClient
-                    variant="primary"
-                    @click="showClient(product)"
-                  >
-                    Client
-                  </b-button>
-                  <b-button
-                    v-b-modal.modalEdit
-                    variant="primary"
-                    @click="showModal(product)"
-                  >
-                    Product
-                  </b-button>
-                  <b-button
-                    v-b-modal.modalChecklist
-                    variant="primary"
-                    @click="showChecklist(product)"
-                  >
-                    Checklist
-                  </b-button>
-                </td>
-                <td>
-                  <div>
-                    <b-button @click="actionClone(product)">
+                  <div class="d-flex justify-content-center flex-wrap">
+                    <b-button
+                      v-b-modal.modalClient
+                      class="px-2 m-1"
+                      variant="primary"
+                      @click="showClient(product)"
+                    >
+                      Client
+                    </b-button>
+                    <b-button
+                      v-b-modal.modalEdit
+                      class="px-2 m-1"
+                      variant="primary"
+                      @click="showModal(product)"
+                    >
+                      Product
+                    </b-button>
+                    <b-button
+                      v-b-modal.modalChecklist
+                      class="px-2 m-1"
+                      variant="primary"
+                      @click="showChecklist(product)"
+                    >
+                      Checklist
+                    </b-button>
+                  </div>
+                  <div class="d-flex justify-content-end">
+                    <b-button @click="actionClone(product)"
+                              class="px-2 m-1">
                       Clone
                     </b-button>
-                    <b-button @click="actionDelete(product)">
+                    <b-button @click="actionDelete(product)"
+                              class="px-2 m-1">
                       Delete
                     </b-button>
                   </div>

@@ -9,7 +9,7 @@ const webAuth = new auth0.WebAuth({
   domain: authConfig.domain,
   redirectUri: `${window.location.origin}/callback`,
   clientID: authConfig.clientId,
-  audience: authConfig.audience, // add the audience
+  audience: process.env.VUE_APP_API, // add the audience
   responseType: 'token id_token', // request 'token' as well as 'id_token'
   scope: 'openid profile email'
 });
