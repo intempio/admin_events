@@ -29,7 +29,11 @@
               </router-link>
             </div>
           </div>
-
+        </div>
+        <div class="row">
+          <div class="col-4 mx-auto mt-5">
+            <h6 class="text-center">system version: {{appVersion}}</h6>
+          </div>
         </div>
       </div>
     </div>
@@ -37,16 +41,19 @@
 </template>
 
 <script>
+  import * as packageJson from '../package.json';
+
   export default {
     name: 'systems',
     data() {
       return {
         client_id: 'cf72db35-82f9-4053-a7a0-96cecc516664',
-        client_name: 'Biogen'
+        client_name: 'Biogen',
+        appVersion: ''
       }
     },
     mounted: function () {
-
+      this.appVersion = packageJson.version;
     },
     methods: {
       goToLoginPage() {
