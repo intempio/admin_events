@@ -149,11 +149,7 @@
           })
           .catch(error => {
             console.log(error);
-            this.$toast.open({
-              message: `Error: ${error}`,
-              position: 'is-bottom',
-              type: 'is-danger'
-            })
+            this.$toast.error(`Error: ${error}`)
           })
           .then(function () {
             // always executed even with catched errors
@@ -169,11 +165,7 @@
             this.peopleAssigned = response.data
           })
           .catch(err => {
-            this.$toast.open({
-              message: `Error: ${err}`,
-              position: 'is-bottom',
-              type: 'is-danger'
-            })
+            this.$toast.error(`Error: ${err}`)
           })
       },
 
@@ -189,20 +181,12 @@
         restService
           .post(url, data)
           .then(() => {
-            this.$toast.open({
-              message: `Added successfully`,
-              position: 'is-bottom',
-              type: 'is-success'
-            });
+            this.$toast.success(`Added successfully`);
             this.fetchPeopleAssigned()
           })
           .catch(error => {
             console.log(error);
-            this.$toast.open({
-              message: `Error: ${error}`,
-              position: 'is-bottom',
-              type: 'is-danger'
-            })
+            this.$toast.error(`Error: ${error}`)
           })
       },
 
@@ -216,19 +200,11 @@
           .delete(url, {data})
           .then(response => {
             this.peopleAssigned.splice(index, 1);
-            this.$toast.open({
-              message: `Deleted successfully`,
-              position: 'is-bottom',
-              type: 'is-success'
-            })
+            this.$toast.success(`Deleted successfully`)
           })
           .catch(error => {
             console.log(error);
-            this.$toast.open({
-              message: `Error: ${error}`,
-              position: 'is-bottom',
-              type: 'is-danger'
-            })
+            this.$toast.error(`Error: ${error}`)
           })
       },
 

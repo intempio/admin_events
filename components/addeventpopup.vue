@@ -65,11 +65,7 @@
         restService.get(url)
           .then(response => this.Products = response.data)
           .catch(err => {
-            this.$toast.open({
-              message: `Cannot fetch product list: ${err}`,
-              position: 'is-bottom',
-              type: 'is-danger'
-            })
+            this.$toast.error(`Cannot fetch product list: ${err}`)
           })
       },
       addEvent: function () {
@@ -86,11 +82,7 @@
           })
           .catch(error => {
             console.log(error);
-            this.$toast.open({
-              message: `Error: ${error}`,
-              position: 'is-bottom',
-              type: 'is-danger'
-            })
+            this.$toast.error(`Error: ${error}`);
           })
       },
 

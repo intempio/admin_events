@@ -116,11 +116,8 @@
           this.Eventtag = response.data
         })
           .catch(err => {
-            this.$toast.open({
-              message: `Error getting event tag: ${err}`,
-              position: 'is-bottom',
-              type: 'is-danger'
-            })
+
+            this.$toast.error(`Error getting event tag: ${err}`)
           })
       },
 
@@ -136,19 +133,11 @@
         restService.post(url, data)
           .then(response => {
             this.fetchEventtag();
-            this.$toast.open({
-              message: `Added successfully`,
-              position: 'is-bottom',
-              type: 'is-success'
-            })
+            this.$toast.success(`Added successfully`)
           })
           .catch(function (error) {
             console.log(error);
-            this.$toast.open({
-              message: `Saving error: ${error}`,
-              position: 'is-bottom',
-              type: 'is-danger'
-            })
+            this.$toast.error(`Saving error: ${error}`)
           });
       },
       edit: function (index, oldValue) {
@@ -174,19 +163,11 @@
             .put(url, data)
             .then(response => {
               this.fetchEventtag();
-              this.$toast.open({
-                message: `Updated successfully`,
-                position: 'is-bottom',
-                type: 'is-success'
-              })
+              this.$toast.success(`Updated successfully`)
             })
             .catch(function (error) {
               console.log(error);
-              this.$toast.open({
-                message: `Error: ${error}`,
-                position: 'is-bottom',
-                type: 'is-danger'
-              })
+              this.$toast.error(`Error: ${error}`)
             })
         }
       },

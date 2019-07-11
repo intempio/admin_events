@@ -398,6 +398,14 @@
                     </button>
                   </div>
                 </div>
+                <div class="col-12 p-0" v-if="!isHidden">
+                  <b-form-checkbox
+                    id="checkbox-1"
+                    v-model="event.send_email"
+                    name="checkbox-1"
+                  >Send notes to clients?
+                  </b-form-checkbox>
+                </div>
               </div>
             </div>
 
@@ -549,6 +557,7 @@
         this.isHidden = !this.isHidden;
         if (this.isHidden) {
           this.event.external_notes = '';
+          this.event.send_email = undefined;
           this.onChange();
         }
       },

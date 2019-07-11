@@ -96,11 +96,7 @@ export default {
         })
         .catch(function(error) {
           console.log(error);
-          this.$toast.open({
-            message: `Error fetching event: ${error}`,
-            position: 'is-bottom',
-            type: 'is-danger'
-          })
+          this.$toast.error(`Error fetching event: ${error}`)
         })
         .then(function() {
           // always executed even with catched errors

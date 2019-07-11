@@ -62,6 +62,7 @@ module.exports = {
   ],
   toast: {
     position: 'bottom-center',
+    duration: 3000
   },
   /*
    ** Axios module configuration

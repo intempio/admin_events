@@ -83,11 +83,7 @@
             this.currentclientname();
           })
           .catch(err => {
-            this.$toast.open({
-              message: `Error fetching clients: ${err}`,
-              position: 'is-bottom',
-              type: 'is-danger'
-            })
+            this.$toast.error(`Error fetching clients: ${err}`);
           })
       },
       currentclientname: function () {

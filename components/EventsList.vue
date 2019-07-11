@@ -120,11 +120,7 @@ export default {
         })
         .catch(function(error) {
           console.log(error);
-          this.$toast.open({
-            message: `Error: ${error}`,
-            position: 'is-bottom',
-            type: 'is-danger'
-          })
+          this.$toast.error(`Error: ${error}`);
         })
     }
   },
