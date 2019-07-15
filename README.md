@@ -21,4 +21,4 @@ $ npm run generate
 
 For detailed explanation on how things work, checkout [Nuxt.js docs](https://nuxtjs.org).
 
-testing
+This branch for testing auth-0 front-end to  back-end
