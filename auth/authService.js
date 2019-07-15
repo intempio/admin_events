@@ -13,8 +13,8 @@ const webAuth = new auth0.WebAuth({
   //clientID: authConfig.clientId,
   clientID: "yfiGkfHSKg5KuvB3tI7fXjRQXY7yK3l5",
   //clientID: process.env.AUTH0_CLIENTID,
-  audience: process.env.VUE_APP_API, // add the audience
-  //audience: "https://intempio-cribs-api-qa-pr-19.herokuapp.com", // add the audience
+  //audience: process.env.VUE_APP_API, // add the audience
+  audience: "https://intempio-cribs-api-qa-pr-19.herokuapp.com", // add the audience
   responseType: 'token id_token', // request 'token' as well as 'id_token'
   scope: 'openid profile email'
 });
