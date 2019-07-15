@@ -1,15 +1,20 @@
 import auth0 from 'auth0-js'
 import EventEmitter from 'events'
-import authConfig from '../auth_config.json'
+//import authConfig from '../auth_config.json'
 import 'rxjs';
 import {authService} from '../services/auth-service'
 import * as moment from 'moment'
 
 const webAuth = new auth0.WebAuth({
-  domain: authConfig.domain,
+  //domain: authConfig.domain,
+  domain: "intempio.auth0.com",
+  //domain: process.env.AUTH0_DOMAIN,
   redirectUri: `${window.location.origin}/callback`,
-  clientID: authConfig.clientId,
+  //clientID: authConfig.clientId,
+  clientID: "yfiGkfHSKg5KuvB3tI7fXjRQXY7yK3l5",
+  //clientID: process.env.AUTH0_CLIENTID,
   audience: process.env.VUE_APP_API, // add the audience
+  //audience: "https://intempio-cribs-api-qa-pr-19.herokuapp.com", // add the audience
   responseType: 'token id_token', // request 'token' as well as 'id_token'
   scope: 'openid profile email'
 });
@@ -50,7 +55,10 @@ class AuthService extends EventEmitter {
     this.profile = authResult.idTokenPayload;
     this.tokenExpiry = new Date(this.profile.exp * 1000);
     this.accessToken = authResult.accessToken;
-
+    console.log('authResult.idToken', authResult.idToken)
+    console.log('authResult.idTokenPayload', authResult.idTokenPayload)
+    console.log('this.tokenExpiry', this.tokenExpiry)
+    console.log('authResult.accessToken', authResult.accessToken)
     // Convert expiresIn to milliseconds and add the current time
     // (expiresIn is a relative timestamp, but an absolute time is desired)
     this.accessTokenExpiry = new Date(Date.now() + authResult.expiresIn * 1000);
@@ -96,7 +104,7 @@ class AuthService extends EventEmitter {
     this.emit(loginEvent, { loggedIn: false })
   }
 
-  isAuthenticated() {
+  /*isAuthenticated() {
     const expiry = localStorage.getItem('expiry');
     const user = JSON.parse(localStorage.getItem('user'));
     const userRoles = JSON.parse(localStorage.getItem('user_roles'));
@@ -104,6 +112,13 @@ class AuthService extends EventEmitter {
       this.profile = user;
     }
     return !!this.profile;
+  }*/
+
+   isAuthenticated() {
+    return (
+      Date.now() < this.tokenExpiry &&
+      localStorage.getItem(localStorageKey) === "true"
+    );
   }
 
   // ... other methods
