@@ -40,8 +40,11 @@
                   <font-awesome-icon icon="caret-down"/>
                 </th>
 
-                <th class="text-center" style="width: 280px;">
-                  <span>Actions</span>
+                <th class="text-center" style="width: 330px;">
+                  <span>Edit actions</span>
+                </th>
+                <th class="text-center" style="width: 170px;">
+                  <span>List actions</span>
                 </th>
               </tr>
               </thead>
@@ -64,7 +67,7 @@
                     <b-button
                       v-b-modal.modalClient
                       class="px-2 m-1"
-                      variant="primary"
+                      variant="primary action"
                       @click="showClient(product)"
                     >
                       Client
@@ -72,7 +75,7 @@
                     <b-button
                       v-b-modal.modalEdit
                       class="px-2 m-1"
-                      variant="primary"
+                      variant="primary action"
                       @click="showModal(product)"
                     >
                       Product
@@ -80,18 +83,23 @@
                     <b-button
                       v-b-modal.modalChecklist
                       class="px-2 m-1"
-                      variant="primary"
+                      variant="primary action"
                       @click="showChecklist(product)"
                     >
                       Checklist
                     </b-button>
                   </div>
+
+                </td>
+                <td>
                   <div class="d-flex justify-content-end">
-                    <b-button @click="actionClone(product)"
+                    <b-button v-b-modal.eventClone
+                              @click="selectedEvent = product"
                               class="px-2 m-1">
                       Clone
                     </b-button>
-                    <b-button @click="actionDelete(product)"
+                    <b-button v-b-modal.eventDelete
+                              @click="selectedEvent = product"
                               class="px-2 m-1">
                       Delete
                     </b-button>
@@ -302,7 +310,28 @@
               <div class="notif">{{ tag_notif }}</div>
             </b-modal>
             <!-- Modal Component -->
+
             <b-modal
+              id="eventDelete"
+              ref="eventDelete"
+              title="Delete Event"
+              @ok="actionDelete(selectedEvent)"
+            >
+              <span v-if="selectedEvent">Do you want to delete product: {{selectedEvent.product_description}}?</span>
+            </b-modal>
+
+            <b-modal
+              size="sm"
+              id="eventClone"
+              ref="eventClone"
+              title="Clone Event"
+              @ok="actionClone(selectedEvent)"
+            >
+              <span v-if="selectedEvent">Do you want to clone product: {{selectedEvent.product_description}}?</span>
+            </b-modal>
+
+            <b-modal
+              size="sm"
               id="modalEdit"
               ref="modal"
               title="Edit Product"
@@ -380,6 +409,7 @@
             </b-modal>
 
             <b-modal
+              size="sm"
               id="modalChecklist"
               ref="modalChecklist"
               title="Edit Checklist"
@@ -514,7 +544,8 @@
         prod_name: '',
         prodData: '',
         clientName: [],
-        clientOptions: []
+        clientOptions: [],
+        selectedEvent: ''
       };
     },
     head: {
@@ -556,10 +587,8 @@
 
         restService.delete(del_url, {data: data_delete})
           .then(() => {
-            this.notif = 'Product has been deleted!';
-            setTimeout(function () {
-              window.location.reload();
-            }, 1000);
+            this.onLoadData();
+            this.$toast.success('Event deleted successfully')
           })
           .catch(error => {
             this.$toast.error(`Error: ${error}`)
@@ -609,10 +638,8 @@
             product_name: productData.product_name,
             clone: 'True'
           });
-          this.notif = 'Product has been cloned!';
-          setTimeout(function () {
-            window.location.reload();
-          }, 1000);
+          this.onLoadData();
+          this.$toast.success('Event cloned successfully')
         } catch (e) {
           this.$toast.error(`Error: ${error}`)
         }
@@ -864,4 +891,8 @@
 </script>
 <style lang="scss">
   @import "../../css/people-products";
+
+  .action {
+    width: 94px;
+  }
 </style>
