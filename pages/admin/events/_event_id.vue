@@ -253,26 +253,26 @@
 
                   <div class="col-12">
                     <label>Producer count:</label>
-                    <b-form-input
+                    <input
                       v-model="event.producer_count"
                       type="text"
                       name="prod_count"
                       placeholder="Producer count"
                       class="input"
                       @input="onChange"
-                    ></b-form-input>
+                    >
                   </div>
 
                   <div class="col-12">
                     <label>Duration (minutes):</label>
-                    <b-form-input
+                    <input
                       v-model="event.duration_minutes"
                       type="text"
                       name="duration"
                       placeholder="Duration"
                       class="input"
                       @input="onChange"
-                    ></b-form-input>
+                    >
                   </div>
                 </div>
               </div>
@@ -397,14 +397,6 @@
                       <font-awesome-icon class="icon" icon="history"/>
                     </button>
                   </div>
-                </div>
-                <div class="col-12 p-0" v-if="!isHidden">
-                  <b-form-checkbox
-                    id="checkbox-1"
-                    v-model="event.send_email"
-                    name="checkbox-1"
-                  >Send notes to clients?
-                  </b-form-checkbox>
                 </div>
               </div>
             </div>
@@ -547,7 +539,11 @@
             }, 3500);
           })
           .catch(error => {
-            this.$toast.error(`Error: ${error}`)
+            this.$toast.open({
+              message: `Error saving: ${error}`,
+              position: 'is-bottom',
+              type: 'is-danger'
+            });
           });
       },
       discardEventChanges() {
@@ -557,7 +553,6 @@
         this.isHidden = !this.isHidden;
         if (this.isHidden) {
           this.event.external_notes = '';
-          this.event.send_email = undefined;
           this.onChange();
         }
       },
@@ -586,7 +581,12 @@
             });
           })
           .catch(err => {
-            this.$toast.error(`Error: ${error}`)
+            this.$toast.open({
+              message: `Error fetching event: ${err}`,
+              position: 'is-bottom',
+              type: 'is-danger'
+            });
+            console.log(err);
           });
       }
     },

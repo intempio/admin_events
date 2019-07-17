@@ -56,13 +56,13 @@
             </b-select>
           </div>
           <div class="col pl-2 pr-4">
-            <b-form-input
+            <input
               v-model="InputTagName"
               type="text"
               name="url"
               placeholder="input text here"
               class="input input-items w-100"
-            ></b-form-input>
+            >
           </div>
         </div>
         <button class="add_btn" @click="add()">+ Add</button>
@@ -116,8 +116,11 @@
           this.Eventtag = response.data
         })
           .catch(err => {
-
-            this.$toast.error(`Error getting event tag: ${err}`)
+            this.$toast.open({
+              message: `Error getting event tag: ${err}`,
+              position: 'is-bottom',
+              type: 'is-danger'
+            })
           })
       },
 
@@ -133,11 +136,19 @@
         restService.post(url, data)
           .then(response => {
             this.fetchEventtag();
-            this.$toast.success(`Added successfully`)
+            this.$toast.open({
+              message: `Added successfully`,
+              position: 'is-bottom',
+              type: 'is-success'
+            })
           })
           .catch(function (error) {
             console.log(error);
-            this.$toast.error(`Saving error: ${error}`)
+            this.$toast.open({
+              message: `Saving error: ${error}`,
+              position: 'is-bottom',
+              type: 'is-danger'
+            })
           });
       },
       edit: function (index, oldValue) {
@@ -163,11 +174,19 @@
             .put(url, data)
             .then(response => {
               this.fetchEventtag();
-              this.$toast.success(`Updated successfully`)
+              this.$toast.open({
+                message: `Updated successfully`,
+                position: 'is-bottom',
+                type: 'is-success'
+              })
             })
             .catch(function (error) {
               console.log(error);
-              this.$toast.error(`Error: ${error}`)
+              this.$toast.open({
+                message: `Error: ${error}`,
+                position: 'is-bottom',
+                type: 'is-danger'
+              })
             })
         }
       },

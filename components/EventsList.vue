@@ -1,6 +1,6 @@
 <template>
   <div class="events-list">
-    <table border="1" class="w-100">
+    <table border="1">
       <thead>
         <tr>
           <th class="tbl-sort" @click="sort('contact')">
@@ -120,7 +120,11 @@ export default {
         })
         .catch(function(error) {
           console.log(error);
-          this.$toast.error(`Error: ${error}`);
+          this.$toast.open({
+            message: `Error: ${error}`,
+            position: 'is-bottom',
+            type: 'is-danger'
+          })
         })
     }
   },

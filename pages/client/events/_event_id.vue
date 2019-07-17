@@ -249,9 +249,17 @@
 
         data[field_name] = this.event[field_name]
         restService.put(url, data).then(() => {
-
+          // this.$toast.open({
+          //   message: `Saved successfully`,
+          //   position: 'is-bottom',
+          //   type: 'is-success'
+          // })
         }).catch(err => {
-          this.$toast.error(`Error: ${error}`)
+          this.$toast.open({
+            message: `Saving error: ${err}`,
+            position: 'is-bottom',
+            type: 'is-danger'
+          })
         })
       },
 

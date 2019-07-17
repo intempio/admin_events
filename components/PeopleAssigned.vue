@@ -58,15 +58,14 @@
             </b-select>
           </div>
           <div class="col-6 pl-0">
-            <div class="px-2">
-              <b-form-input list="input-with-list"
-                            v-model="selectedRole"
-                            placeholder="Role"
-              ></b-form-input>
-              <datalist id="input-with-list">
-                <option v-for="role in people_assigned_roles">{{ role.value }}</option>
-              </datalist>
-            </div>
+            <b-autocomplete
+              v-model="selectedRole"
+              class="px-2"
+              placeholder="Role"
+              :keep-first="true"
+              :open-on-focus="true"
+              :data="people_assigned_roles">
+            </b-autocomplete>
           </div>
         </div>
         <button class="add_btn" @click="add()">+ Add</button>
@@ -149,7 +148,11 @@
           })
           .catch(error => {
             console.log(error);
-            this.$toast.error(`Error: ${error}`)
+            this.$toast.open({
+              message: `Error: ${error}`,
+              position: 'is-bottom',
+              type: 'is-danger'
+            })
           })
           .then(function () {
             // always executed even with catched errors
@@ -165,7 +168,11 @@
             this.peopleAssigned = response.data
           })
           .catch(err => {
-            this.$toast.error(`Error: ${err}`)
+            this.$toast.open({
+              message: `Error: ${err}`,
+              position: 'is-bottom',
+              type: 'is-danger'
+            })
           })
       },
 
@@ -181,12 +188,20 @@
         restService
           .post(url, data)
           .then(() => {
-            this.$toast.success(`Added successfully`);
+            this.$toast.open({
+              message: `Added successfully`,
+              position: 'is-bottom',
+              type: 'is-success'
+            });
             this.fetchPeopleAssigned()
           })
           .catch(error => {
             console.log(error);
-            this.$toast.error(`Error: ${error}`)
+            this.$toast.open({
+              message: `Error: ${error}`,
+              position: 'is-bottom',
+              type: 'is-danger'
+            })
           })
       },
 
@@ -200,11 +215,19 @@
           .delete(url, {data})
           .then(response => {
             this.peopleAssigned.splice(index, 1);
-            this.$toast.success(`Deleted successfully`)
+            this.$toast.open({
+              message: `Deleted successfully`,
+              position: 'is-bottom',
+              type: 'is-success'
+            })
           })
           .catch(error => {
             console.log(error);
-            this.$toast.error(`Error: ${error}`)
+            this.$toast.open({
+              message: `Error: ${error}`,
+              position: 'is-bottom',
+              type: 'is-danger'
+            })
           })
       },
 

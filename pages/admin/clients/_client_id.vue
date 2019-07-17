@@ -11,12 +11,12 @@
 
           <div class="filter-container" style="margin-bottom: 25px">
             <div class="search-input-field-name cleartext-wrap">
-              <b-form-input
+              <input
                 type="text"
                 class="filter-item search-input input"
                 placeholder="Search"
                 v-model="search"
-              ></b-form-input>
+              >
 
               <div class="inputs-wrap from">
                 <div class="date-time-picker-wrap">
@@ -130,7 +130,11 @@
             }
           })
           .catch(error => {
-            this.$toast.error(`Error: ${error}`)
+            this.$toast.open({
+              message: `Error: ${error}`,
+              position: 'is-bottom',
+              type: 'is-danger'
+            })
           })
       },
 
@@ -148,7 +152,11 @@
             }
           })
           .catch(error => {
-            this.$toast.error(`Error: ${error}`)
+            this.$toast.open({
+              message: `Error: ${error}`,
+              position: 'is-bottom',
+              type: 'is-danger'
+            })
           })
       },
 

@@ -38,5 +38,6 @@
   }
 </script>
 <style lang="scss">
-
+  @import "~bulma/sass/utilities/_all";
+  $primary: #0097e1;
 </style>

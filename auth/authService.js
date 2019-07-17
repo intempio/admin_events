@@ -3,13 +3,12 @@ import EventEmitter from 'events'
 import authConfig from '../auth_config.json'
 import 'rxjs';
 import {authService} from '../services/auth-service'
-import * as moment from 'moment'
 
 const webAuth = new auth0.WebAuth({
   domain: authConfig.domain,
   redirectUri: `${window.location.origin}/callback`,
   clientID: authConfig.clientId,
-  audience: process.env.VUE_APP_API, // add the audience
+  audience: authConfig.audience, // add the audience
   responseType: 'token id_token', // request 'token' as well as 'id_token'
   scope: 'openid profile email'
 });
@@ -38,7 +37,7 @@ class AuthService extends EventEmitter {
         if (err) {
           reject(err)
         } else {
-          this.localLogin(authResult);
+          this.localLogin(authResult)
           resolve(authResult.accessToken)
         }
       })
@@ -46,14 +45,14 @@ class AuthService extends EventEmitter {
   }
 
   localLogin(authResult) {
-    this.idToken = authResult.idToken;
-    this.profile = authResult.idTokenPayload;
-    this.tokenExpiry = new Date(this.profile.exp * 1000);
-    this.accessToken = authResult.accessToken;
+    this.idToken = authResult.idToken
+    this.profile = authResult.idTokenPayload
+    this.tokenExpiry = new Date(this.profile.exp * 1000)
+    this.accessToken = authResult.accessToken
 
     // Convert expiresIn to milliseconds and add the current time
     // (expiresIn is a relative timestamp, but an absolute time is desired)
-    this.accessTokenExpiry = new Date(Date.now() + authResult.expiresIn * 1000);
+    this.accessTokenExpiry = new Date(Date.now() + authResult.expiresIn * 1000)
 
     authService.setSession(authResult);
 
@@ -75,7 +74,7 @@ class AuthService extends EventEmitter {
         if (err) {
           reject(err)
         } else {
-          this.localLogin(authResult);
+          this.localLogin(authResult)
           resolve(authResult)
         }
       })
@@ -91,16 +90,15 @@ class AuthService extends EventEmitter {
 
     webAuth.logout({
       returnTo: window.location.origin + '/login'
-    });
+    })
 
     this.emit(loginEvent, { loggedIn: false })
   }
 
   isAuthenticated() {
-    const expiry = localStorage.getItem('expiry');
     const user = JSON.parse(localStorage.getItem('user'));
     const userRoles = JSON.parse(localStorage.getItem('user_roles'));
-    if (user && moment.unix(Number(expiry)).isAfter(moment())) {
+    if (user) {
       this.profile = user;
     }
     return !!this.profile;

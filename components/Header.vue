@@ -13,12 +13,10 @@
       </div>
       <div class="header-projects">{{currentclient}}</div>
       <div v-if="isAuthenticated">
-        <a @click="goToSystemPick" class="login-style cursor-pointer">Change system</a>
-        <span class="mx-2">|</span>
-        <a @click="logout" class="login-style cursor-pointer">Logout</a>
+        <a @click="logout" class="login-style">Logout</a>
       </div>
     </div>
-    <div class="menu-wrap" v-if="!sidebarOff">
+    <div class="menu-wrap">
       <template>
         <Slide noOverlay width="190">
           <div v-for="(item) in clients" v-bind:key="item.client_name" class="popup-menu-item">
@@ -44,7 +42,7 @@
 
   export default {
     name: 'clientheader',
-    props: {clientid: String, sidebarOff: Boolean},
+    props: {clientid: String},
     data: function () {
       return {
         isLoading: false,
@@ -71,9 +69,6 @@
       logout() {
         this.$auth.logOut()
       },
-      goToSystemPick() {
-        this.$router.push('/system-pick');
-      },
       fetchClients: function () {
         const url = '/api/v3/clients/';
 
@@ -83,7 +78,11 @@
             this.currentclientname();
           })
           .catch(err => {
-            this.$toast.error(`Error fetching clients: ${err}`);
+            this.$toast.open({
+              message: `Error fetching clients: ${err}`,
+              position: 'is-bottom',
+              type: 'is-danger'
+            })
           })
       },
       currentclientname: function () {

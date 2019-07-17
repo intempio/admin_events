@@ -10,7 +10,7 @@
     components: {loginComponent},
     mounted() {
       this.$auth.handleAuthentication().then(() => {
-        this.$router.push('/system-pick');
+        this.$router.push('/');
       });
     }
   }
