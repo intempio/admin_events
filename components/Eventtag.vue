@@ -228,30 +228,24 @@
       items: function () {
         if (this.tagType === 'checklist') {
           if (process.env.CHECKLIST_ITEMS) {
-            const checklist_env = process.env.CHECKLIST_ITEMS.split(',').map(
-              item => item.trim()
-            )
-            return checklist_env
+            return process.env.CHECKLIST_ITEMS.split(',').map(item => item.trim());
+          } else {
+            return CHECKLIST_ITEMS
           }
-          return CHECKLIST_ITEMS
         }
         if (this.tagType === 'product') {
           if (process.env.PRODUCT_ITEMS) {
-            const product_env = process.env.PRODUCT_ITEMS.split(',').map(item =>
-              item.trim()
-            )
-            return product_env
+            return process.env.PRODUCT_ITEMS.split(',').map(item => item.trim())
+          } else {
+            return PRODUCT_ITEMS
           }
-          return PRODUCT_ITEMS
         }
         if (this.tagType === 'client') {
           if (process.env.CLIENT_ITEMS) {
-            const client_env = process.env.CLIENT_ITEMS.split(',').map(item =>
-              item.trim()
-            )
-            return client_env
+            return process.env.CLIENT_ITEMS.split(',').map(item => item.trim())
+          } else {
+            return CLIENT_ITEMS
           }
-          return CLIENT_ITEMS
         }
       }
     }
