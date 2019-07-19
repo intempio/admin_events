@@ -23,6 +23,13 @@ export const authService = new Vue({
       }
       return this.token;
     },
+    getUser() {
+      if (this.user) {
+        return this.user;
+      } else {
+        return ''
+      }
+    },
     setSession(data) {
       this.token = data.accessToken;
       localStorage.setItem('loggedIn', 'true');

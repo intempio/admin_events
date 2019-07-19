@@ -6,7 +6,8 @@ const LOADER_EXCEPTIONS = [];
 export const restService = axios.create({
   baseURL: process.env.VUE_APP_API,
   headers: {
-    Authorization: `Bearer ${authService.getToken()}`
+    Authorization: `Bearer ${authService.getToken()}`,
+    updated_by_id: authService.getUser().email
   }
 });
 
