@@ -27,7 +27,8 @@ export const authService = new Vue({
       if (this.user) {
         return this.user;
       } else {
-        return ''
+        this.restoreSession();
+        return this.user;
       }
     },
     setSession(data) {
