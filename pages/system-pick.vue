@@ -1,27 +1,33 @@
 <template>
   <section>
-    <div style="height: 100vh;">
-      <div style="height: 30%;" class="d-flex justify-content-center align-items-end mb-5">
+    <div class="main">
+      <clientheader :clientid="clientid ? clientid : ''"
+                    :sidebarOff="true"
+                    :changeSystem="false">
+      </clientheader>
+    </div>
+    <div class="container-fluid" style="max-width: 1200px; height: 100vh">
+      <div style="height: 36%;" class="d-flex justify-content-center align-items-end mb-5">
         <h1>PICK A SYSTEM:</h1>
       </div>
       <div style="height: 40%;">
         <div class="row">
           <div class="col-8 p-0 offset-2 d-flex">
-            <div class="col-4">
+            <div class="col-4" >
               <router-link to="/admin/clients/cf72db35-82f9-4053-a7a0-96cecc516664">
                 <div class="circle">
                   <span>Events</span>
                 </div>
               </router-link>
             </div>
-            <div class="col-4">
+            <div class="col-4" >
               <router-link to="/products/product">
                 <div class="circle">
                   <span>Products</span>
                 </div>
               </router-link>
             </div>
-            <div class="col-4">
+            <div class="col-4" >
               <router-link to="/people/people">
                 <div class="circle">
                   <span>People</span>
@@ -30,8 +36,8 @@
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-4 mx-auto mt-5">
+        <div class="row fixed-bottom" style="height: 50px; background-color: lightgray">
+          <div class="col-4 mx-auto mt-3">
             <h6 class="text-center">system version: {{appVersion}}</h6>
           </div>
         </div>
@@ -42,9 +48,14 @@
 
 <script>
   import * as packageJson from '../package.json';
+  import union from 'lodash.union'
+  import {PERMS} from '../const/permissions';
+  import clientheader from '../components/Header.vue'
 
   export default {
     name: 'systems',
+    components: {clientheader},
+    roles: [],
     data() {
       return {
         client_id: 'cf72db35-82f9-4053-a7a0-96cecc516664',
@@ -58,6 +69,15 @@
     methods: {
       goToLoginPage() {
         this.$router.push('/login');
+      },
+      getPermission(system) {
+        if (this.roles) {
+          const allPerms = this.roles.reduce((p, c) => union(p, PERMS[c]), []);
+          return allPerms.includes(system);
+        } else {
+          this.roles = JSON.parse(localStorage.getItem('user_roles'));
+          this.getPermission();
+        }
       }
     }
   }

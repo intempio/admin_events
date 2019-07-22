@@ -13,8 +13,8 @@
       </div>
       <div class="header-projects">{{currentclient}}</div>
       <div v-if="isAuthenticated">
-        <a @click="goToSystemPick" class="login-style cursor-pointer">Change system</a>
-        <span class="mx-2">|</span>
+        <a v-if="changeSystem" @click="goToSystemPick" class="login-style cursor-pointer">Change system</a>
+        <span v-if="changeSystem" class="mx-2">|</span>
         <a @click="logout" class="login-style cursor-pointer">Logout</a>
       </div>
     </div>
@@ -44,7 +44,7 @@
 
   export default {
     name: 'clientheader',
-    props: {clientid: String, sidebarOff: Boolean},
+    props: {clientid: String, sidebarOff: Boolean, changeSystem: true},
     data: function () {
       return {
         isLoading: false,
