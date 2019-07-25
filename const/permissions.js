@@ -1,6 +1,5 @@
 export const PERMS = {
-  // Administrator: ['admin', 'products', 'people'],
-  Administrator: ['people'],
+  Administrator: ['admin', 'products', 'people'],
   Operations: ['admin', 'people'],
   QA: ['admin'],
   Producer: ['admin', 'people'],

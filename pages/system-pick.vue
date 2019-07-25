@@ -12,22 +12,22 @@
       </div>
       <div style="height: 40%;">
         <div class="row">
-          <div class="col-8 p-0 offset-2 d-flex">
-            <div class="col-4" >
+          <div class="col-8 p-0 offset-2 d-flex justify-content-center">
+            <div class="col-4" v-if="visibleParts.includes('admin')">
               <router-link to="/admin/clients/cf72db35-82f9-4053-a7a0-96cecc516664">
                 <div class="circle">
                   <span>Events</span>
                 </div>
               </router-link>
             </div>
-            <div class="col-4" >
+            <div class="col-4" v-if="visibleParts.includes('products')">
               <router-link to="/products/product">
                 <div class="circle">
                   <span>Products</span>
                 </div>
               </router-link>
             </div>
-            <div class="col-4" >
+            <div class="col-4" v-if="visibleParts.includes('people')">
               <router-link to="/people/people">
                 <div class="circle">
                   <span>People</span>
@@ -58,26 +58,27 @@
     roles: [],
     data() {
       return {
+        clientid: '',
         client_id: 'cf72db35-82f9-4053-a7a0-96cecc516664',
         client_name: 'Biogen',
-        appVersion: ''
+        appVersion: '',
+        visibleParts: [],
+        roles: []
       }
     },
     mounted: function () {
       this.appVersion = packageJson.version;
     },
+    created() {
+      this.setPermissions();
+    },
     methods: {
       goToLoginPage() {
         this.$router.push('/login');
       },
-      getPermission(system) {
-        if (this.roles) {
-          const allPerms = this.roles.reduce((p, c) => union(p, PERMS[c]), []);
-          return allPerms.includes(system);
-        } else {
-          this.roles = JSON.parse(localStorage.getItem('user_roles'));
-          this.getPermission();
-        }
+      setPermissions() {
+        this.roles = JSON.parse(localStorage.getItem('user_roles'));
+        this.visibleParts = this.roles.reduce((p, c) => union(p, PERMS[c]), []);
       }
     }
   }
