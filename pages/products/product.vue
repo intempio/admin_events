@@ -1,7 +1,7 @@
 <template>
   <section>
     <div class="main">
-      <clientheader :clientid="clientid ? clientid : ''" :sidebarOff="true"></clientheader>
+      <clientheader :clientid="clientid ? clientid : ''" :sidebarOff="true" change-system="true"></clientheader>
 
       <div class="container-fluid mt-5" style="padding-top: 30px">
         <div class="row">
@@ -108,7 +108,7 @@
               </tr>
               </tbody>
             </table>
-            <div class="py-4">
+            <div class="pagination py-4">
               <button @click="prevPage">&laquo;</button>
               <button @click="nextPage">&raquo;</button>
             </div>
@@ -880,7 +880,6 @@
     },
     computed: {
       filteredItems: function () {
-        let items = this.items;
         if (this.search.length > 0) {
           return this.searchproducts();
         }

@@ -1,7 +1,7 @@
 <template>
   <div class="main">
 
-    <clientheader :clientid="clientid"></clientheader>
+    <clientheader :clientid="clientid" change-system="true"></clientheader>
 
     <div class="container-fluid mt-5" style="padding-top: 30px">
       <div class="row">
@@ -425,28 +425,22 @@
         </div>
       </div>
 
-      <div class="row" style="margin-top: 26px;">
+      <div class="row mt-3">
         <div class="col-xl-10 col-lg-12 m-auto">
-          <div class="row">
-            <div class="col-6">
+          <b-tabs>
+            <b-tab title="People assigned" active>
               <people :event-id="event.event_id"></people>
-            </div>
-            <div class="col-6">
+            </b-tab>
+            <b-tab title="Checklist">
               <eventtag :event-id="event.event_id" tag-type="checklist" title="Checklist"></eventtag>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row mt-3 mb-5">
-        <div class="col-xl-10 col-lg-12 m-auto">
-          <div class="row">
-            <div class="col-6">
+            </b-tab>
+            <b-tab title="Product">
               <eventtag :event-id="event.event_id" tag-type="product" title="Product"></eventtag>
-            </div>
-            <div class="col-6">
+            </b-tab>
+            <b-tab title="Client">
               <eventtag :event-id="event.event_id" tag-type="client" title="Client"></eventtag>
-            </div>
-          </div>
+            </b-tab>
+          </b-tabs>
         </div>
       </div>
     </div>

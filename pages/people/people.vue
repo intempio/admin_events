@@ -2,7 +2,7 @@
   <section>
     <div class="main">
 
-      <clientheader :clientid="clientid ? clientid : ''" :sidebarOff="true"></clientheader>
+      <clientheader :clientid="clientid ? clientid : ''" :sidebarOff="true" change-system="true"></clientheader>
 
       <div class="container-fluid mt-5" style="padding-top: 30px">
         <div class="row">

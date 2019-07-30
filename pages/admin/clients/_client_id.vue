@@ -1,6 +1,6 @@
 <template>
   <section>
-    <clientheader :clientid="this.$route.params.client_id"></clientheader>
+    <clientheader :clientid="this.$route.params.client_id" change-system="true"></clientheader>
     <div class="col-xl-10 col-lg-12 m-auto">
 
       <section class="main-content content main" id="page-wrap">
@@ -21,7 +21,7 @@
               <div class="inputs-wrap from">
                 <div class="date-time-picker-wrap">
                   <VueCtkDateTimePicker
-                    id="CtkDateTimePicker"
+                    id="CtkDateTimePickerFrom"
                     v-model="dateFrom"
                     :no-header=true
                     :no-button-now=true
@@ -37,7 +37,7 @@
               <div class="inputs-wrap from">
                 <div class="date-time-picker-wrap">
                   <VueCtkDateTimePicker
-                    id="CtkDateTimePicker"
+                    id="CtkDateTimePickerTo"
                     v-model="dateTo"
                     :no-header=true
                     :no-button-now=true

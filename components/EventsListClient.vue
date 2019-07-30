@@ -27,7 +27,7 @@
           </th>
           <th>Par.#</th>
           <th>Pres.#</th>
-          <th style="min-width: 154px;">Actions</th>
+          <th style="min-width: 170px;">Actions</th>
         </tr>
       </thead>
       <tbody>

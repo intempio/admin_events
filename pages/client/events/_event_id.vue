@@ -24,7 +24,7 @@
           type="text"
           name="event_name"
           placeholder="Event Name"
-          class="input"
+          class="input w-100"
           @input="onChangeTimeout('event_name')"
         >
       </div>

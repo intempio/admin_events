@@ -27,22 +27,27 @@ module.exports = {
   head: {
     title: pkg.name,
     meta: [
-      { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: pkg.description }
+      {charset: 'utf-8'},
+      {name: 'viewport', content: 'width=device-width, initial-scale=1'},
+      {hid: 'description', name: 'description', content: pkg.description}
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+    link: [{rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'}]
   },
 
   /*
    ** Customize the progress-bar color
    */
-  loading: { color: '#fff' },
+  loading: {color: '#fff'},
 
   /*
    ** Global CSS
    */
-  css: ['~/css/main.scss', '@fortawesome/fontawesome-svg-core/styles.css', 'assets/styles.scss'],
+  css: [
+    '~/css/main.scss',
+    '@fortawesome/fontawesome-svg-core/styles.css',
+    'assets/styles.scss',
+    'vue-multiselect/dist/vue-multiselect.min.css'
+  ],
 
   /*
    ** Plugins to load before mounting the App

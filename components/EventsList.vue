@@ -2,144 +2,146 @@
   <div class="events-list">
     <table border="1" class="w-100">
       <thead>
-        <tr>
-          <th class="tbl-sort" @click="sort('contact')">
-            Contact
-            <font-awesome-icon icon="caret-down" size="lg"/>
-          </th>
-          <th class="tbl-sort" @click="sort('event_code')">
-            Event Code
-            <font-awesome-icon icon="caret-down" size="lg"/>
-          </th>
-          <th class="tbl-sort" @click="sort('event_name')">
-            Event Name
-            <font-awesome-icon icon="caret-down" size="lg"/>
-          </th>
-          <th class="tbl-sort" @click="sort('event_start')">
-            Event Date
-            <font-awesome-icon icon="caret-down" size="lg"/>
-          </th>
-          <th class="tbl-sort" @click="sort('updated')">
-            Last Updated
-            <font-awesome-icon icon="caret-down" size="lg"/>
-          </th>
-          <th class="tbl-sort" @click="sort('client_status')">
-            Client Status
-            <font-awesome-icon icon="caret-down" size="lg"/>
-          </th>
-          <th style="min-width: 154px;">Actions</th>
-        </tr>
+      <tr>
+        <th class="tbl-sort" @click="sort('contact')">
+          Contact
+          <font-awesome-icon icon="caret-down" size="lg"/>
+        </th>
+        <th class="tbl-sort" @click="sort('event_code')">
+          Event Code
+          <font-awesome-icon icon="caret-down" size="lg"/>
+        </th>
+        <th class="tbl-sort" @click="sort('event_name')">
+          Event Name
+          <font-awesome-icon icon="caret-down" size="lg"/>
+        </th>
+        <th class="tbl-sort" @click="sort('event_start')">
+          Event Date
+          <font-awesome-icon icon="caret-down" size="lg"/>
+        </th>
+        <th class="tbl-sort" @click="sort('updated')">
+          Last Updated
+          <font-awesome-icon icon="caret-down" size="lg"/>
+        </th>
+        <th class="tbl-sort" @click="sort('client_status')">
+          Client Status
+          <font-awesome-icon icon="caret-down" size="lg"/>
+        </th>
+        <th style="min-width: 170px;">Actions</th>
+      </tr>
       </thead>
       <tbody>
-        <tr class="sub" v-for="event in sortedEvents" v-bind:key="event.event_code">
-          <td>
-            {{ event.contact }}
-            <!--<a href="#openModal">{{ event.contact }}</a>
-            <div id="openModal" class="modalDialog">
-              <div>
-                <a href="#close" title="Close" class="close">X</a>
-                <h2>Details</h2>
-                <ul v-for="details in event.customer_details" v-bind:key="details">
-                  <li>
-                    <strong>Customer Name:</strong>
-                    {{ details.customer_name }}
-                  </li>
-                  <li>
-                    <strong>Phone Number:</strong>
-                    {{ details.phone }}
-                  </li>
-                  <li>
-                    <strong>Email Address:</strong>
-                    {{ details.email }}
-                  </li>
-                </ul>
-              </div>
-            </div>-->
-          </td>
-          <td>{{ event.event_code }}</td>
-          <td>{{ event.event_name }}</td>
-          <td>{{ event.event_start }}</td>
-          <td>{{ event.updated }}</td>
-          <td>{{ event.client_status }}</td>
-          <td>
-            <router-link :to="'/admin/events/' + event.event_id">
-              <button>Edit</button>
-            </router-link>
-            <button @click="clone(event.event_id)" class="clone">Clone</button>
-          </td>
-        </tr>
+      <tr class="sub" v-for="event in sortedEvents" v-bind:key="event.event_id">
+        <td>
+          {{ event.contact }}
+          <!--<a href="#openModal">{{ event.contact }}</a>
+          <div id="openModal" class="modalDialog">
+            <div>
+              <a href="#close" title="Close" class="close">X</a>
+              <h2>Details</h2>
+              <ul v-for="details in event.customer_details" v-bind:key="details">
+                <li>
+                  <strong>Customer Name:</strong>
+                  {{ details.customer_name }}
+                </li>
+                <li>
+                  <strong>Phone Number:</strong>
+                  {{ details.phone }}
+                </li>
+                <li>
+                  <strong>Email Address:</strong>
+                  {{ details.email }}
+                </li>
+              </ul>
+            </div>
+          </div>-->
+        </td>
+        <td>{{ event.event_code }}</td>
+        <td>{{ event.event_name }}</td>
+        <td>{{ event.event_start }}</td>
+        <td>{{ event.updated }}</td>
+        <td>{{ event.client_status }}</td>
+        <td>
+          <router-link :to="'/admin/events/' + event.event_id">
+            <button>Edit</button>
+          </router-link>
+          <button @click="clone(event.event_id)" class="clone">Clone</button>
+        </td>
+      </tr>
       </tbody>
     </table>
-    <button @click="prevPage">&laquo;</button>
-    <button @click="nextPage">&raquo;</button>
+    <div class="pagination">
+      <button @click="prevPage">&laquo;</button>
+      <button @click="nextPage">&raquo;</button>
+    </div>
   </div>
 </template>
 
 <script>
-import {restService} from '../plugins/axios';
+  import {restService} from '../plugins/axios';
 
-export default {
-  name: 'EventsList',
-  props: { events: Array, fetchEvents: Function },
-  data() {
-    return {
-      currentSort: 'event_code',
-      currentSortDir: 'asc',
-      pageSize: 9,
-      currentPage: 1,
-      search: ''
-    }
-  },
-  methods: {
-    sort: function(s) {
-      //if s == current sort, reverse
-      if (s === this.currentSort) {
-        this.currentSortDir = this.currentSortDir === 'asc' ? 'desc' : 'asc'
+  export default {
+    name: 'EventsList',
+    props: {events: Array, fetchEvents: Function},
+    data() {
+      return {
+        currentSort: 'event_code',
+        currentSortDir: 'asc',
+        pageSize: 9,
+        currentPage: 1,
+        search: ''
       }
-      this.currentSort = s
     },
-    nextPage: function() {
-      if (this.currentPage * this.pageSize < this.events.length)
-        this.currentPage++
-    },
-    prevPage: function() {
-      if (this.currentPage > 1) this.currentPage--
-    },
+    methods: {
+      sort: function (s) {
+        //if s == current sort, reverse
+        if (s === this.currentSort) {
+          this.currentSortDir = this.currentSortDir === 'asc' ? 'desc' : 'asc'
+        }
+        this.currentSort = s
+      },
+      nextPage: function () {
+        if (this.currentPage * this.pageSize < this.events.length)
+          this.currentPage++
+      },
+      prevPage: function () {
+        if (this.currentPage > 1) this.currentPage--
+      },
 
-    clone: async function(event_id) {
-      const url = '/api/v3/events/'
-      var data = {
-        event_id: event_id,
-        clone: 'True'
+      clone: async function (event_id) {
+        const url = '/api/v3/events/'
+        var data = {
+          event_id: event_id,
+          clone: 'True'
+        }
+
+        restService
+          .post(url, data)
+          .then(response => {
+            this.$router.push(`/admin/events/${response.data.event_id}`)
+          })
+          .catch(function (error) {
+            console.log(error);
+            this.$toast.error(`Error: ${error}`);
+          })
       }
-
-      restService
-        .post(url, data)
-        .then(response => {
-          this.$router.push(`/admin/events/${response.data.event_id}`)
-        })
-        .catch(function(error) {
-          console.log(error);
-          this.$toast.error(`Error: ${error}`);
-        })
-    }
-  },
-  computed: {
-    sortedEvents: function() {
-      return this.events
-        .sort((a, b) => {
-          let modifier = 1
-          if (this.currentSortDir === 'desc') modifier = -1
-          if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier
-          if (a[this.currentSort] > b[this.currentSort]) return 1 * modifier
-          return 0
-        })
-        .filter((event, index) => {
-          let start = (this.currentPage - 1) * this.pageSize
-          let end = this.currentPage * this.pageSize
-          if (index >= start && index < end) return true
-        })
+    },
+    computed: {
+      sortedEvents: function () {
+        return this.events
+          .sort((a, b) => {
+            let modifier = 1
+            if (this.currentSortDir === 'desc') modifier = -1
+            if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier
+            if (a[this.currentSort] > b[this.currentSort]) return 1 * modifier
+            return 0
+          })
+          .filter((event, index) => {
+            let start = (this.currentPage - 1) * this.pageSize
+            let end = this.currentPage * this.pageSize
+            if (index >= start && index < end) return true
+          })
+      }
     }
   }
-}
 </script>
