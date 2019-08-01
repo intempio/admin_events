@@ -111,9 +111,9 @@
 </template>
 
 <script>
-  import {CLIENT_ITEMS} from '../components/constants.js'
-  import {CHECKLIST_ITEMS} from '../components/constants.js'
-  import {PRODUCT_ITEMS} from '../components/constants.js'
+  import {CLIENT_ITEMS} from '../const/constants.js'
+  import {CHECKLIST_ITEMS} from '../const/constants.js'
+  import {PRODUCT_ITEMS} from '../const/constants.js'
   import {restService} from '../plugins/axios';
   import Multiselect from 'vue-multiselect';
   import get from 'lodash.get'
@@ -133,8 +133,8 @@
         show: true,
         InputTagName: '',
         currentIndex: -1,
-        currentSort: 'tag_name',
-        currentSortDir: 'asc',
+        currentSort: 'tag_value',
+        currentSortDir: 'desc',
         pageSize: 10,
         currentPage: 1,
         allPages: 1,
@@ -247,10 +247,12 @@
 
         if (this.search) {
           eventtags = this.Eventtag.filter(tag => {
-            const results = Object.values(tag).reduce((prev, val) => {
-              if (typeof val === 'string' || typeof val === 'number') {
-                const text = val.toString().toLowerCase();
+            const results = Object.keys(tag).reduce((prev, key) => {
+              if ((typeof tag[key] === 'string' || typeof tag[key] === 'number') && key !== 'tag_type') {
+                const text = tag[key].toString().toLowerCase();
                 return [...prev, text.includes(this.search.toLowerCase())];
+              } else {
+                return prev;
               }
             }, []);
             return results.some(e => !!e)

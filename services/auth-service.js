@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import {BehaviorSubject} from 'rxjs';
 import * as moment from 'moment';
+import {PERMISSIONS} from '../const/permissions';
+import union from 'lodash.union';
 
 export const authService = new Vue({
   data: {
@@ -30,6 +32,22 @@ export const authService = new Vue({
         this.restoreSession();
         return this.user;
       }
+    },
+    getUserPermissions() {
+      const userRoles = JSON.parse(localStorage.getItem('user_roles'));
+      const permissions = userRoles.reduce((prev, role) => {
+        Object.keys(PERMISSIONS[role]).forEach(key => {
+          if (prev.hasOwnProperty(key)) {
+            prev[key] = union(prev[key], PERMISSIONS[role][key]);
+            return prev;
+          } else {
+            prev[key] = PERMISSIONS[role][key];
+          }
+        });
+        return prev;
+      }, {});
+      console.log(permissions);
+      return permissions;
     },
     setSession(data) {
       this.token = data.accessToken;

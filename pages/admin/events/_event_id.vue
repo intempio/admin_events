@@ -458,10 +458,10 @@
   import statusupdatemodal from '../../../components/StatusUpdateModal.vue'
   import eventtag from '../../../components/Eventtag.vue'
   import clientheader from '../../../components/Header.vue'
-  import {CLIENT_STATUSES} from '../../../components/constants.js'
-  import {OPERATION_STATUSES} from '../../../components/constants.js'
-  import {QA_STATUSES} from '../../../components/constants.js'
-  import {PRODUCTION_STATUSES} from '../../../components/constants.js'
+  import {CLIENT_STATUSES} from '../../../const/constants.js'
+  import {OPERATION_STATUSES} from '../../../const/constants.js'
+  import {QA_STATUSES} from '../../../const/constants.js'
+  import {PRODUCTION_STATUSES} from '../../../const/constants.js'
   import {restService} from '../../../plugins/axios';
   import isEqual from 'lodash.isequal';
   import forOwn from 'lodash.forown';

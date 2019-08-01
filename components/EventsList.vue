@@ -31,30 +31,9 @@
       </tr>
       </thead>
       <tbody>
-      <tr class="sub" v-for="event in sortedEvents" v-bind:key="event.event_id">
+      <tr class="sub" v-for="event in eventList" v-bind:key="event.event_id">
         <td>
           {{ event.contact }}
-          <!--<a href="#openModal">{{ event.contact }}</a>
-          <div id="openModal" class="modalDialog">
-            <div>
-              <a href="#close" title="Close" class="close">X</a>
-              <h2>Details</h2>
-              <ul v-for="details in event.customer_details" v-bind:key="details">
-                <li>
-                  <strong>Customer Name:</strong>
-                  {{ details.customer_name }}
-                </li>
-                <li>
-                  <strong>Phone Number:</strong>
-                  {{ details.phone }}
-                </li>
-                <li>
-                  <strong>Email Address:</strong>
-                  {{ details.email }}
-                </li>
-              </ul>
-            </div>
-          </div>-->
         </td>
         <td>{{ event.event_code }}</td>
         <td>{{ event.event_name }}</td>
@@ -68,29 +47,60 @@
           <button @click="clone(event.event_id)" class="clone">Clone</button>
         </td>
       </tr>
+      <tr v-if="!eventList.length">
+        <td colspan="7">
+          <span class="p-3">No results. Try changing search queries.</span>
+        </td>
+      </tr>
       </tbody>
     </table>
-    <div class="pagination">
+    <div class="pagination-wrap mt-1">
       <button @click="prevPage">&laquo;</button>
-      <button @click="nextPage">&raquo;</button>
+      <b-form-input
+        type="text"
+        :value="getPages()"
+        name="url"
+        readonly
+        style="width: 50px;"
+        class="input input-items mx-1"
+      ></b-form-input>
+      <b-select v-model="pageSize" placeholder="Items" style="width: 100px">
+        <option :value="item.value"
+                v-for="item in paginationOptions"
+                :key="item.value">{{item.label}}
+        </option>
+      </b-select>
+      <button @click="nextPage" class="mx-1">&raquo;</button>
     </div>
   </div>
 </template>
 
 <script>
   import {restService} from '../plugins/axios';
+  import get from 'lodash.get';
 
   export default {
     name: 'EventsList',
-    props: {events: Array, fetchEvents: Function},
+    props: {events: Array, fetchEvents: Function, tableName: String},
     data() {
       return {
+        eventList: [],
         currentSort: 'event_code',
         currentSortDir: 'asc',
-        pageSize: 9,
+        pageSize: 10,
         currentPage: 1,
-        search: ''
+        paginationOptions: [],
+        search: '',
+        allPages: 1,
       }
+    },
+    created() {
+      this.paginationOptions = [
+        {label: '10', value: 10},
+        {label: '25', value: 25},
+        {label: '50', value: 50},
+      ];
+      this.getTableSettings();
     },
     methods: {
       sort: function (s) {
@@ -100,20 +110,27 @@
         }
         this.currentSort = s
       },
+      getPages() {
+        return `${this.currentPage}/${this.allPages}`
+      },
       nextPage: function () {
-        if (this.currentPage * this.pageSize < this.events.length)
-          this.currentPage++
+        if (this.currentPage * this.pageSize < this.events.length) {
+          this.currentPage++;
+          this.sortedEvents();
+        }
       },
       prevPage: function () {
-        if (this.currentPage > 1) this.currentPage--
+        if (this.currentPage > 1) {
+          this.currentPage--;
+          this.sortedEvents();
+        }
       },
-
       clone: async function (event_id) {
         const url = '/api/v3/events/'
         var data = {
           event_id: event_id,
           clone: 'True'
-        }
+        };
 
         restService
           .post(url, data)
@@ -124,11 +141,10 @@
             console.log(error);
             this.$toast.error(`Error: ${error}`);
           })
-      }
-    },
-    computed: {
-      sortedEvents: function () {
-        return this.events
+      },
+      sortedEvents() {
+        const data = JSON.parse(JSON.stringify(this.events));
+        this.eventList = data
           .sort((a, b) => {
             let modifier = 1
             if (this.currentSortDir === 'desc') modifier = -1
@@ -140,7 +156,34 @@
             let start = (this.currentPage - 1) * this.pageSize
             let end = this.currentPage * this.pageSize
             if (index >= start && index < end) return true
-          })
+          });
+        this.allPages = Math.ceil(this.events.length / this.pageSize);
+      },
+      getTableSettings() {
+        let tableSettings = JSON.parse(localStorage.getItem('tableSizes'));
+        if (get(tableSettings, this.tableName)) {
+          this.pageSize = get(tableSettings, this.tableName);
+        }
+      },
+      saveTableSettings() {
+        let tableSettings = JSON.parse(localStorage.getItem('tableSizes'));
+        if (tableSettings) {
+          tableSettings[this.tableName] = this.pageSize;
+        } else {
+          tableSettings = {
+            [this.tableName]: this.pageSize
+          }
+        }
+        localStorage.setItem('tableSizes', JSON.stringify(tableSettings));
+      },
+    },
+    watch: {
+      events: function () {
+        this.sortedEvents();
+      },
+      pageSize: function () {
+        this.sortedEvents();
+        this.saveTableSettings();
       }
     }
   }

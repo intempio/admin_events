@@ -1,5 +1,6 @@
 import union from 'lodash.union'
-import {PERMS} from '../const/permissions';
+import get from 'lodash.get';
+import {PERMISSIONS} from '../const/permissions';
 
 export default function ({app, route, redirect}) {
   if ((route.path !== '/callback' && route.path !== '/login') && !app.router.app.$auth.isAuthenticated()) {
@@ -13,7 +14,13 @@ export default function ({app, route, redirect}) {
   if (guardedRoutes.includes(pathName)) {
     const roles = JSON.parse(localStorage.getItem('user_roles'));
     if (roles) {
-      const allPerms = roles.reduce((p, c) => union(p, PERMS[c]), []);
+      const allPerms = roles.reduce((p, c) => {
+        if (get(PERMISSIONS, c)) {
+          return union(p, Object.keys(PERMISSIONS[c]));
+        } else {
+          return p;
+        }
+      }, []);
       if (!allPerms.includes(pathName)) {
         redirect('/forbidden');
       }

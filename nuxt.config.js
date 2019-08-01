@@ -46,7 +46,8 @@ module.exports = {
     '~/css/main.scss',
     '@fortawesome/fontawesome-svg-core/styles.css',
     'assets/styles.scss',
-    'vue-multiselect/dist/vue-multiselect.min.css'
+    'vue-multiselect/dist/vue-multiselect.min.css',
+    'vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css'
   ],
 
   /*

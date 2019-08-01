@@ -5,73 +5,48 @@
 
       <section class="main-content content main" id="page-wrap">
         <div id="wrap">
-          <h2>Recent Updates:</h2>
-
-          <events-list :events="recentEvents"></events-list>
-
           <div class="filter-container" style="margin-bottom: 25px">
-            <div class="search-input-field-name cleartext-wrap">
-              <b-form-input
-                type="text"
-                class="filter-item search-input input"
-                placeholder="Search"
-                v-model="search"
-              ></b-form-input>
-
-              <div class="inputs-wrap from">
+            <div class="row w-100 ml-0">
+              <div class="col-4 px-0">
+                <b-form-input
+                  type="text"
+                  class="filter-item search-input input"
+                  placeholder="Search"
+                  v-model="search"
+                ></b-form-input>
+              </div>
+              <div class="col-4 pr-0">
                 <div class="date-time-picker-wrap">
                   <VueCtkDateTimePicker
-                    id="CtkDateTimePickerFrom"
-                    v-model="dateFrom"
-                    :no-header=true
+                    id="CtkDateTimePicker"
+                    v-model="dateRange"
                     :no-button-now=true
+                    :range="true"
                     color="#0097e1"
-                    label="From"
                     :only-date=true
                     formatted="YYYY-MM-DD"
                     format="YYYY-MM-DD"
                   ></VueCtkDateTimePicker>
                 </div>
               </div>
-
-              <div class="inputs-wrap from">
-                <div class="date-time-picker-wrap">
-                  <VueCtkDateTimePicker
-                    id="CtkDateTimePickerTo"
-                    v-model="dateTo"
-                    :no-header=true
-                    :no-button-now=true
-                    color="#0097e1"
-                    label="To"
-                    :only-date=true
-                    formatted="YYYY-MM-DD"
-                    format="YYYY-MM-DD"
-                  ></VueCtkDateTimePicker>
-                </div>
+              <div class="col-2 pr-0">
+                <button @click="onSearch()" class="search-icon">
+                  <font-awesome-icon icon="search"/>
+                </button>
               </div>
-
-              <button @click="onSearch()" class="search-icon">
-                <font-awesome-icon icon="search"/>
-              </button>
-
-              <button
-                class="search-icon clear"
-                v-show="this.search || (this.dateFrom && this.dateTo)"
-                @click="search = '', dateFrom='', dateTo='', onSearch()"
-              >
-                <font-awesome-icon icon="times-circle"/>
-              </button>
+              <div class="col-2 pr-0 d-flex justify-content-end">
+                <addeventmodal ref="add_event_modal" :client-id="this.$route.params.client_id"></addeventmodal>
+                <button class="add_btn" @click="AddEventModal">
+                  <font-awesome-icon class="icon" icon="calendar-plus"/>
+                  Add
+                </button>
+              </div>
             </div>
-
-            <addeventmodal ref="add_event_modal" :client-id="this.$route.params.client_id"></addeventmodal>
-
-            <button class="add_btn" @click="AddEventModal">
-              <font-awesome-icon class="icon" icon="calendar-plus"/>
-              Add
-            </button>
           </div>
+          <events-list :events="events" :fetchEvents="fetchEvents" table-name="eventsList"></events-list>
 
-          <events-list :events="events" :fetchEvents="fetchEvents"></events-list>
+          <h2 class="mt-5">Recent Updates:</h2>
+          <events-list :events="recentEvents" table-name="recentEvents"></events-list>
         </div>
       </section>
     </div>
@@ -100,34 +75,25 @@
         search: '',
         events: [],
         recentEvents: [],
-        dateFrom: '',
-        dateTo: ''
+        dateRange: '',
       }
     },
 
     methods: {
       fetchEvents: function () {
-        let url =
-          '/api/v3/events/?clientID=' +
-          this.$route.params.client_id
+        let url = '/api/v3/events/?clientID=' + this.$route.params.client_id;
         if (this.search) {
           url += '&searchStr=' + this.search
         }
 
-        if (this.dateFrom) {
-          url += '&fromDate=' + this.dateFrom
-        }
-
-        if (this.dateTo) {
-          url += '&toDate=' + this.dateTo
+        if (this.dateRange) {
+          url += '&fromDate=' + this.dateRange.start + '&toDate=' + this.dateRange.end;
         }
 
         restService
           .get(url)
           .then(response => {
-            if (response.data['records'].length) {
-              this.events = response.data['records']
-            }
+            this.events = response.data['records'];
           })
           .catch(error => {
             this.$toast.error(`Error: ${error}`)
@@ -190,6 +156,12 @@
 
         this.$router.push(url)
         this.fetchEvents()
+      },
+      onClear() {
+        this.search = null;
+        this.dateFrom = null;
+        this.dateTo = null;
+        this.onSearch();
       }
     },
     components: {

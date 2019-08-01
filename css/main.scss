@@ -153,7 +153,6 @@ button:not(.datepicker-day) {
 
 input.filter-item {
   padding: 7px 20px 7px 10px;
-  width: 320px !important;
 }
 
 div.head {
@@ -547,6 +546,20 @@ h2.colored {
 #CtkDateTimePicker {
   height: 37px;
   min-height: 37px;
+
+  .field {
+    input {
+      padding-top: 0;
+    }
+
+    label {
+      display: none;
+    }
+  }
+
+  .shortcuts-container button {
+    margin-bottom: 4px;
+  }
 }
 
 .date-time-picker-wrap {
@@ -817,10 +830,8 @@ button.add {
 
 input.filter-item.search-input {
   display: inline-block;
-  width: 320px !important;
   height: 37.7px;
   padding: 7px 20px 7px 10px;
-  margin-right: 1%;
 }
 
 .search-input-field-name {
@@ -1193,6 +1204,10 @@ table.tblProdUpdate {
   .multiselect__option--highlight, .multiselect__option--highlight:after {
     background: $color_primary;
   }
+}
+
+a {
+  cursor: pointer;
 }
 
 

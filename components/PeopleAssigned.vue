@@ -97,7 +97,7 @@
 
 <script>
   import {restService} from '../plugins/axios';
-  import {PEOPLE_ASSIGNED_ROLES} from '../components/constants.js';
+  import {PEOPLE_ASSIGNED_ROLES} from '../const/constants.js';
   import get from 'lodash.get';
   import sortBy from 'lodash.sortby';
   import Multiselect from 'vue-multiselect';

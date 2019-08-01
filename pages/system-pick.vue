@@ -48,9 +48,8 @@
 
 <script>
   import * as packageJson from '../package.json';
-  import union from 'lodash.union'
-  import {PERMS} from '../const/permissions';
   import clientheader from '../components/Header.vue'
+  import {authService} from '../services/auth-service'
 
   export default {
     name: 'systems',
@@ -70,16 +69,12 @@
       this.appVersion = packageJson.version;
     },
     created() {
-      this.setPermissions();
+      this.visibleParts = Object.keys(authService.getUserPermissions());
     },
     methods: {
       goToLoginPage() {
         this.$router.push('/login');
       },
-      setPermissions() {
-        this.roles = JSON.parse(localStorage.getItem('user_roles'));
-        this.visibleParts = this.roles.reduce((p, c) => union(p, PERMS[c]), []);
-      }
     }
   }
 </script>

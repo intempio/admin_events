@@ -269,44 +269,35 @@
                     </b-button>
                   </td>
                 </tr>
+                <tr class="add">
+                  <td class="hidden">
+                    <b-form-input type="text"></b-form-input>
+                  </td>
+                  <td>
+                    <b-form-input
+                      type="text"
+                      v-model="tag_name"
+                    ></b-form-input>
+                  </td>
+                  <td>
+                    <b-form-input
+                      type="text"
+                      v-model="tag_value"
+                    ></b-form-input>
+                  </td>
+                  <td>
+                    <b-button
+                      type="submit"
+                      class="w-100"
+                      variant="secondary"
+                      @click="addClient()"
+                    >+ ADD
+                    </b-button>
+                  </td>
+                </tr>
                 </tbody>
               </table>
-              <div class="modAdd">
-                <table class="modal-tbl">
-                  <thead>
-                  <tr>
-                    <th></th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr>
-                    <td class="hidden">
-                      <b-form-input type="text"></b-form-input>
-                    </td>
-                    <td>
-                      <b-form-input
-                        type="text"
-                        v-model="tag_name"
-                      ></b-form-input>
-                    </td>
-                    <td>
-                      <b-form-input
-                        type="text"
-                        v-model="tag_value"
-                      ></b-form-input>
-                    </td>
-                    <td>
-                      <b-button
-                        type="submit"
-                        variant="primary"
-                        @click="addClient()"
-                      >+ ADD
-                      </b-button>
-                    </td>
-                  </tr>
-                  </tbody>
-                </table>
-              </div>
+
               <div class="notif">{{ tag_notif }}</div>
             </b-modal>
             <!-- Modal Component -->
@@ -405,7 +396,6 @@
                 </tr>
                 </tbody>
               </table>
-              <div class="notif">{{ tag_notif }}</div>
             </b-modal>
 
             <b-modal
@@ -455,45 +445,34 @@
                     </b-button>
                   </td>
                 </tr>
+                <tr class="add">
+                  <td class="hidden">
+                    <b-form-input type="text"></b-form-input>
+                  </td>
+                  <td>
+                    <b-form-input
+                      type="text"
+                      v-model="check_tag_name"
+                    ></b-form-input>
+                  </td>
+                  <td>
+                    <b-form-input
+                      type="text"
+                      v-model="check_tag_value"
+                    ></b-form-input>
+                  </td>
+                  <td>
+                    <b-button
+                      type="submit"
+                      class="w-100"
+                      variant="secondary"
+                      @click="addChecklist()"
+                    >+ ADD
+                    </b-button>
+                  </td>
+                </tr>
                 </tbody>
               </table>
-              <div class="modAdd">
-                <table class="modal-tbl">
-                  <thead>
-                  <tr>
-                    <th></th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr>
-                    <td class="hidden">
-                      <b-form-input type="text"></b-form-input>
-                    </td>
-                    <td>
-                      <b-form-input
-                        type="text"
-                        v-model="check_tag_name"
-                      ></b-form-input>
-                    </td>
-                    <td>
-                      <b-form-input
-                        type="text"
-                        v-model="check_tag_value"
-                      ></b-form-input>
-                    </td>
-                    <td>
-                      <b-button
-                        type="submit"
-                        variant="primary"
-                        @click="addChecklist()"
-                      >+ ADD
-                      </b-button>
-                    </td>
-                  </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div class="notif">{{ tag_notif }}</div>
             </b-modal>
           </div>
         </div>
@@ -545,7 +524,10 @@
         prodData: '',
         clientName: [],
         clientOptions: [],
-        selectedEvent: ''
+        selectedEvent: '',
+        selectedProduct: '',
+        selectedClient: '',
+        selectedChecklist: ''
       };
     },
     head: {
@@ -555,30 +537,6 @@
       this.onLoadData();
     },
     methods: {
-      // async addItem(field) {
-      //   let url = '/api/v3/producttags';
-      //   var data = {
-      //     product_id: this.product_id,
-      //     tag_type: this.tagType,
-      //     tag_name: this.selectedItem,
-      //     tag_value: this.InputTagName
-      //   };
-      //   let response = axios
-      //     .post(url, data, {
-      //       headers: {
-      //         'Content-Type': 'application/json'
-      //       }
-      //     })
-      //     .then(response => {
-      //       this.fetchEvenag();
-      //     })
-      //     .catch(function (error) {
-      //       console.log(error);
-      //     })
-      //     .then(function () {
-      //       // always executed
-      //     });
-      // },
       actionDelete(product) {
         let del_url = '/api/v3/products/';
         let data_delete = {
@@ -607,7 +565,6 @@
           clientOption.push({value: d['client_id'], text: d['client_name']});
         }
         this.clientOptions = clientOption;
-        console.log(this.clientOptions);
       },
       async sendData() {
         try {
@@ -620,7 +577,6 @@
             duration_minutes: this.updateModal.duration_minutes
           };
           let response = await restService.put(update_url, data);
-          console.log(response);
           this.notif = 'Successfully Submitted!';
           this.$refs.modalUpdate.hide();
           this.onLoadData();
@@ -633,7 +589,7 @@
         try {
           let productData = product;
           let clone_url = '/api/v3/products/';
-          let response = restService.post(clone_url, {
+          restService.post(clone_url, {
             product_id: productData.product_id,
             product_name: productData.product_name,
             clone: 'True'
@@ -659,7 +615,6 @@
           this.client_id = '';
           this.duration_minutes = '';
           this.notif = 'Successfully Submitted!';
-          // this.$router.push('/');
           this.$refs.modalAdd.hide();
           this.onLoadData();
           this.notif = '';
@@ -678,6 +633,7 @@
         }
       },
       async showModal(product) {
+        this.selectedProduct = product;
         try {
           this.prod_id = product['product_id'];
           let productid = product['product_id'];
@@ -689,10 +645,11 @@
           console.log('Error in function handleSubmit' + e);
         }
       },
-      async showClient(product) {
+      async showClient(client) {
+        this.selectedClient = client;
         try {
-          this.prod_id = product['product_id'];
-          let productid = product['product_id'];
+          this.prod_id = client['product_id'];
+          let productid = client['product_id'];
           let turl =
             '/api/v3/producttags/?productID=' + productid + '&tagType=Client';
           let response = await restService.get(turl);
@@ -701,23 +658,15 @@
           console.log('Error in function handleSubmit' + e);
         }
       },
-      async showChecklist(product) {
+      async showChecklist(checklist) {
+        this.selectedChecklist = checklist;
         try {
-          this.prod_id = product['product_id'];
-          let productid = product['product_id'];
+          this.prod_id = checklist['product_id'];
+          let productid = checklist['product_id'];
           let turl =
             '/api/v3/producttags/?productID=' + productid + '&tagType=Checklist';
           let response = await restService.get(turl);
           this.checklistModal = response.data;
-          if (this.checklistModal > 0) {
-            let i;
-            for (i = 0; i < this.checklistModal.length; i++) {
-              let d = this.checklistModal[i];
-              console.log(d['tag_name']);
-            }
-          } else {
-            //test
-          }
         } catch (e) {
           console.log('Error in function handleSubmit' + e);
         }
@@ -728,7 +677,6 @@
       handleOk(evt) {
         evt.preventDefault();
         this.handleSubmit();
-        //}
       },
       handleAdd(evt) {
         evt.preventDefault();
@@ -746,10 +694,10 @@
             tag_name: product.tag_name,
             tag_value: product.tag_value
           };
-          console.log('data' + data.tag_value);
           let pt_url = '/api/v3/producttags/';
-          let response = await restService.post(pt_url, data);
-          this.tag_notif = 'Successfully submitted!';
+          await restService.post(pt_url, data);
+          this.$toast.success(`Updated successfully`);
+          this.showModal(this.selectedProduct);
         } catch (e) {
           console.log('Error in function handleSubmit' + e);
         }
@@ -763,10 +711,11 @@
             tag_value: this.pro_tag_value
           };
           let pt_url = '/api/v3/producttags/';
-          let response = await restService.post(pt_url, data);
+          await restService.post(pt_url, data);
           this.pro_tag_name = '';
           this.pro_tag_value = '';
-          this.tag_notif = 'Successfully submitted!';
+          this.$toast.success(`Added successfully`);
+          this.showModal(this.selectedProduct);
         } catch (e) {
           this.$toast.error(`Error: ${error}`)
         }
@@ -779,10 +728,10 @@
             tag_name: client.tag_name,
             tag_value: client.tag_value
           };
-          console.log('data' + data.tag_value);
           let pt_url = '/api/v3/producttags/';
-          let response = await restService.post(pt_url, data);
-          this.tag_notif = 'Successfully submitted!';
+          await restService.post(pt_url, data);
+          this.$toast.success(`Updated successfully`);
+          this.showClient(this.selectedClient);
         } catch (e) {
           console.log('Error in function handleSubmit' + e);
         }
@@ -797,7 +746,8 @@
           };
           let pt_url = '/api/v3/producttags/';
           let response = await restService.post(pt_url, data);
-          this.tag_notif = 'Successfully submitted!';
+          this.$toast.success(`Added successfully`);
+          this.showClient(this.selectedClient);
         } catch (e) {
           this.$toast.error(`Error: ${error}`)
         }
@@ -810,12 +760,12 @@
             tag_name: checklist.tag_name,
             tag_value: checklist.tag_value
           };
-          console.log('data' + data.tag_value);
           let pt_url = '/api/v3/producttags/';
-          let response = await restService.post(pt_url, data);
+          await restService.post(pt_url, data);
           this.tag_name = '';
           this.tag_value = '';
-          this.tag_notif = 'Successfully submitted!';
+          this.$toast.success(`Updated successfully`);
+          this.showChecklist(this.selectedChecklist);
         } catch (e) {
           console.log('Error in function handleSubmit' + e);
         }
@@ -828,12 +778,12 @@
             tag_name: this.check_tag_name,
             tag_value: this.check_tag_value
           };
-          console.log(data);
           let pt_url = '/api/v3/producttags/';
-          let response = await restService.post(pt_url, data);
+          await restService.post(pt_url, data);
           this.check_tag_name = '';
           this.check_tag_value = '';
-          this.tag_notif = 'Successfully submitted!';
+          this.$toast.success(`Added successfully`);
+          this.showChecklist(this.selectedChecklist);
         } catch (e) {
           this.$toast.error(`Error: ${error}`)
         }
