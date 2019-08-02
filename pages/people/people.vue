@@ -77,7 +77,6 @@
                       ></b-form-textarea>
                     </b-form-group>
                     <!--<b-button type="submit" variant="primary">Submit</b-button>-->
-                    <span class="notif">{{notif}}</span>
                   </b-form>
                 </b-modal>
               </div>
@@ -122,7 +121,7 @@
                   </thead>
                   <tbody>
                   <tr
-                    v-for="person in filteredItems"
+                    v-for="person in persons"
                     v-bind:key="person.person_id"
                   >
                     <td>{{ person['first_name'] }}</td>
@@ -144,16 +143,32 @@
                       </div>
                     </td>
                   </tr>
-                  <tr v-if="!filteredItems.length">
+                  <tr v-if="!persons.length">
                     <td colspan="7" class="py-3">
                       <span>No results. Try changing the search query.</span>
                     </td>
                   </tr>
                   </tbody>
                 </table>
-                <div class="pagination mb-5">
-                  <button @click="prevPage">&laquo;</button>
-                  <button @click="nextPage">&raquo;</button>
+                <div class="pagination mb-5 mt-1">
+                  <div class="pagination-wrap">
+                    <button @click="prevPage">&laquo;</button>
+                    <b-form-input
+                      type="text"
+                      :value="getPages()"
+                      name="url"
+                      readonly
+                      style="width: 50px;"
+                      class="input input-items mx-1"
+                    ></b-form-input>
+                    <b-select v-model="pageSize" placeholder="Items" style="width: 100px">
+                      <option :value="item.value"
+                              v-for="item in paginationOptions"
+                              :key="item.value">{{item.label}}
+                      </option>
+                    </b-select>
+                    <button @click="nextPage" class="mx-1">&raquo;</button>
+                  </div>
                 </div>
                 <!-- Modal Component -->
                 <b-modal
@@ -222,6 +237,7 @@
 <script>
   import clientheader from '../../components/Header.vue'
   import {restService} from '../../plugins/axios';
+  import {tableService} from '../../services/table-service';
 
   export default {
     components: {clientheader},
@@ -232,8 +248,10 @@
         currentSortDir: 'asc',
         pageSize: 10,
         currentPage: 1,
+        allPages: 1,
         search: '',
         persons: [],
+        allPersons: [],
         personModal: {},
         first_name: null,
         last_name: null,
@@ -241,7 +259,6 @@
         cell: null,
         primary_comm: null,
         notes: null,
-        notif: '',
         clientid: '',
         primary_comms: [
           {text: 'Select Primary Comm Method', value: null},
@@ -249,7 +266,9 @@
           'Chat',
           'Call'
         ],
-        show: true
+        show: true,
+        tableName: 'peopleList',
+        paginationOptions: []
       };
     },
     head: {
@@ -257,6 +276,12 @@
     },
     created: function () {
       this.onLoadData();
+      this.pageSize = tableService.getTableSettings(this.tableName);
+      this.paginationOptions = [
+        {label: '10', value: 10},
+        {label: '25', value: 25},
+        {label: '50', value: 50},
+      ];
     },
     methods: {
       submit() {
@@ -276,11 +301,8 @@
             this.email = '';
             this.cell = '';
             this.notes = '';
-            this.notif = 'Successfully Submitted!';
-            // this.$router.push('/');
             this.$refs.modalAdd.hide();
             this.onLoadData();
-            this.notif = '';
           })
           .catch(error => {
             this.$toast.error(`Error: ${error}`)
@@ -291,6 +313,8 @@
         restService.get(url)
           .then(response => {
             this.persons = response.data;
+            this.allPersons = response.data;
+            this.sortedPersons();
           })
           .catch(error => {
             this.$toast.error(`Error: ${error}`)
@@ -305,12 +329,13 @@
       handleOk(evt) {
         evt.preventDefault();
         this.handleSubmit();
-        //}
       },
       handleAdd(evt) {
         evt.preventDefault();
         this.submit();
-        //}
+      },
+      getPages() {
+        return `${this.currentPage}/${this.allPages}`
       },
       handleSubmit() {
         let data = {
@@ -332,55 +357,73 @@
           });
       },
       sort: function (s) {
-        //if s == current sort, reverse
         if (s === this.currentSort) {
           this.currentSortDir = this.currentSortDir === 'asc' ? 'desc' : 'asc';
         }
         this.currentSort = s;
+        this.sortedPersons();
       },
       nextPage: function () {
-        if (this.currentPage * this.pageSize < this.persons.length)
+        if (this.currentPage < this.allPages) {
           this.currentPage++;
+          this.sortedPersons();
+        }
       },
       prevPage: function () {
-        if (this.currentPage > 1) this.currentPage--;
+        if (this.currentPage > 1) {
+          this.currentPage--;
+          this.sortedPersons();
+        }
       },
       sortedPersons: function () {
-        /*  if (this.search.length <= 0) {
-          return this.searchPersons();
-        }*/
-        return this.persons
-          .sort((a, b) => {
-            let modifier = 1;
-            if (this.currentSortDir === 'desc') modifier = -1;
-            if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
-            if (a[this.currentSort] > b[this.currentSort]) return 1 * modifier;
-            return 0;
-          })
-          .filter((row, index) => {
-            let start = (this.currentPage - 1) * this.pageSize;
-            let end = this.currentPage * this.pageSize;
-            if (index >= start && index < end) return true;
+        let list = JSON.parse(JSON.stringify(this.allPersons));
+
+        if (this.search) {
+          list = list.filter(person => {
+            const results = Object.values(person).reduce((prev, val) => {
+              if (typeof val === 'string' || typeof val === 'number') {
+                const text = val.toString().toLowerCase();
+                return [...prev, text.includes(this.search.toLowerCase())];
+              }
+            }, []);
+            return results.some(e => !!e);
           });
-      },
-      searchPersons: function () {
-        return this.persons.filter(person => {
-          const results = Object.values(person).reduce((prev, val) => {
-            if (typeof val === 'string' || typeof val === 'number') {
-              const text = val.toString().toLowerCase();
-              return [...prev, text.includes(this.search.toLowerCase())];
-            }
-          }, []);
-          return results.some(e => !!e);
+        }
+
+        list = list.sort((a, b) => {
+          let modifier = 1;
+          if (this.currentSortDir === 'desc') modifier = -1;
+          if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
+          if (a[this.currentSort] > b[this.currentSort]) return modifier;
+          return 0;
         });
+
+        this.allPages = Math.ceil(list.length / this.pageSize);
+
+        if (list.length < this.pageSize) {
+          this.currentPage = 1;
+        }
+
+        if (this.currentPage > this.allPages) {
+          this.currentPage = 1;
+        }
+
+        list = list.filter((row, index) => {
+          let start = (this.currentPage - 1) * this.pageSize;
+          let end = this.currentPage * this.pageSize;
+          if (index >= start && index < end) return true;
+        });
+
+        this.persons = list;
       }
     },
-    computed: {
-      filteredItems: function () {
-        if (this.search.length > 0) {
-          return this.searchPersons();
-        }
-        return this.sortedPersons();
+    watch: {
+      pageSize: function () {
+        this.sortedPersons();
+        tableService.saveTableSettings(this.tableName, this.pageSize);
+      },
+      search: function () {
+        this.sortedPersons();
       }
     }
   };

@@ -78,8 +78,8 @@
 
 <script>
   import {restService} from '../plugins/axios';
-  import get from 'lodash.get';
   import {authService} from '../services/auth-service';
+  import {tableService} from '../services/table-service';
 
   export default {
     name: 'EventsList',
@@ -104,7 +104,7 @@
         {label: '25', value: 25},
         {label: '50', value: 50},
       ];
-      this.getTableSettings();
+      this.pageSize = tableService.getTableSettings(this.tableName);
     },
     methods: {
       sort: function (s) {
@@ -162,24 +162,7 @@
             if (index >= start && index < end) return true
           });
         this.allPages = Math.ceil(this.events.length / this.pageSize);
-      },
-      getTableSettings() {
-        let tableSettings = JSON.parse(localStorage.getItem('tableSizes'));
-        if (get(tableSettings, this.tableName)) {
-          this.pageSize = get(tableSettings, this.tableName);
-        }
-      },
-      saveTableSettings() {
-        let tableSettings = JSON.parse(localStorage.getItem('tableSizes'));
-        if (tableSettings) {
-          tableSettings[this.tableName] = this.pageSize;
-        } else {
-          tableSettings = {
-            [this.tableName]: this.pageSize
-          }
-        }
-        localStorage.setItem('tableSizes', JSON.stringify(tableSettings));
-      },
+      }
     },
     watch: {
       events: function () {
@@ -187,7 +170,7 @@
       },
       pageSize: function () {
         this.sortedEvents();
-        this.saveTableSettings();
+        tableService.saveTableSettings(this.tableName, this.pageSize);
       }
     }
   }

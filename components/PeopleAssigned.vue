@@ -102,6 +102,7 @@
   import sortBy from 'lodash.sortby';
   import Multiselect from 'vue-multiselect';
   import {authService} from '../services/auth-service';
+  import {tableService} from '../services/table-service';
 
   export default {
     name: 'people',
@@ -157,7 +158,7 @@
         {label: '25', value: 25},
         {label: '50', value: 50},
       ];
-      this.getTableSettings();
+      this.pageSize = tableService.getTableSettings(this.tableName);
     },
     watch: {
       eventId: function (val) {
@@ -168,7 +169,7 @@
       },
       pageSize: function () {
         this.filtered();
-        this.saveTableSettings()
+        tableService.saveTableSettings(this.tableName, this.pageSize);
       },
       search: function () {
         this.filtered();
@@ -248,23 +249,6 @@
           .catch(err => {
             this.$toast.error(`Error: ${err}`)
           })
-      },
-      getTableSettings() {
-        let tableSettings = JSON.parse(localStorage.getItem('tableSizes'));
-        if (get(tableSettings, this.tableName)) {
-          this.pageSize = get(tableSettings, this.tableName);
-        }
-      },
-      saveTableSettings() {
-        let tableSettings = JSON.parse(localStorage.getItem('tableSizes'));
-        if (tableSettings) {
-          tableSettings[this.tableName] = this.pageSize;
-        } else {
-          tableSettings = {
-            [this.tableName]: this.pageSize
-          }
-        }
-        localStorage.setItem('tableSizes', JSON.stringify(tableSettings));
       },
       add: function (field_name) {
         const url = '/api/v3/eventpersons/';

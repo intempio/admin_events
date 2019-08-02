@@ -51,7 +51,7 @@
               <tbody>
               <tr></tr>
               <tr
-                v-for="(product, index) in filteredItems"
+                v-for="(product, index) in products"
                 v-bind:key="index"
               >
                 <td><img
@@ -109,8 +109,24 @@
               </tbody>
             </table>
             <div class="pagination py-4">
-              <button @click="prevPage">&laquo;</button>
-              <button @click="nextPage">&raquo;</button>
+              <div class="pagination-wrap">
+                <button @click="prevPage">&laquo;</button>
+                <b-form-input
+                  type="text"
+                  :value="getPages()"
+                  name="url"
+                  readonly
+                  style="width: 50px;"
+                  class="input input-items mx-1"
+                ></b-form-input>
+                <b-select v-model="pageSize" placeholder="Items" style="width: 100px">
+                  <option :value="item.value"
+                          v-for="item in paginationOptions"
+                          :key="item.value">{{item.label}}
+                  </option>
+                </b-select>
+                <button @click="nextPage" class="mx-1">&raquo;</button>
+              </div>
             </div>
             <b-modal
               id="modalUpdate"
@@ -484,6 +500,7 @@
 <script>
   import clientheader from '../../components/Header.vue'
   import {restService} from '../../plugins/axios';
+  import {tableService} from '../../services/table-service';
 
   export default {
     components: {clientheader},
@@ -527,7 +544,10 @@
         selectedEvent: '',
         selectedProduct: '',
         selectedClient: '',
-        selectedChecklist: ''
+        selectedChecklist: '',
+        tableName: 'productList',
+        paginationOptions: [],
+        allProducts: []
       };
     },
     head: {
@@ -535,6 +555,12 @@
     },
     created: function () {
       this.onLoadData();
+      this.paginationOptions = [
+        {label: '10', value: 10},
+        {label: '25', value: 25},
+        {label: '50', value: 50},
+      ];
+      this.pageSize = tableService.getTableSettings(this.tableName);
     },
     methods: {
       actionDelete(product) {
@@ -542,7 +568,6 @@
         let data_delete = {
           product_id: product.product_id
         };
-
         restService.delete(del_url, {data: data_delete})
           .then(() => {
             this.onLoadData();
@@ -551,6 +576,9 @@
           .catch(error => {
             this.$toast.error(`Error: ${error}`)
           });
+      },
+      getPages() {
+        return `${this.currentPage}/${this.allPages}`
       },
       async editProduct(data) {
         this.updateModal = data;
@@ -609,7 +637,7 @@
             duration_minutes: this.duration_minutes
           };
           let sub_url = '/api/v3/products/';
-          let response = await restService.post(sub_url, data);
+          await restService.post(sub_url, data);
           this.product_name = '';
           this.product_description = '';
           this.client_id = '';
@@ -627,7 +655,8 @@
           let load_url = '/api/v3/products/';
           let response = await restService.get(load_url);
           this.products = response.data;
-          // console.log(this.products);
+          this.allProducts = response.data;
+          this.sortedProducts();
         } catch (e) {
           console.log('Error in function handleSubmit' + e);
         }
@@ -789,26 +818,54 @@
         }
       },
       sort: function (s) {
-        //if s == current sort, reverse
         if (s === this.currentSort) {
           this.currentSortDir = this.currentSortDir === 'asc' ? 'desc' : 'asc';
         }
         this.currentSort = s;
       },
       nextPage: function () {
-        if (this.currentPage * this.pageSize < this.products.length)
+        if (this.currentPage < this.allPages) {
           this.currentPage++;
+          this.sortedProducts();
+        }
       },
       prevPage: function () {
-        if (this.currentPage > 1) this.currentPage--;
+        if (this.currentPage > 1) {
+          this.currentPage--;
+          this.sortedProducts();
+        }
       },
-      sortedproducts: function () {
-        return this.products
+      sortedProducts: function () {
+        let list = JSON.parse(JSON.stringify(this.allProducts));
+
+        if (this.search) {
+          list = list.filter(person => {
+            const results = Object.values(person).reduce((prev, val) => {
+              if (typeof val === 'string' || typeof val === 'number') {
+                const text = val.toString().toLowerCase();
+                return [...prev, text.includes(this.search.toLowerCase())];
+              }
+            }, []);
+            return results.some(e => !!e);
+          });
+        }
+
+        this.allPages = Math.ceil(list.length / this.pageSize);
+
+        if (list.length < this.pageSize) {
+          this.currentPage = 1;
+        }
+
+        if (this.currentPage > this.allPages) {
+          this.currentPage = 1;
+        }
+
+        list = list
           .sort((a, b) => {
             let modifier = 1;
             if (this.currentSortDir === 'desc') modifier = -1;
             if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
-            if (a[this.currentSort] > b[this.currentSort]) return 1 * modifier;
+            if (a[this.currentSort] > b[this.currentSort]) return modifier;
             return 0;
           })
           .filter((row, index) => {
@@ -816,24 +873,17 @@
             let end = this.currentPage * this.pageSize;
             if (index >= start && index < end) return true;
           });
-      },
-      searchproducts: function () {
-        var self = this;
-        return this.products.filter(function (products) {
-          return (
-            products.product_name
-              .toLowerCase()
-              .indexOf(self.search.toLowerCase()) >= 0
-          );
-        });
+
+        this.products = list;
       }
     },
-    computed: {
-      filteredItems: function () {
-        if (this.search.length > 0) {
-          return this.searchproducts();
-        }
-        return this.sortedproducts();
+    watch: {
+      pageSize: function () {
+        this.sortedProducts();
+        tableService.saveTableSettings(this.tableName, this.pageSize);
+      },
+      search: function () {
+        this.sortedProducts();
       }
     }
   };

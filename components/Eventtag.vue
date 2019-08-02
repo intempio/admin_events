@@ -116,8 +116,8 @@
   import {PRODUCT_ITEMS} from '../const/constants.js'
   import {restService} from '../plugins/axios';
   import Multiselect from 'vue-multiselect';
-  import get from 'lodash.get';
   import {authService} from '../services/auth-service';
+  import {tableService} from '../services/table-service';
 
   export default {
     name: 'eventtag',
@@ -153,7 +153,7 @@
         {label: '25', value: 25},
         {label: '50', value: 50},
       ];
-      this.getTableSettings();
+      this.pageSize = tableService.getTableSettings(this.tableName);
     },
     watch: {
       eventId: function (val) {
@@ -161,9 +161,9 @@
           this.fetchEventtag()
         }
       },
-      pageSize: function (val) {
+      pageSize: function () {
         this.filtered();
-        this.saveTableSettings()
+        tableService.saveTableSettings(this.tableName, this.pageSize);
       },
       search: function () {
         this.filtered();
@@ -288,23 +288,6 @@
           if (index >= start && index < end) return true
         });
         this.events = eventtags;
-      },
-      getTableSettings() {
-        let tableSettings = JSON.parse(localStorage.getItem('tableSizes'));
-        if (get(tableSettings, this.tagType)) {
-          this.pageSize = get(tableSettings, this.tagType);
-        }
-      },
-      saveTableSettings() {
-        let tableSettings = JSON.parse(localStorage.getItem('tableSizes'));
-        if (tableSettings) {
-          tableSettings[this.tagType] = this.pageSize;
-        } else {
-          tableSettings = {
-            [this.tagType]: this.pageSize
-          }
-        }
-        localStorage.setItem('tableSizes', JSON.stringify(tableSettings));
       }
     },
     computed: {
