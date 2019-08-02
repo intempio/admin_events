@@ -32,14 +32,14 @@
           <font-awesome-icon icon="caret-up" size="lg"
                              v-if="currentSort === 'person_role' && currentSortDir === 'desc'"/>
         </td>
-        <td>Action</td>
+        <td v-if="permissions.includes('EDIT')">Action</td>
       </tr>
       </thead>
       <tbody>
       <tr v-for="(item, index) in peopleAssigned" v-bind:key="item.person_id">
         <td>{{item.person}}</td>
         <td>{{item.person_role}}</td>
-        <td>
+        <td v-if="permissions.includes('EDIT')">
           <a @click="remove(index, item.person_id)">
             <font-awesome-icon icon="times-circle"/>
             Remove
@@ -67,7 +67,7 @@
         </b-select>
         <button @click="nextPage" class="mx-1">&raquo;</button>
       </div>
-      <div class="add-new-record ml-3">
+      <div class="add-new-record ml-3" v-if="permissions.includes('EDIT')">
         <div class="row m-0">
           <div class="col pr-0">
             <multiselect v-model="selectedPersonId"
@@ -101,6 +101,7 @@
   import get from 'lodash.get';
   import sortBy from 'lodash.sortby';
   import Multiselect from 'vue-multiselect';
+  import {authService} from '../services/auth-service';
 
   export default {
     name: 'people',
@@ -145,10 +146,12 @@
           {value: '4', text: 'cd'},
           {value: '5', text: 'de'}
         ],
-        item2: ''
+        item2: '',
+        permissions: []
       }
     },
     created() {
+      this.permissions = authService.getUserPermissions().admin;
       this.paginationOptions = [
         {label: '10', value: 10},
         {label: '25', value: 25},

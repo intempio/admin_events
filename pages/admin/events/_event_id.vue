@@ -27,7 +27,8 @@
                       type="text"
                       name="event_name"
                       placeholder="Event Name"
-                      class="input input-hidden"
+                      class="input input-hidden w-100"
+                      :disabled="!permissions.includes('EDIT')"
                       @input="onChange"
                     >
                   </div>
@@ -48,15 +49,11 @@
               <div class="col-4">
                 <div class="row">
                   <div class="col-12 d-flex">
-                    <!--<statusupdatemodal-->
-                    <!--ref="status_update_modal"-->
-                    <!--:saveCallback="onChange"-->
-                    <!--fieldName="client_status"-->
-                    <!--&gt;</statusupdatemodal>-->
                     <div class="col-11 pr-2">
                       <label class="">Client Status:</label>
                       <b-select v-model="event.client_status"
                                 placeholder="Client Status"
+                                :disabled="!permissions.includes('EDIT')"
                                 @input="onChange"
                       >
                         <option
@@ -94,6 +91,7 @@
                       <label class="">Operation Status:</label>
                       <b-select v-model="event.operations_status"
                                 placeholder="Operations Status"
+                                :disabled="!permissions.includes('EDIT')"
                                 @input="onChange"
                       >
                         <option
@@ -134,6 +132,7 @@
                       <label class="">QA Status:</label>
                       <b-select
                         v-model="event.qa_status"
+                        :disabled="!permissions.includes('EDIT')"
                         placeholder="QA Status"
                         @input="onChange"
                       >
@@ -167,6 +166,7 @@
                       <label class="">Production Status:</label>
                       <b-select
                         v-model="event.production_status"
+                        :disabled="!permissions.includes('EDIT')"
                         placeholder="Production Status"
                         @input="onChange"
                       >
@@ -221,6 +221,7 @@
                       :no-button-now=true
                       color="#0097e1"
                       minute-interval="15"
+                      :disabled="!permissions.includes('EDIT')"
                       label
                       @input="onChange"
                     ></VueCtkDateTimePicker>
@@ -229,6 +230,7 @@
                   <div class="col-12">
                     <label>Time zone:</label>
                     <b-select v-model="event.time_zone"
+                              :disabled="!permissions.includes('EDIT')"
                               placeholder="Time zone"
                               @input="onChange"
                     >
@@ -242,6 +244,7 @@
                     <label>Producer offset:</label>
                     <b-select
                       v-model="event.producer_offset_minutes"
+                      :disabled="!permissions.includes('EDIT')"
                       placeholder="Producer offset"
                       @input="onChange"
                     >
@@ -255,6 +258,7 @@
                     <label>Producer count:</label>
                     <b-form-input
                       v-model="event.producer_count"
+                      :disabled="!permissions.includes('EDIT')"
                       type="text"
                       name="prod_count"
                       placeholder="Producer count"
@@ -267,6 +271,7 @@
                     <label>Duration (minutes):</label>
                     <b-form-input
                       v-model="event.duration_minutes"
+                      :disabled="!permissions.includes('EDIT')"
                       type="text"
                       name="duration"
                       placeholder="Duration"
@@ -283,6 +288,7 @@
                     <label>Internal notes:</label>
                     <b-form-textarea
                       v-model="event.internal_notes"
+                      :disabled="!permissions.includes('EDIT')"
                       placeholder="Internal notes"
                       class="input"
                       rows="2"
@@ -320,6 +326,7 @@
                     <label>Producer notes:</label>
                     <b-form-textarea
                       v-model="event.producer_notes"
+                      :disabled="!permissions.includes('EDIT')"
                       placeholder="Producer notes"
                       class="input"
                       rows="2"
@@ -355,6 +362,7 @@
                 <div class="col-12 p-0">
                   <button
                     @click="toggleExternalNotes()"
+                    v-if="permissions.includes('EDIT')"
                     class="history secondary"
                     id="showNotesBtn"
                     style="margin-top: 21px"
@@ -368,6 +376,7 @@
                     <b-form-textarea
                       v-model="event.external_notes"
                       placeholder="External notes"
+                      :disabled="!permissions.includes('EDIT')"
                       class="input"
                       rows="2"
                       @input="onChange"
@@ -402,6 +411,7 @@
                   <b-form-checkbox
                     id="checkbox-1"
                     v-model="event.send_email"
+                    :disabled="!permissions.includes('EDIT')"
                     name="checkbox-1"
                   >Send notes to clients?
                   </b-form-checkbox>
@@ -466,8 +476,9 @@
   import isEqual from 'lodash.isequal';
   import forOwn from 'lodash.forown';
   import {EventObject} from './event';
+  import {authService} from '../../../services/auth-service';
 
-  Vue.component('VueCtkDateTimePicker', VueCtkDateTimePicker)
+  Vue.component('VueCtkDateTimePicker', VueCtkDateTimePicker);
 
   export default {
     data() {
@@ -510,8 +521,13 @@
         qa_statuses,
         production_statuses,
         isEventChanged: false,
-        isEventSaved: false
+        isEventSaved: false,
+        permissions: []
       }
+    },
+    created() {
+      this.permissions = authService.getUserPermissions().admin;
+      this.fetchEvent();
     },
     methods: {
       openHistoryModal(name) {
@@ -590,9 +606,6 @@
       statusupdatemodal,
       eventtag,
       clientheader
-    },
-    mounted: function () {
-      this.fetchEvent()
     }
   }
 </script>
@@ -602,6 +615,7 @@
   .input-hidden {
     border: none;
     box-shadow: none;
+    padding: 4px 10px;
   }
 
   .custom-card label {

@@ -46,7 +46,6 @@ export const authService = new Vue({
         });
         return prev;
       }, {});
-      console.log(permissions);
       return permissions;
     },
     setSession(data) {

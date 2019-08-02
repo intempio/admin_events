@@ -30,7 +30,7 @@
           <font-awesome-icon icon="caret-down" size="lg" v-if="currentSort === 'tag_value' && currentSortDir === 'asc'"/>
           <font-awesome-icon icon="caret-up" size="lg" v-if="currentSort === 'tag_value' && currentSortDir === 'desc'"/>
         </td>
-        <td>Action</td>
+        <td v-if="permissions.includes('EDIT')">Action</td>
       </tr>
       </thead>
       <tbody>
@@ -48,7 +48,7 @@
             @keyup.enter="onChange(item.tag_value, item.tag_name), currentIndex=-1"
           >
         </td>
-        <td>
+        <td v-if="permissions.includes('EDIT')">
           <a @click="edit(index, item.tag_value)" v-if="index != currentIndex">
             <font-awesome-icon class="mr-1" icon="edit"/>
             Edit
@@ -81,7 +81,7 @@
         <button @click="nextPage" class="mx-1">&raquo;</button>
       </div>
 
-      <div class="add-new-record ml-3">
+      <div class="add-new-record ml-3" v-if="permissions.includes('EDIT')">
         <div class="row m-0">
           <div class="col pr-0">
             <multiselect v-model="selectedItem"
@@ -116,7 +116,8 @@
   import {PRODUCT_ITEMS} from '../const/constants.js'
   import {restService} from '../plugins/axios';
   import Multiselect from 'vue-multiselect';
-  import get from 'lodash.get'
+  import get from 'lodash.get';
+  import {authService} from '../services/auth-service';
 
   export default {
     name: 'eventtag',
@@ -142,9 +143,11 @@
         oldDescriptionValue: '',
         search: '',
         paginationOptions: [],
+        permissions: []
       }
     },
     created() {
+      this.permissions = authService.getUserPermissions().admin;
       this.paginationOptions = [
         {label: '10', value: 10},
         {label: '25', value: 25},

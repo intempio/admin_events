@@ -34,7 +34,7 @@
                   <font-awesome-icon icon="search"/>
                 </button>
               </div>
-              <div class="col-2 pr-0 d-flex justify-content-end">
+              <div class="col-2 pr-0 d-flex justify-content-end" v-if="permissions.includes('CREATE')">
                 <addeventmodal ref="add_event_modal" :client-id="this.$route.params.client_id"></addeventmodal>
                 <button class="add_btn" @click="AddEventModal">
                   <font-awesome-icon class="icon" icon="calendar-plus"/>
@@ -43,10 +43,15 @@
               </div>
             </div>
           </div>
-          <events-list :events="events" :fetchEvents="fetchEvents" table-name="eventsList"></events-list>
+          <events-list :events="events"
+                       :fetchEvents="fetchEvents"
+                       table-name="eventsList">
+          </events-list>
 
           <h2 class="mt-5">Recent Updates:</h2>
-          <events-list :events="recentEvents" table-name="recentEvents"></events-list>
+          <events-list :events="recentEvents"
+                       table-name="recentEvents">
+          </events-list>
         </div>
       </section>
     </div>
@@ -62,6 +67,7 @@
   import VueCtkDateTimePicker from 'vue-ctk-date-time-picker'
   import 'vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css'
   import {restService} from '../../../plugins/axios';
+  import {authService} from '../../../services/auth-service';
 
   Vue.component('VueCtkDateTimePicker', VueCtkDateTimePicker)
 
@@ -76,9 +82,17 @@
         events: [],
         recentEvents: [],
         dateRange: '',
+        permissions: []
       }
     },
-
+    created() {
+      this.permissions = authService.getUserPermissions().admin;
+      this.fetchEvents();
+      this.fetchRecentEvents();
+    },
+    mounted: function () {
+      this.search = this.$route.query.search
+    },
     methods: {
       fetchEvents: function () {
         let url = '/api/v3/events/?clientID=' + this.$route.params.client_id;
@@ -99,7 +113,6 @@
             this.$toast.error(`Error: ${error}`)
           })
       },
-
       fetchRecentEvents: function () {
         let url =
           '/api/v3/events/?clientID=' +
@@ -117,11 +130,9 @@
             this.$toast.error(`Error: ${error}`)
           })
       },
-
       AddEventModal: function (addeventmodal) {
         this.$refs.add_event_modal.open()
       },
-
       onSearch: function () {
         let date = new Date()
         date.setDate(date.getDate())
@@ -157,27 +168,11 @@
         this.$router.push(url)
         this.fetchEvents()
       },
-      onClear() {
-        this.search = null;
-        this.dateFrom = null;
-        this.dateTo = null;
-        this.onSearch();
-      }
     },
     components: {
       EventsList,
       addeventmodal,
       clientheader
-    },
-    mounted: function () {
-      this.search = this.$route.query.search
-      if (this.$route.query.fromDate && this.$route.query.toDate) {
-        this.dateFrom = this.$route.query.fromDate
-        this.dateTo = this.$route.query.toDate
-      }
-
-      this.fetchEvents()
-      this.fetchRecentEvents()
     }
   }
 </script>

@@ -42,9 +42,10 @@
         <td>{{ event.client_status }}</td>
         <td>
           <router-link :to="'/admin/events/' + event.event_id">
-            <button>Edit</button>
+            <button v-if="permissions.includes('EDIT')">Edit</button>
+            <button v-else>See details</button>
           </router-link>
-          <button @click="clone(event.event_id)" class="clone">Clone</button>
+          <button @click="clone(event.event_id)" class="clone" v-if="permissions.includes('EDIT')">Clone</button>
         </td>
       </tr>
       <tr v-if="!eventList.length">
@@ -78,6 +79,7 @@
 <script>
   import {restService} from '../plugins/axios';
   import get from 'lodash.get';
+  import {authService} from '../services/auth-service';
 
   export default {
     name: 'EventsList',
@@ -92,9 +94,11 @@
         paginationOptions: [],
         search: '',
         allPages: 1,
+        permissions: []
       }
     },
     created() {
+      this.permissions = authService.getUserPermissions().admin;
       this.paginationOptions = [
         {label: '10', value: 10},
         {label: '25', value: 25},
