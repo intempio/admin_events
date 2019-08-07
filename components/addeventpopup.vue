@@ -66,7 +66,7 @@
         this.selectedProduct = product.product_id;
       },
       fetchProducts: function () {
-        const url = '/api/v3/products/?clientID=' + this.clientId
+        const url = '/api/v3/products/?clientID=' + this.clientId;
         restService.get(url)
           .then(response => {
             this.Products = response.data;

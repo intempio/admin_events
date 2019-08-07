@@ -104,8 +104,6 @@
           <button class="add_btn" @click="add()">+ Add</button>
         </div>
       </div>
-
-
     </div>
   </div>
 </template>

@@ -15,7 +15,6 @@
                 ></b-form-input>
               </div>
             </div>
-            <div class="half notif">{{ notif }}</div>
             <table
               border="0"
               class="person_tbl w-100"
@@ -23,21 +22,42 @@
               <thead>
 
               <tr>
-                <th>Client Name</th>
+                <th @click="sort('client_name')" class="cursor-pointer">
+                  <div class="d-flex align-items-center flex-nowrap">
+                    <span class="mr-2">Client Name</span>
+                    <font-awesome-icon icon="sort" size="lg" v-if="currentSort !== 'client_name'"/>
+                    <font-awesome-icon icon="caret-down" size="lg"
+                                       v-if="currentSort === 'client_name' && currentSortDir === 'asc'"/>
+                    <font-awesome-icon icon="caret-up" size="lg"
+                                       v-if="currentSort === 'client_name' && currentSortDir === 'desc'"/>
+                  </div>
+                </th>
                 <th
                   @click="sort('product_name')"
-                  style="cursor:pointer"
+                  class="cursor-pointer"
                 >
-                  Product Name
-                  <font-awesome-icon icon="caret-down"/>
+                  <div class="d-flex align-items-center flex-nowrap">
+                    <span class="mr-2">Product Name</span>
+                    <font-awesome-icon icon="sort" size="lg" v-if="currentSort !== 'product_name'"/>
+                    <font-awesome-icon icon="caret-down" size="lg"
+                                       v-if="currentSort === 'product_name' && currentSortDir === 'asc'"/>
+                    <font-awesome-icon icon="caret-up" size="lg"
+                                       v-if="currentSort === 'product_name' && currentSortDir === 'desc'"/>
+                  </div>
                 </th>
 
                 <th
                   @click="sort('product_description')"
-                  style="cursor:pointer"
+                  class="cursor-pointer"
                 >
-                  Product Description
-                  <font-awesome-icon icon="caret-down"/>
+                  <div class="d-flex align-items-center flex-nowrap">
+                    <span class="mr-2">Product Description</span>
+                    <font-awesome-icon icon="sort" size="lg" v-if="currentSort !== 'product_description'"/>
+                    <font-awesome-icon icon="caret-down" size="lg"
+                                       v-if="currentSort === 'product_description' && currentSortDir === 'asc'"/>
+                    <font-awesome-icon icon="caret-up" size="lg"
+                                       v-if="currentSort === 'product_description' && currentSortDir === 'desc'"/>
+                  </div>
                 </th>
 
                 <th class="text-center" style="width: 330px;">
@@ -65,10 +85,10 @@
                 <td>
                   <div class="d-flex justify-content-center flex-wrap">
                     <b-button
-                      v-b-modal.modalClient
+                      v-b-modal.modalEdit
                       class="px-2 m-1"
                       variant="primary action"
-                      @click="showClient(product)"
+                      @click="showModal(product, 'Client')"
                     >
                       Client
                     </b-button>
@@ -76,15 +96,15 @@
                       v-b-modal.modalEdit
                       class="px-2 m-1"
                       variant="primary action"
-                      @click="showModal(product)"
+                      @click="showModal(product, 'Product')"
                     >
                       Product
                     </b-button>
                     <b-button
-                      v-b-modal.modalChecklist
+                      v-b-modal.modalEdit
                       class="px-2 m-1"
                       variant="primary action"
-                      @click="showChecklist(product)"
+                      @click="showModal(product, 'Checklist')"
                     >
                       Checklist
                     </b-button>
@@ -128,6 +148,7 @@
                 <button @click="nextPage" class="mx-1">&raquo;</button>
               </div>
             </div>
+            <!-- Product edit modal-->
             <b-modal
               id="modalUpdate"
               ref="modalUpdate"
@@ -236,51 +257,91 @@
                   </tr>
                   </tbody>
                 </table>
-                <span class="notif">{{ notif }}</span>
               </b-form>
             </b-modal>
+
+            <!-- Confirm Modal -->
             <b-modal
-              id="modalClient"
-              ref="modalClient"
-              title="Edit Client"
+              id="eventDelete"
+              ref="eventDelete"
+              title="Delete Event"
+              @ok="actionDelete(selectedEvent)"
+            >
+              <span v-if="selectedEvent">Do you want to delete product: {{selectedEvent.product_description}}?</span>
+            </b-modal>
+
+            <!-- Confirm Modal -->
+            <b-modal
+              size="sm"
+              id="eventClone"
+              ref="eventClone"
+              title="Clone Event"
+              @ok="actionClone(selectedEvent)"
+            >
+              <span v-if="selectedEvent">Do you want to clone product: {{selectedEvent.product_description}}?</span>
+            </b-modal>
+
+            <b-modal
+              size="sm"
+              id="modalEdit"
+              ref="modal"
+              :title="'Edit ' + selectedModal"
             >
               <table class="modal-tbl">
                 <thead>
                 <tr>
-                  <th>Items</th>
-                  <th>Content</th>
+                  <th class="cursor-pointer" @click="sort('tag_name', true)">
+                    <div class="d-flex align-items-center flex-nowrap">
+                      <span class="mr-2">Items</span>
+                      <font-awesome-icon icon="sort" size="lg" v-if="modalTableSort.field !== 'tag_name'"/>
+                      <font-awesome-icon icon="caret-down" size="lg"
+                                         v-if="modalTableSort.field === 'tag_name' && modalTableSort.dir === 'asc'"/>
+                      <font-awesome-icon icon="caret-up" size="lg"
+                                         v-if="modalTableSort.field === 'tag_name' && modalTableSort.dir === 'desc'"/>
+                    </div>
+                  </th>
+                  <th class="cursor-pointer" @click="sort('updated', true)">
+                    <div class="d-flex align-items-center flex-nowrap">
+                      <span class="mr-2">Content</span>
+                      <font-awesome-icon icon="sort" size="lg" v-if="modalTableSort.field !== 'updated'"/>
+                      <font-awesome-icon icon="caret-down" size="lg"
+                                         v-if="modalTableSort.field === 'updated' && modalTableSort.dir === 'asc'"/>
+                      <font-awesome-icon icon="caret-up" size="lg"
+                                         v-if="modalTableSort.field === 'updated' && modalTableSort.dir === 'desc'"/>
+                    </div>
+                  </th>
                   <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr
-                  v-for="(client, index) in clientModal"
+                  v-for="(item, index) in modalData"
                   v-bind:key="index"
                 >
                   <td class="hidden">
                     <b-form-input
                       type="text"
-                      v-model="client.product_id"
+                      v-model="item.product_id"
                     ></b-form-input>
                   </td>
                   <td>
                     <b-form-input
                       disabled
                       type="text"
-                      v-model="client.tag_name"
+                      v-model="item.tag_name"
                     ></b-form-input>
                   </td>
                   <td>
                     <b-form-input
                       type="text"
-                      v-model="client.tag_value"
+                      v-model="item.tag_value"
                     ></b-form-input>
                   </td>
                   <td>
                     <b-button
                       type="submit"
                       variant="primary"
-                      @click="updateClient(client)"
+                      @click="updateItem(item)"
                     >UPDATE
                     </b-button>
                   </td>
@@ -306,183 +367,7 @@
                       type="submit"
                       class="w-100"
                       variant="secondary"
-                      @click="addClient()"
-                    >+ ADD
-                    </b-button>
-                  </td>
-                </tr>
-                </tbody>
-              </table>
-
-              <div class="notif">{{ tag_notif }}</div>
-            </b-modal>
-            <!-- Modal Component -->
-
-            <b-modal
-              id="eventDelete"
-              ref="eventDelete"
-              title="Delete Event"
-              @ok="actionDelete(selectedEvent)"
-            >
-              <span v-if="selectedEvent">Do you want to delete product: {{selectedEvent.product_description}}?</span>
-            </b-modal>
-
-            <b-modal
-              size="sm"
-              id="eventClone"
-              ref="eventClone"
-              title="Clone Event"
-              @ok="actionClone(selectedEvent)"
-            >
-              <span v-if="selectedEvent">Do you want to clone product: {{selectedEvent.product_description}}?</span>
-            </b-modal>
-
-            <b-modal
-              size="sm"
-              id="modalEdit"
-              ref="modal"
-              title="Edit Product"
-            >
-              <table class="modal-tbl">
-                <thead>
-                <tr>
-                  <th>Items</th>
-                  <th>Content</th>
-                  <th>Action</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr
-                  v-for="(product, index) in productModal"
-                  v-bind:key="index"
-                >
-                  <td class="hidden">
-                    <b-form-input
-                      type="text"
-                      v-model="product.product_id"
-                    ></b-form-input>
-                  </td>
-                  <td>
-                    <b-form-input
-                      disabled
-                      type="text"
-                      v-model="product.tag_name"
-                    ></b-form-input>
-                  </td>
-                  <td>
-                    <b-form-input
-                      type="text"
-                      v-model="product.tag_value"
-                    ></b-form-input>
-                  </td>
-                  <td>
-                    <b-button
-                      type="submit"
-                      variant="primary"
-                      @click="updateProduct(product)"
-                    >UPDATE
-                    </b-button>
-                  </td>
-                </tr>
-                <tr class="add">
-                  <td class="hidden">
-                    <b-form-input type="text"></b-form-input>
-                  </td>
-                  <td>
-                    <b-form-input
-                      type="text"
-                      v-model="pro_tag_name"
-                    ></b-form-input>
-                  </td>
-                  <td>
-                    <b-form-input
-                      type="text"
-                      v-model="pro_tag_value"
-                    ></b-form-input>
-                  </td>
-                  <td>
-                    <b-button
-                      type="submit"
-                      class="w-100"
-                      variant="secondary"
-                      @click="addProduct()"
-                    >+ ADD
-                    </b-button>
-                  </td>
-                </tr>
-                </tbody>
-              </table>
-            </b-modal>
-
-            <b-modal
-              size="sm"
-              id="modalChecklist"
-              ref="modalChecklist"
-              title="Edit Checklist"
-            >
-              <table class="modal-tbl">
-                <thead>
-                <tr>
-                  <th>Items</th>
-                  <th>Content</th>
-                  <th>Action</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr
-                  v-for="(checklist, index) in checklistModal"
-                  v-bind:key="index"
-                >
-                  <td class="hidden">
-                    <b-form-input
-                      type="text"
-                      v-model="checklist.product_id"
-                    ></b-form-input>
-                  </td>
-                  <td>
-                    <b-form-input
-                      disabled
-                      type="text"
-                      v-model="checklist.tag_name"
-                    ></b-form-input>
-                  </td>
-                  <td>
-                    <b-form-input
-                      type="text"
-                      v-model="checklist.tag_value"
-                    ></b-form-input>
-                  </td>
-                  <td>
-                    <b-button
-                      type="submit"
-                      variant="primary"
-                      @click="updateChecklist(checklist)"
-                    >UPDATE
-                    </b-button>
-                  </td>
-                </tr>
-                <tr class="add">
-                  <td class="hidden">
-                    <b-form-input type="text"></b-form-input>
-                  </td>
-                  <td>
-                    <b-form-input
-                      type="text"
-                      v-model="check_tag_name"
-                    ></b-form-input>
-                  </td>
-                  <td>
-                    <b-form-input
-                      type="text"
-                      v-model="check_tag_value"
-                    ></b-form-input>
-                  </td>
-                  <td>
-                    <b-button
-                      type="submit"
-                      class="w-100"
-                      variant="secondary"
-                      @click="addChecklist()"
+                      @click="addItem()"
                     >+ ADD
                     </b-button>
                   </td>
@@ -501,6 +386,8 @@
   import clientheader from '../../components/Header.vue'
   import {restService} from '../../plugins/axios';
   import {tableService} from '../../services/table-service';
+  import orderBy from 'lodash.orderby';
+  import * as moment from 'moment';
 
   export default {
     components: {clientheader},
@@ -519,35 +406,28 @@
         product_description: null,
         client_id: null,
         duration_minutes: null,
-        notif: '',
-        productModal: [],
+        modalData: [],
         product: {},
         updateM: {},
-        clientModal: [],
-        client: {},
-        checklistModal: [],
-        checklist: {},
-        tag_notif: '',
         updateModal: [],
         prod_id: null,
         tag_name: null,
         tag_value: null,
-        check_tag_name: null,
-        check_tag_value: null,
-        pro_tag_name: null,
-        pro_tag_value: null,
         client_name: '',
         prod_name: '',
         prodData: '',
         clientName: [],
         clientOptions: [],
         selectedEvent: '',
-        selectedProduct: '',
-        selectedClient: '',
-        selectedChecklist: '',
         tableName: 'productList',
         paginationOptions: [],
-        allProducts: []
+        allProducts: [],
+        selectedModal: '',
+        selectedItem: '',
+        modalTableSort: {
+          dir: 'desc',
+          field: 'updated'
+        }
       };
     },
     head: {
@@ -604,13 +484,11 @@
             client_id: this.updateModal.client_id,
             duration_minutes: this.updateModal.duration_minutes
           };
-          let response = await restService.put(update_url, data);
-          this.notif = 'Successfully Submitted!';
+          await restService.put(update_url, data);
           this.$refs.modalUpdate.hide();
           this.onLoadData();
-          this.notif = '';
-        } catch (e) {
-          console.log('Error in function handleSubmit' + e);
+        } catch (error) {
+          this.$toast.error(`Error: ${error}`)
         }
       },
       async actionClone(product) {
@@ -624,7 +502,7 @@
           });
           this.onLoadData();
           this.$toast.success('Event cloned successfully')
-        } catch (e) {
+        } catch (error) {
           this.$toast.error(`Error: ${error}`)
         }
       },
@@ -642,11 +520,9 @@
           this.product_description = '';
           this.client_id = '';
           this.duration_minutes = '';
-          this.notif = 'Successfully Submitted!';
           this.$refs.modalAdd.hide();
           this.onLoadData();
-          this.notif = '';
-        } catch (e) {
+        } catch (error) {
           this.$toast.error(`Error: ${error}`)
         }
       },
@@ -657,47 +533,23 @@
           this.products = response.data;
           this.allProducts = response.data;
           this.sortedProducts();
-        } catch (e) {
-          console.log('Error in function handleSubmit' + e);
+        } catch (error) {
+          this.$toast.error(`Error: ${error}`)
         }
       },
-      async showModal(product) {
-        this.selectedProduct = product;
+      async showModal(item, type) {
+        this.selectedModal = type;
+        this.selectedItem = item;
         try {
-          this.prod_id = product['product_id'];
-          let productid = product['product_id'];
+          this.prod_id = item['product_id'];
+          let productid = item['product_id'];
           let turl =
-            '/api/v3/producttags/?productID=' + productid + '&tagType=Product';
+            '/api/v3/producttags/?productID=' + productid + '&tagType=' + this.selectedModal;
           let response = await restService.get(turl);
-          this.productModal = response.data;
-        } catch (e) {
-          console.log('Error in function handleSubmit' + e);
-        }
-      },
-      async showClient(client) {
-        this.selectedClient = client;
-        try {
-          this.prod_id = client['product_id'];
-          let productid = client['product_id'];
-          let turl =
-            '/api/v3/producttags/?productID=' + productid + '&tagType=Client';
-          let response = await restService.get(turl);
-          this.clientModal = response.data;
-        } catch (e) {
-          console.log('Error in function handleSubmit' + e);
-        }
-      },
-      async showChecklist(checklist) {
-        this.selectedChecklist = checklist;
-        try {
-          this.prod_id = checklist['product_id'];
-          let productid = checklist['product_id'];
-          let turl =
-            '/api/v3/producttags/?productID=' + productid + '&tagType=Checklist';
-          let response = await restService.get(turl);
-          this.checklistModal = response.data;
-        } catch (e) {
-          console.log('Error in function handleSubmit' + e);
+          this.modalData = response.data;
+          this.sortModalItems();
+        } catch (error) {
+          this.$toast.error(`Error: ${error}`);
         }
       },
       clearName() {
@@ -715,113 +567,53 @@
         evt.preventDefault();
         this.sendData();
       },
-      async updateProduct(product) {
+      async updateItem(item) {
         try {
           let data = {
-            product_id: product.product_id,
-            tag_type: 'Product',
-            tag_name: product.tag_name,
-            tag_value: product.tag_value
+            product_id: item.product_id,
+            tag_type: this.selectedModal,
+            tag_name: item.tag_name,
+            tag_value: item.tag_value
           };
           let pt_url = '/api/v3/producttags/';
           await restService.post(pt_url, data);
           this.$toast.success(`Updated successfully`);
-          this.showModal(this.selectedProduct);
-        } catch (e) {
-          console.log('Error in function handleSubmit' + e);
+          this.showModal(this.selectedItem, this.selectedModal);
+        } catch (error) {
+          this.$toast.error(`Error: ${error}`);
         }
       },
-      async addProduct() {
+      async addItem() {
         try {
           let data = {
             product_id: this.prod_id,
-            tag_type: 'Product',
-            tag_name: this.pro_tag_name,
-            tag_value: this.pro_tag_value
-          };
-          let pt_url = '/api/v3/producttags/';
-          await restService.post(pt_url, data);
-          this.pro_tag_name = '';
-          this.pro_tag_value = '';
-          this.$toast.success(`Added successfully`);
-          this.showModal(this.selectedProduct);
-        } catch (e) {
-          this.$toast.error(`Error: ${error}`)
-        }
-      },
-      async updateClient(client) {
-        try {
-          let data = {
-            product_id: client.product_id,
-            tag_type: 'Client',
-            tag_name: client.tag_name,
-            tag_value: client.tag_value
-          };
-          let pt_url = '/api/v3/producttags/';
-          await restService.post(pt_url, data);
-          this.$toast.success(`Updated successfully`);
-          this.showClient(this.selectedClient);
-        } catch (e) {
-          console.log('Error in function handleSubmit' + e);
-        }
-      },
-      async addClient() {
-        try {
-          let data = {
-            product_id: this.prod_id,
-            tag_type: 'Client',
+            tag_type: this.selectedModal,
             tag_name: this.tag_name,
             tag_value: this.tag_value
           };
           let pt_url = '/api/v3/producttags/';
-          let response = await restService.post(pt_url, data);
-          this.$toast.success(`Added successfully`);
-          this.showClient(this.selectedClient);
-        } catch (e) {
-          this.$toast.error(`Error: ${error}`)
-        }
-      },
-      async updateChecklist(checklist) {
-        try {
-          let data = {
-            product_id: checklist.product_id,
-            tag_type: 'Checklist',
-            tag_name: checklist.tag_name,
-            tag_value: checklist.tag_value
-          };
-          let pt_url = '/api/v3/producttags/';
           await restService.post(pt_url, data);
-          this.tag_name = '';
-          this.tag_value = '';
-          this.$toast.success(`Updated successfully`);
-          this.showChecklist(this.selectedChecklist);
-        } catch (e) {
-          console.log('Error in function handleSubmit' + e);
-        }
-      },
-      async addChecklist() {
-        try {
-          let data = {
-            product_id: this.prod_id,
-            tag_type: 'Checklist',
-            tag_name: this.check_tag_name,
-            tag_value: this.check_tag_value
-          };
-          let pt_url = '/api/v3/producttags/';
-          await restService.post(pt_url, data);
-          this.check_tag_name = '';
-          this.check_tag_value = '';
+          this.tag_name = null;
+          this.tag_value = null;
           this.$toast.success(`Added successfully`);
-          this.showChecklist(this.selectedChecklist);
-        } catch (e) {
-          this.$toast.error(`Error: ${error}`)
+          this.showModal(this.selectedItem, this.selectedModal);
+        } catch (error) {
+          this.$toast.error(`Error: ${error}`);
         }
       },
-      sort: function (s) {
-        if (s === this.currentSort) {
+      sort: function (s, modal) {
+        if (s === this.currentSort && !modal) {
           this.currentSortDir = this.currentSortDir === 'asc' ? 'desc' : 'asc';
+        } else if (s === this.modalTableSort.field && modal) {
+          this.modalTableSort.dir = this.modalTableSort.dir === 'asc' ? 'desc' : 'asc';
         }
-        this.currentSort = s;
+        if (!modal) {
+          this.currentSort = s;
+          this.sortedProducts();
+        } else {
+          this.modalTableSort.field = s;
+          this.sortModalItems();
+        }
       },
       nextPage: function () {
         if (this.currentPage < this.allPages) {
@@ -875,6 +667,15 @@
           });
 
         this.products = list;
+      },
+      sortModalItems() {
+        if (this.modalTableSort.field === 'tag_name') {
+          this.modalData = orderBy(this.modalData, [this.modalTableSort.field], [this.modalTableSort.dir]);
+        } else if (this.modalTableSort.field === 'updated') {
+          let data = this.modalData.map(i => ({...i, updated: moment(i.updated).toDate()}));
+          this.modalData = orderBy(data, ['updated', 'tag_value'], [this.modalTableSort.dir, 'asc']);
+        }
+        console.log(this.modalData);
       }
     },
     watch: {
@@ -893,5 +694,9 @@
 
   .action {
     width: 94px;
+  }
+
+  img {
+    cursor: pointer;
   }
 </style>

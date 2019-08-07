@@ -1,7 +1,7 @@
 {
   "name": "intempio",
-  "version": "1.4.1",
-  "description": "Intempio SPA alpha version",
+  "version": "1.4.2",
+  "description": "CRIBS",
   "author": "Lenara Anafieva | KP",
   "private": true,
   "scripts": {
@@ -28,6 +28,7 @@
     "lodash.forown": "^4.4.0",
     "lodash.get": "^4.4.2",
     "lodash.isequal": "^4.5.0",
+    "lodash.orderby": "^4.6.0",
     "lodash.sortby": "^4.7.0",
     "lodash.union": "^4.6.0",
     "moment": "^2.24.0",

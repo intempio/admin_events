@@ -93,28 +93,56 @@
                     <th
                       @click="sort('first_name')"
                       style="cursor:pointer"
-                    >First Name
-                      <font-awesome-icon icon="caret-down"/>
+                    >
+                      <div class="d-flex align-items-center flex-nowrap">
+                        <span class="mr-2">First Name</span>
+                        <font-awesome-icon icon="sort" size="lg" v-if="currentSort !== 'first_name'"/>
+                        <font-awesome-icon icon="caret-down" size="lg"
+                                           v-if="currentSort === 'first_name' && currentSortDir === 'asc'"/>
+                        <font-awesome-icon icon="caret-up" size="lg"
+                                           v-if="currentSort === 'first_name' && currentSortDir === 'desc'"/>
+                      </div>
                     </th>
                     <th
                       @click="sort('last_name')"
                       style="cursor:pointer"
-                    >Last Name
-                      <font-awesome-icon icon="caret-down"/>
+                    >
+                      <div class="d-flex align-items-center flex-nowrap">
+                        <span class="mr-2">Last Name</span>
+                        <font-awesome-icon icon="sort" size="lg" v-if="currentSort !== 'last_name'"/>
+                        <font-awesome-icon icon="caret-down" size="lg"
+                                           v-if="currentSort === 'last_name' && currentSortDir === 'asc'"/>
+                        <font-awesome-icon icon="caret-up" size="lg"
+                                           v-if="currentSort === 'last_name' && currentSortDir === 'desc'"/>
+                      </div>
                     </th>
                     <th
                       @click="sort('email')"
                       style="cursor:pointer"
-                    >Email
-                      <font-awesome-icon icon="caret-down"/>
+                    >
+                      <div class="d-flex align-items-center flex-nowrap">
+                        <span class="mr-2">Email</span>
+                        <font-awesome-icon icon="sort" size="lg" v-if="currentSort !== 'email'"/>
+                        <font-awesome-icon icon="caret-down" size="lg"
+                                           v-if="currentSort === 'email' && currentSortDir === 'asc'"/>
+                        <font-awesome-icon icon="caret-up" size="lg"
+                                           v-if="currentSort === 'email' && currentSortDir === 'desc'"/>
+                      </div>
                     </th>
                     <th>Cell</th>
                     <th>Primary <br/> Comm Method</th>
                     <th
                       @click="sort('notes')"
                       style="cursor:pointer"
-                    >Notes
-                      <font-awesome-icon icon="caret-down"/>
+                    >
+                      <div class="d-flex align-items-center flex-nowrap">
+                        <span class="mr-2">Notes</span>
+                        <font-awesome-icon icon="sort" size="lg" v-if="currentSort !== 'notes'"/>
+                        <font-awesome-icon icon="caret-down" size="lg"
+                                           v-if="currentSort === 'notes' && currentSortDir === 'asc'"/>
+                        <font-awesome-icon icon="caret-up" size="lg"
+                                           v-if="currentSort === 'notes' && currentSortDir === 'desc'"/>
+                      </div>
                     </th>
                     <th>Actions</th>
                   </tr>

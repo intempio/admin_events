@@ -4,28 +4,64 @@
       <thead>
       <tr>
         <th class="tbl-sort" @click="sort('contact')">
-          Contact
-          <font-awesome-icon icon="caret-down" size="lg"/>
+          <div class="d-flex align-items-center flex-nowrap">
+            <span class="mr-2">Contact</span>
+            <font-awesome-icon icon="sort" size="lg" v-if="currentSort !== 'contact'"/>
+            <font-awesome-icon icon="caret-down" size="lg"
+                               v-if="currentSort === 'contact' && currentSortDir === 'asc'"/>
+            <font-awesome-icon icon="caret-up" size="lg"
+                               v-if="currentSort === 'contact' && currentSortDir === 'desc'"/>
+          </div>
         </th>
         <th class="tbl-sort" @click="sort('event_code')">
-          Event Code
-          <font-awesome-icon icon="caret-down" size="lg"/>
+          <div class="d-flex align-items-center flex-nowrap">
+            <span class="mr-2">Event Code</span>
+            <font-awesome-icon icon="sort" size="lg" v-if="currentSort !== 'event_code'"/>
+            <font-awesome-icon icon="caret-down" size="lg"
+                               v-if="currentSort === 'event_code' && currentSortDir === 'asc'"/>
+            <font-awesome-icon icon="caret-up" size="lg"
+                               v-if="currentSort === 'event_code' && currentSortDir === 'desc'"/>
+          </div>
         </th>
         <th class="tbl-sort" @click="sort('event_name')">
-          Event Name
-          <font-awesome-icon icon="caret-down" size="lg"/>
+          <div class="d-flex align-items-center flex-nowrap">
+            <span class="mr-2">Event Name</span>
+            <font-awesome-icon icon="sort" size="lg" v-if="currentSort !== 'event_name'"/>
+            <font-awesome-icon icon="caret-down" size="lg"
+                               v-if="currentSort === 'event_name' && currentSortDir === 'asc'"/>
+            <font-awesome-icon icon="caret-up" size="lg"
+                               v-if="currentSort === 'event_name' && currentSortDir === 'desc'"/>
+          </div>
         </th>
         <th class="tbl-sort" @click="sort('event_start')">
-          Event Date
-          <font-awesome-icon icon="caret-down" size="lg"/>
+          <div class="d-flex align-items-center flex-nowrap">
+            <span class="mr-2">Event Date</span>
+            <font-awesome-icon icon="sort" size="lg" v-if="currentSort !== 'event_start'"/>
+            <font-awesome-icon icon="caret-down" size="lg"
+                               v-if="currentSort === 'event_start' && currentSortDir === 'asc'"/>
+            <font-awesome-icon icon="caret-up" size="lg"
+                               v-if="currentSort === 'event_start' && currentSortDir === 'desc'"/>
+          </div>
         </th>
         <th class="tbl-sort" @click="sort('updated')">
-          Last Updated
-          <font-awesome-icon icon="caret-down" size="lg"/>
+          <div class="d-flex align-items-center flex-nowrap">
+            <span class="mr-2">Last Updated</span>
+            <font-awesome-icon icon="sort" size="lg" v-if="currentSort !== 'updated'"/>
+            <font-awesome-icon icon="caret-down" size="lg"
+                               v-if="currentSort === 'updated' && currentSortDir === 'asc'"/>
+            <font-awesome-icon icon="caret-up" size="lg"
+                               v-if="currentSort === 'updated' && currentSortDir === 'desc'"/>
+          </div>
         </th>
         <th class="tbl-sort" @click="sort('client_status')">
-          Client Status
-          <font-awesome-icon icon="caret-down" size="lg"/>
+          <div class="d-flex align-items-center flex-nowrap">
+            <span class="mr-2">Client Status</span>
+            <font-awesome-icon icon="sort" size="lg" v-if="currentSort !== 'client_status'"/>
+            <font-awesome-icon icon="caret-down" size="lg"
+                               v-if="currentSort === 'client_status' && currentSortDir === 'asc'"/>
+            <font-awesome-icon icon="caret-up" size="lg"
+                               v-if="currentSort === 'client_status' && currentSortDir === 'desc'"/>
+          </div>
         </th>
         <th style="min-width: 170px;">Actions</th>
       </tr>
@@ -108,11 +144,11 @@
     },
     methods: {
       sort: function (s) {
-        //if s == current sort, reverse
         if (s === this.currentSort) {
           this.currentSortDir = this.currentSortDir === 'asc' ? 'desc' : 'asc'
         }
-        this.currentSort = s
+        this.currentSort = s;
+        this.sortedEvents();
       },
       getPages() {
         return `${this.currentPage}/${this.allPages}`
@@ -142,31 +178,32 @@
             this.$router.push(`/admin/events/${response.data.event_id}`)
           })
           .catch(function (error) {
-            console.log(error);
             this.$toast.error(`Error: ${error}`);
           })
       },
       sortedEvents() {
-        const data = JSON.parse(JSON.stringify(this.events));
+        let data = JSON.parse(JSON.stringify(this.events));
         this.eventList = data
           .sort((a, b) => {
-            let modifier = 1
-            if (this.currentSortDir === 'desc') modifier = -1
-            if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier
-            if (a[this.currentSort] > b[this.currentSort]) return 1 * modifier
-            return 0
+            let modifier = 1;
+            if (this.currentSortDir === 'desc') modifier = -1;
+            if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
+            if (a[this.currentSort] > b[this.currentSort]) return modifier;
+            return 0;
           })
           .filter((event, index) => {
-            let start = (this.currentPage - 1) * this.pageSize
-            let end = this.currentPage * this.pageSize
+            let start = (this.currentPage - 1) * this.pageSize;
+            let end = this.currentPage * this.pageSize;
             if (index >= start && index < end) return true
           });
         this.allPages = Math.ceil(this.events.length / this.pageSize);
       }
     },
     watch: {
-      events: function () {
-        this.sortedEvents();
+      events: function (val) {
+        if (val) {
+          this.sortedEvents();
+        }
       },
       pageSize: function () {
         this.sortedEvents();
