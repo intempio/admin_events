@@ -63,7 +63,7 @@
     </table>
     <div class="wrap-pagination-add">
       <div class="pagination-wrap">
-        <button @click="prevPage">&laquo;</button>
+        <button class="cstm" @click="prevPage">&laquo;</button>
         <b-form-input
           :value="currentPage + '/' + allPages"
           type="text"
@@ -78,7 +78,7 @@
                   :key="item.value">{{item.label}}
           </option>
         </b-select>
-        <button @click="nextPage" class="mx-1">&raquo;</button>
+        <button @click="nextPage" class="mx-1 cstm">&raquo;</button>
       </div>
 
       <div class="add-new-record ml-3" v-if="permissions.includes('EDIT')">
@@ -101,7 +101,7 @@
               ></b-form-input>
             </div>
           </div>
-          <button class="add_btn" @click="add()">+ Add</button>
+          <button class="add_btn cstm" @click="add()">+ Add</button>
         </div>
       </div>
     </div>

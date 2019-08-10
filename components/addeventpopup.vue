@@ -26,8 +26,8 @@
 
         <div class="modal-footer">
           <slot name="footer">
-            <button @click="show=false">Cancel</button>
-            <button class="clone ml-1" @click="addEvent()">Next</button>
+            <button @click="show=false" class="cstm">Cancel</button>
+            <button class="clone ml-1 cstm" @click="addEvent()">Next</button>
           </slot>
         </div>
 

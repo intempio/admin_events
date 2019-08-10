@@ -78,10 +78,10 @@
         <td>{{ event.client_status }}</td>
         <td>
           <router-link :to="'/admin/events/' + event.event_id">
-            <button v-if="permissions.includes('EDIT')">Edit</button>
-            <button v-else>See details</button>
+            <button class="cstm" v-if="permissions.includes('EDIT')">Edit</button>
+            <button class="cstm" v-else>See details</button>
           </router-link>
-          <button @click="clone(event.event_id)" class="clone" v-if="permissions.includes('EDIT')">Clone</button>
+          <button @click="clone(event.event_id)" class="clone cstm" v-if="permissions.includes('EDIT')">Clone</button>
         </td>
       </tr>
       <tr v-if="!eventList.length">
@@ -92,7 +92,7 @@
       </tbody>
     </table>
     <div class="pagination-wrap mt-1">
-      <button @click="prevPage">&laquo;</button>
+      <button class="cstm" @click="prevPage">&laquo;</button>
       <b-form-input
         type="text"
         :value="getPages()"
@@ -107,7 +107,7 @@
                 :key="item.value">{{item.label}}
         </option>
       </b-select>
-      <button @click="nextPage" class="mx-1">&raquo;</button>
+      <button @click="nextPage" class="mx-1 cstm">&raquo;</button>
     </div>
   </div>
 </template>

@@ -36,7 +36,7 @@
 
         <div class="modal-footer">
           <slot name="footer">
-            <button class="modal-button" @click="close">Close</button>
+            <button class="modal-button cstm" @click="close">Close</button>
           </slot>
         </div>
       </div>

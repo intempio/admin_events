@@ -30,13 +30,13 @@
                 </div>
               </div>
               <div class="col-2 pr-0">
-                <button @click="onSearch()" class="search-icon">
+                <button @click="onSearch()" class="search-icon cstm">
                   <font-awesome-icon icon="search"/>
                 </button>
               </div>
               <div class="col-2 pr-0 d-flex justify-content-end" v-if="permissions.includes('CREATE')">
                 <addeventmodal ref="add_event_modal" :client-id="this.$route.params.client_id"></addeventmodal>
-                <button class="add_btn" @click="AddEventModal">
+                <button class="add_btn cstm" @click="AddEventModal">
                   <font-awesome-icon class="icon" icon="calendar-plus"/>
                   Add
                 </button>

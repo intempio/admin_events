@@ -50,7 +50,7 @@
     </table>
     <div class="wrap-pagination-add">
       <div class="pagination-wrap">
-        <button @click="prevPage">&laquo;</button>
+        <button class="cstm" @click="prevPage">&laquo;</button>
         <b-form-input
           type="text"
           :value="getPages()"
@@ -65,7 +65,7 @@
                   :key="item.value">{{item.label}}
           </option>
         </b-select>
-        <button @click="nextPage" class="mx-1">&raquo;</button>
+        <button @click="nextPage" class="mx-1 cstm">&raquo;</button>
       </div>
       <div class="add-new-record ml-3" v-if="permissions.includes('EDIT')">
         <div class="row m-0">
@@ -87,7 +87,7 @@
               </multiselect>
             </div>
           </div>
-          <button class="add_btn" @click="add()">+ Add</button>
+          <button class="add_btn cstm" @click="add()">+ Add</button>
         </div>
       </div>
     </div>
@@ -112,7 +112,7 @@
       let people_assigned_roles = PEOPLE_ASSIGNED_ROLES.map(item => ({
         value: item,
         text: item
-      }))
+      }));
 
       if (process.env.PEOPLE_ASSIGNED_ROLES) {
         people_assigned_roles = process.env.PEOPLE_ASSIGNED_ROLES.split(',').map(

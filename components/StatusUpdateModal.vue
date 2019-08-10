@@ -16,8 +16,8 @@
 
         <div class="modal-footer status">
           <slot name="footer">
-            <button class="modal-button save" @click="save">Save</button>
-            <button class="modal-button" @click="close">Cancel</button>
+            <button class="modal-button save cstm" @click="save">Save</button>
+            <button class="modal-button cstm" @click="close">Cancel</button>
           </slot>
         </div>
       </div>

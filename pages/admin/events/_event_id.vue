@@ -80,7 +80,7 @@
                         </tr>
                         </tbody>
                       </modal>
-                      <button class="history" @click="openHistoryModal('client_status_history')">
+                      <button class="history cstm" @click="openHistoryModal('client_status_history')">
                         <font-awesome-icon class="icon" icon="history"/>
                       </button>
                     </div>
@@ -121,7 +121,7 @@
                         </tr>
                         </tbody>
                       </modal>
-                      <button class="history" @click="openHistoryModal('operations_status_history')">
+                      <button class="history cstm" @click="openHistoryModal('operations_status_history')">
                         <font-awesome-icon class="icon" icon="history"/>
                       </button>
                     </div>
@@ -155,7 +155,7 @@
                         </tr>
                         </tbody>
                       </modal>
-                      <button class="history" @click="openHistoryModal('qa_status_history')">
+                      <button class="history cstm" @click="openHistoryModal('qa_status_history')">
                         <font-awesome-icon class="icon" icon="history"/>
                       </button>
                     </div>
@@ -200,7 +200,7 @@
                         </tr>
                         </tbody>
                       </modal>
-                      <button class="history" @click="openHistoryModal('production_status_history')">
+                      <button class="history cstm" @click="openHistoryModal('production_status_history')">
                         <font-awesome-icon class="icon" icon="history"/>
                       </button>
                     </div>
@@ -315,7 +315,7 @@
                       </tr>
                       </tbody>
                     </modal>
-                    <button class="history" @click="openHistoryModal('internal_notes_history')">
+                    <button class="history cstm" @click="openHistoryModal('internal_notes_history')">
                       <font-awesome-icon class="icon" icon="history"/>
                     </button>
                   </div>
@@ -353,7 +353,7 @@
                       </tr>
                       </tbody>
                     </modal>
-                    <button class="history" @click="openHistoryModal('producer_notes_history')">
+                    <button class="history cstm" @click="openHistoryModal('producer_notes_history')">
                       <font-awesome-icon class="icon" icon="history"/>
                     </button>
                   </div>
@@ -363,7 +363,7 @@
                   <button
                     @click="toggleExternalNotes()"
                     v-if="permissions.includes('EDIT')"
-                    class="history secondary"
+                    class="history secondary cstm"
                     id="showNotesBtn"
                     style="margin-top: 21px"
                   >{{isHidden ? 'Add External Notes' : 'Remove External Notes'}}
@@ -402,7 +402,7 @@
                       </tr>
                       </tbody>
                     </modal>
-                    <button class="history" @click="openHistoryModal('external_notes_history')">
+                    <button class="history cstm" @click="openHistoryModal('external_notes_history')">
                       <font-awesome-icon class="icon" icon="history"/>
                     </button>
                   </div>

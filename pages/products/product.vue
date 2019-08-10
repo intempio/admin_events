@@ -137,7 +137,7 @@
                   name="url"
                   readonly
                   style="width: 50px;"
-                  class="input input-items mx-1"
+                  class="input input-items mx-1 cstm"
                 ></b-form-input>
                 <b-select v-model="pageSize" placeholder="Items" style="width: 100px">
                   <option :value="item.value"
@@ -145,7 +145,7 @@
                           :key="item.value">{{item.label}}
                   </option>
                 </b-select>
-                <button @click="nextPage" class="mx-1">&raquo;</button>
+                <button @click="nextPage" class="mx-1 cstm">&raquo;</button>
               </div>
             </div>
             <!-- Product edit modal-->

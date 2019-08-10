@@ -40,14 +40,14 @@
           <td>2</td>
           <td>
             <router-link :to="'client/events/' + event.event_id">
-              <button>Edit</button>
+              <button class="cstm">Edit</button>
             </router-link>
           </td>
         </tr>
       </tbody>
     </table>
-    <button @click="prevPage">&laquo;</button>
-    <button @click="nextPage">&raquo;</button>
+    <button class="cstm" @click="prevPage">&laquo;</button>
+    <button class="cstm" @click="nextPage">&raquo;</button>
   </div>
 </template>
 

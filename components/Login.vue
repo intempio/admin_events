@@ -8,7 +8,7 @@
       <!--<b-button type="is-primary" outlined inverted @click="logIn" v-if="mode === 'signup'">-->
         <!--SIGN IN-->
       <!--</b-button>-->
-      <button class="temporary-button" @click="logIn" v-if="mode === 'signup'">
+      <button class="temporary-button cstm" @click="logIn" v-if="mode === 'signup'">
         SIGN IN
       </button>
       <h3 v-if="mode !== 'signup'">Loading...</h3>

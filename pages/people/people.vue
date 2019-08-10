@@ -180,7 +180,7 @@
                 </table>
                 <div class="pagination mb-5 mt-1">
                   <div class="pagination-wrap">
-                    <button @click="prevPage">&laquo;</button>
+                    <button class="cstm" @click="prevPage">&laquo;</button>
                     <b-form-input
                       type="text"
                       :value="getPages()"
@@ -195,7 +195,7 @@
                               :key="item.value">{{item.label}}
                       </option>
                     </b-select>
-                    <button @click="nextPage" class="mx-1">&raquo;</button>
+                    <button @click="nextPage" class="mx-1 cstm">&raquo;</button>
                   </div>
                 </div>
                 <!-- Modal Component -->
