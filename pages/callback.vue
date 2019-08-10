@@ -10,7 +10,13 @@
     components: {loginComponent},
     mounted() {
       this.$auth.handleAuthentication().then(() => {
-        this.$router.push('/system-pick');
+        const redirectUrl = localStorage.getItem('requestedUrl');
+        if (redirectUrl) {
+          this.$router.push(redirectUrl);
+          localStorage.removeItem('requestedUrl');
+        } else {
+          this.$router.push('/system-pick');
+        }
       });
     }
   }
