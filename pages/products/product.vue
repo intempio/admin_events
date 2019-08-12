@@ -425,7 +425,7 @@
         selectedModal: '',
         selectedItem: '',
         modalTableSort: {
-          dir: 'desc',
+          dir: 'asc',
           field: 'updated'
         }
       };
