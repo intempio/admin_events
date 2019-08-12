@@ -65,22 +65,7 @@
                       </b-select>
                     </div>
                     <div class="d-flex col-1 p-0 d-flex align-items-end">
-                      <modal :client-status-hist="event.client_status_hist" ref="client_status_history">
-                        <h2 slot="header">Client status history</h2>
-                        <tr slot="table-header">
-                          <th>Person</th>
-                          <th>Status</th>
-                          <th>Last updated</th>
-                        </tr>
-                        <tbody slot="table-body">
-                        <tr v-for="client in event.client_status_hist" v-bind:key="client.user_name">
-                          <td>{{client.user_name}}</td>
-                          <td>{{client.client_status}}</td>
-                          <td>{{client.updated}}</td>
-                        </tr>
-                        </tbody>
-                      </modal>
-                      <button class="history cstm" @click="openHistoryModal('client_status_history')">
+                      <button class="history cstm" @click="openHistoryModal('client_status_hist')">
                         <font-awesome-icon class="icon" icon="history"/>
                       </button>
                     </div>
@@ -103,25 +88,8 @@
                       </b-select>
                     </div>
                     <div class="col-1 p-0 d-flex align-items-end">
-                      <modal
-                        :operations_status_hist="event.operations_status_hist"
-                        ref="operations_status_history"
-                      >
-                        <h2 slot="header">Operations status history</h2>
-                        <tr slot="table-header">
-                          <th>ID</th>
-                          <th>Operations status</th>
-                          <th>Updated</th>
-                        </tr>
-                        <tbody slot="table-body">
-                        <tr v-for="(id, i) in event.operations_status_hist" :key="i">
-                          <td>{{id.updated_by_id}}</td>
-                          <td>{{id.operations_status}}</td>
-                          <td>{{id.updated}}</td>
-                        </tr>
-                        </tbody>
-                      </modal>
-                      <button class="history cstm" @click="openHistoryModal('operations_status_history')">
+
+                      <button class="history cstm" @click="openHistoryModal('operations_status_hist')">
                         <font-awesome-icon class="icon" icon="history"/>
                       </button>
                     </div>
@@ -140,22 +108,8 @@
                       </b-select>
                     </div>
                     <div class="col-1 p-0 d-flex align-items-end">
-                      <modal :qa-status-hist="event.qa_status_hist" ref="qa_status_history">
-                        <h2 slot="header">QA status history</h2>
-                        <tr slot="table-header">
-                          <th>Updated</th>
-                          <th>QA status</th>
-                          <th>Last updated</th>
-                        </tr>
-                        <tbody slot="table-body">
-                        <tr v-for="qa in event.qa_status_hist" v-bind:key="qa.qa_status">
-                          <td>{{qa.updated}}</td>
-                          <td>{{qa.qa_status}}</td>
-                          <td>{{qa.updated}}</td>
-                        </tr>
-                        </tbody>
-                      </modal>
-                      <button class="history cstm" @click="openHistoryModal('qa_status_history')">
+
+                      <button class="history cstm" @click="openHistoryModal('qa_status_hist')">
                         <font-awesome-icon class="icon" icon="history"/>
                       </button>
                     </div>
@@ -179,28 +133,8 @@
                       </b-select>
                     </div>
                     <div class="col-1 p-0 d-flex align-items-end">
-                      <modal
-                        :production-status-hist="event.production_status_hist"
-                        ref="production_status_history"
-                      >
-                        <h2 slot="header">Production status history</h2>
-                        <tr slot="table-header">
-                          <th>Updated</th>
-                          <th>Production status</th>
-                          <th>Updated by ID</th>
-                        </tr>
-                        <tbody slot="table-body">
-                        <tr
-                          v-for="prod in event.production_status_hist"
-                          v-bind:key="prod.production_status"
-                        >
-                          <td>{{prod.updated}}</td>
-                          <td>{{prod.production_status}}</td>
-                          <td>{{prod.updated_by_id}}</td>
-                        </tr>
-                        </tbody>
-                      </modal>
-                      <button class="history cstm" @click="openHistoryModal('production_status_history')">
+
+                      <button class="history cstm" @click="openHistoryModal('production_status_hist')">
                         <font-awesome-icon class="icon" icon="history"/>
                       </button>
                     </div>
@@ -297,25 +231,8 @@
                     </b-form-textarea>
                   </div>
                   <div class="col-2 pl-2 d-flex align-items-end">
-                    <modal :internal-notes-hist="event.internal_notes_hist" ref="internal_notes_history">
-                      <h2 slot="header">Internal notes history</h2>
-                      <tr slot="table-header">
-                        <th>Updated</th>
-                        <th>Internal notes</th>
-                        <th>Updated by ID</th>
-                      </tr>
-                      <tbody slot="table-body">
-                      <tr
-                        v-for="intnote in event.internal_notes_hist"
-                        v-bind:key="intnote.internal_notes"
-                      >
-                        <td>{{intnote.updated}}</td>
-                        <td class="history-td-tb-2">{{intnote.internal_notes}}</td>
-                        <td>{{intnote.updated_by_id}}</td>
-                      </tr>
-                      </tbody>
-                    </modal>
-                    <button class="history cstm" @click="openHistoryModal('internal_notes_history')">
+
+                    <button class="history cstm" @click="openHistoryModal('internal_notes_hist')">
                       <font-awesome-icon class="icon" icon="history"/>
                     </button>
                   </div>
@@ -335,25 +252,8 @@
                     </b-form-textarea>
                   </div>
                   <div class="col-2 pl-2 d-flex align-items-end">
-                    <modal :producer_notes_hist="event.producer_notes_hist" ref="producer_notes_history">
-                      <h2 slot="header">Producer notes history</h2>
-                      <tr slot="table-header">
-                        <th>Updated</th>
-                        <th>Producer notes</th>
-                        <th>Updated by ID</th>
-                      </tr>
-                      <tbody slot="table-body">
-                      <tr
-                        v-for="prodevent in event.producer_notes_hist"
-                        v-bind:key="prodevent.producer_status"
-                      >
-                        <td>{{prodevent.updated}}</td>
-                        <td class="history-td-tb-2">{{prodevent.producer_notes}}</td>
-                        <td>{{prodevent.updated_by_id}}</td>
-                      </tr>
-                      </tbody>
-                    </modal>
-                    <button class="history cstm" @click="openHistoryModal('producer_notes_history')">
+
+                    <button class="history cstm" @click="openHistoryModal('producer_notes_hist')">
                       <font-awesome-icon class="icon" icon="history"/>
                     </button>
                   </div>
@@ -384,25 +284,8 @@
                     </b-form-textarea>
                   </div>
                   <div class="col-2 pl-2 d-flex align-items-end">
-                    <modal :external-notes-hist="event.external_notes_hist" ref="external_notes_history">
-                      <h2 slot="header">External Notes history</h2>
-                      <tr slot="table-header">
-                        <th>Updated</th>
-                        <th>External Notes</th>
-                        <th>Updated by ID</th>
-                      </tr>
-                      <tbody slot="table-body">
-                      <tr
-                        v-for="exnote in event.external_notes_hist"
-                        v-bind:key="exnote.external_notes"
-                      >
-                        <td>{{exnote.updated}}</td>
-                        <td class="history-td-tb-2">{{exnote.external_notes}}</td>
-                        <td>{{exnote.updated_by_id}}</td>
-                      </tr>
-                      </tbody>
-                    </modal>
-                    <button class="history cstm" @click="openHistoryModal('external_notes_history')">
+
+                    <button class="history cstm" @click="openHistoryModal('external_notes_hist')">
                       <font-awesome-icon class="icon" icon="history"/>
                     </button>
                   </div>
@@ -434,6 +317,11 @@
           </b-card>
         </div>
       </div>
+
+      <modal ref="history_modal"
+             :data="event[hModalKey]"
+             :table="hModal">
+      </modal>
 
       <div class="row mt-3">
         <div class="col-xl-10 col-lg-12 m-auto">
@@ -477,6 +365,7 @@
   import forOwn from 'lodash.forown';
   import {EventObject} from './event';
   import {authService} from '../../../services/auth-service';
+  import {HISTORY_MODALS} from '../../../const/history-modals';
 
   Vue.component('VueCtkDateTimePicker', VueCtkDateTimePicker);
 
@@ -522,7 +411,10 @@
         production_statuses,
         isEventChanged: false,
         isEventSaved: false,
-        permissions: []
+        permissions: [],
+        hModal: {},
+        hModalKey: '',
+        historyModals: HISTORY_MODALS
       }
     },
     created() {
@@ -531,8 +423,9 @@
     },
     methods: {
       openHistoryModal(name) {
-        this.fetchEvent();
-        this.$refs[name].open();
+        this.hModal = this.historyModals[name];
+        this.hModalKey = name;
+        this.fetchEvent(true);
       },
       onChange: function () {
         this.isEventChanged = !isEqual(this.event, this.eventOld);
@@ -571,7 +464,7 @@
           this.onChange();
         }
       },
-      fetchEvent: function () {
+      fetchEvent: function (modal) {
         this.isDataPatched = false;
         const url = '/api/v3/events/' + this.$route.params.event_id;
         restService.get(url)
@@ -590,6 +483,9 @@
             }
             this.projects = response.data['project_list'];
             this.clientid = this.event.client_id;
+            if (modal) {
+              this.$refs['history_modal'].open();
+            }
             setTimeout(() => {
               this.isDataPatched = true;
               this.isEventChanged = false;
@@ -631,10 +527,6 @@
   table {
     width: 100%;
     font-size: 14px;
-  }
-
-  tr > td:last-of-type {
-    text-align: center;
   }
 
   .notification {
