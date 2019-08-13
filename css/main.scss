@@ -1210,6 +1210,18 @@ a {
   cursor: pointer;
 }
 
+.search-input-clear {
+  position: absolute;
+  top: 14px;
+  right: 13px;
+  height: 20px !important;
+  width: 20px !important;
+  padding: 4px;
+  cursor: pointer;
+  color: white;
+  border-radius: 50%;
+  background-color: $color_primary;
+}
 
 // Container that the modal scrolls within
 //.modal {

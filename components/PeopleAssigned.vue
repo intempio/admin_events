@@ -12,6 +12,10 @@
             v-model="search"
             placeholder="Search"
           ></b-form-input>
+          <font-awesome-icon class="search-input-clear"
+                             icon="times"
+                             v-if="search"
+                             @click="search = ''"/>
         </div>
       </div>
     </div>
