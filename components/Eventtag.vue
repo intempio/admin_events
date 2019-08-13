@@ -27,7 +27,8 @@
         <td class="tbl-sort" @click="sort('tag_value')">
           Content
           <font-awesome-icon icon="sort" size="lg" v-if="currentSort !== 'tag_value'"/>
-          <font-awesome-icon icon="caret-down" size="lg" v-if="currentSort === 'tag_value' && currentSortDir === 'asc'"/>
+          <font-awesome-icon icon="caret-down" size="lg"
+                             v-if="currentSort === 'tag_value' && currentSortDir === 'asc'"/>
           <font-awesome-icon icon="caret-up" size="lg" v-if="currentSort === 'tag_value' && currentSortDir === 'desc'"/>
         </td>
         <td v-if="permissions.includes('EDIT')">Action</td>
@@ -154,6 +155,10 @@
         {label: '50', value: 50},
       ];
       this.pageSize = tableService.getTableSettings(this.tableName);
+      if (this.isChecklist) {
+        this.currentSortDir = 'asc';
+        this.currentSort = 'tag_value';
+      }
     },
     watch: {
       eventId: function (val) {
@@ -167,12 +172,6 @@
       },
       search: function () {
         this.filtered();
-      },
-      isChecklist: function(val) {
-        if (val) {
-          this.currentSort = 'asc';
-          this.currentSort = 'updated';
-        }
       }
     },
     methods: {
@@ -198,7 +197,7 @@
             this.fetchEventtag();
             this.$toast.success(`Added successfully`)
           })
-          .catch(function (error) {
+          .catch(error => {
             this.$toast.error(`Saving error: ${error}`)
           });
       },
@@ -228,7 +227,7 @@
               this.fetchEventtag();
               this.$toast.success(`Updated successfully`)
             })
-            .catch(function (error) {
+            .catch(error => {
               this.$toast.error(`Error: ${error}`)
             })
         }
@@ -271,11 +270,11 @@
           eventtags = this.Eventtag;
         }
 
-        if (!this.isChecklist) {
+        if (!this.isChecklist || (this.isChecklist && this.currentSort !== 'tag_value')) {
           eventtags = orderBy(eventtags, [this.currentSort], [this.currentSortDir]);
         } else {
           let data = eventtags.map(i => ({...i, updated: moment(i.updated).toDate()}));
-          eventtags = orderBy(data, ['updated', 'tag_value'], ['asc', 'asc']);
+          eventtags = orderBy(data, ['updated', 'tag_value'], [this.currentSortDir, 'asc']);
         }
 
         this.allPages = Math.ceil(eventtags.length / this.pageSize);

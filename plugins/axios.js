@@ -18,6 +18,15 @@ restService.interceptors.request.use((req) => {
     requestCount++;
     authService.setLoading(true);
   }
+  if (req.method === 'put' || req.method === 'post') {
+    if (typeof req.data === 'object') {
+      Object.keys(req.data).forEach(key => {
+        if (!req.data[key]) {
+          req.data[key] = '';
+        }
+      })
+    }
+  }
   return req;
 });
 

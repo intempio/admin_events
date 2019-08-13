@@ -177,7 +177,7 @@
           .then(response => {
             this.$router.push(`/admin/events/${response.data.event_id}`)
           })
-          .catch(function (error) {
+          .catch(error => {
             this.$toast.error(`Error: ${error}`);
           })
       },
