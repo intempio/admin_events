@@ -33,6 +33,11 @@
                 <button @click="onSearch()" class="search-icon cstm">
                   <font-awesome-icon icon="search"/>
                 </button>
+                <button @click="onClear()"
+                        class="search-icon cstm"
+                        v-if="dateRange || search">
+                  <font-awesome-icon icon="times"/>
+                </button>
               </div>
               <div class="col-2 pr-0 d-flex justify-content-end" v-if="permissions.includes('CREATE')">
                 <addeventmodal ref="add_event_modal" :client-id="this.$route.params.client_id"></addeventmodal>
@@ -168,6 +173,12 @@
         this.$router.push(url)
         this.fetchEvents()
       },
+      onClear() {
+        this.search = null;
+        this.dateRange = null;
+        this.fetchEvents();
+        this.fetchRecentEvents();
+      }
     },
     components: {
       EventsList,

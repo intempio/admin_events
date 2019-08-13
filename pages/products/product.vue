@@ -13,6 +13,10 @@
                   v-model="search"
                   placeholder="Search"
                 ></b-form-input>
+                <font-awesome-icon class="search-input-clear regular"
+                                   icon="times"
+                                   v-if="search"
+                                   @click="search = ''"/>
               </div>
             </div>
             <table
@@ -63,7 +67,7 @@
                 <th class="text-center" style="width: 330px;">
                   <span>Edit actions</span>
                 </th>
-                <th class="text-center" style="width: 170px;">
+                <th class="text-center" style="width: 145px;">
                   <span>List actions</span>
                 </th>
               </tr>
@@ -130,7 +134,7 @@
             </table>
             <div class="pagination py-4">
               <div class="pagination-wrap">
-                <button @click="prevPage">&laquo;</button>
+                <button @click="prevPage" class="cstm">&laquo;</button>
                 <b-form-input
                   type="text"
                   :value="getPages()"

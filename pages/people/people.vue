@@ -12,6 +12,7 @@
                 <b-button
                   v-b-modal.modalAdd
                   variant="primary"
+                  class="cstm"
                 >
                   + Add
                 </b-button>
@@ -22,6 +23,10 @@
                     placeholder="Search"
                   ></b-form-input>
                 </div>
+                <font-awesome-icon class="search-input-clear regular"
+                                   icon="times"
+                                   v-if="search"
+                                   @click="search = ''"/>
                 <!-- Modal Component -->
                 <b-modal
                   id="modalAdd"

@@ -1221,6 +1221,11 @@ a {
   color: white;
   border-radius: 50%;
   background-color: $color_primary;
+
+  &.regular {
+    top: 9px;
+    right: 22px;
+  }
 }
 
 // Container that the modal scrolls within
