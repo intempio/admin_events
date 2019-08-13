@@ -116,6 +116,8 @@
   import Multiselect from 'vue-multiselect';
   import {authService} from '../services/auth-service';
   import {tableService} from '../services/table-service';
+  import orderBy from 'lodash.orderby';
+  import * as moment from 'moment';
 
   export default {
     name: 'eventtag',
@@ -123,7 +125,7 @@
     components: {
       Multiselect
     },
-    props: {eventId: String, tagType: String, title: String},
+    props: {eventId: String, tagType: String, title: String, isChecklist: Boolean},
     data: function () {
       return {
         Eventtag: [],
@@ -165,6 +167,12 @@
       },
       search: function () {
         this.filtered();
+      },
+      isChecklist: function(val) {
+        if (val) {
+          this.currentSort = 'asc';
+          this.currentSort = 'updated';
+        }
       }
     },
     methods: {
@@ -206,16 +214,17 @@
       onChange: function (tag_value, tag_name) {
         if (this.oldDescriptionValue !== tag_value) {
           const url = '/api/v3/eventtags/';
-          var data = {
+          const data = {
             event_id: this.eventId,
             tag_type: this.tagType.charAt(0).toUpperCase() + this.tagType.slice(1),
             tag_name: tag_name,
-            tag_value: tag_value
+            tag_value: tag_value,
+            updated: moment().utc(true).toDate()
           };
 
           restService
             .put(url, data)
-            .then(response => {
+            .then(() => {
               this.fetchEventtag();
               this.$toast.success(`Updated successfully`)
             })
@@ -262,13 +271,12 @@
           eventtags = this.Eventtag;
         }
 
-        eventtags = eventtags.sort((a, b) => {
-          let modifier = 1;
-          if (this.currentSortDir === 'desc') modifier = -1;
-          if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
-          if (a[this.currentSort] > b[this.currentSort]) return modifier;
-          return 0
-        });
+        if (!this.isChecklist) {
+          eventtags = orderBy(eventtags, [this.currentSort], [this.currentSortDir]);
+        } else {
+          let data = eventtags.map(i => ({...i, updated: moment(i.updated).toDate()}));
+          eventtags = orderBy(data, ['updated', 'tag_value'], ['asc', 'asc']);
+        }
 
         this.allPages = Math.ceil(eventtags.length / this.pageSize);
 

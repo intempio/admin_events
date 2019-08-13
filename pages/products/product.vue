@@ -675,7 +675,6 @@
           let data = this.modalData.map(i => ({...i, updated: moment(i.updated).toDate()}));
           this.modalData = orderBy(data, ['updated', 'tag_value'], [this.modalTableSort.dir, 'asc']);
         }
-        console.log(this.modalData);
       }
     },
     watch: {

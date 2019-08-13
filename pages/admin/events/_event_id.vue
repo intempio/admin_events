@@ -330,7 +330,7 @@
               <people :event-id="event.event_id"></people>
             </b-tab>
             <b-tab title="Checklist">
-              <eventtag :event-id="event.event_id" tag-type="checklist" title="Checklist"></eventtag>
+              <eventtag :event-id="event.event_id" tag-type="checklist" title="Checklist" :is-checklist="true"></eventtag>
             </b-tab>
             <b-tab title="Product">
               <eventtag :event-id="event.event_id" tag-type="product" title="Product"></eventtag>
@@ -491,7 +491,7 @@
               this.isEventChanged = false;
             });
           })
-          .catch(err => {
+          .catch(error => {
             this.$toast.error(`Error: ${error}`)
           });
       }
