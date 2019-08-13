@@ -87,19 +87,14 @@
           })
       },
       currentclientname: function () {
-        //debugger
         let filteredclient
         if (this.clientid == undefined || this.clients == []) {
           this.currentclient = ''
         } else {
           filteredclient = this.clients.filter(
             client => client.client_id === this.clientid
-          )
-          //console.log(this.clientid)
-          //console.log(this.clients)
-          //console.log(filteredclient)
+          );
           if (filteredclient[0] === undefined) return
-          //debugger
           this.currentclient = filteredclient[0].client_name
         }
       }
