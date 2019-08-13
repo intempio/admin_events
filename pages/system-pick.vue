@@ -15,21 +15,24 @@
           <div class="col-8 p-0 offset-2 d-flex justify-content-center">
             <div class="col-4" v-if="visibleParts.includes('admin')">
               <router-link to="/admin/clients/cf72db35-82f9-4053-a7a0-96cecc516664">
-                <div class="circle">
+                <div class="tile">
+                  <font-awesome-icon class="fa-5x mb-3" icon="calendar-week"/>
                   <span>Events</span>
                 </div>
               </router-link>
             </div>
             <div class="col-4" v-if="visibleParts.includes('products')">
               <router-link to="/products/product">
-                <div class="circle">
+                <div class="tile">
+                  <font-awesome-icon class="fa-5x mb-3" icon="box-open"/>
                   <span>Products</span>
                 </div>
               </router-link>
             </div>
             <div class="col-4" v-if="visibleParts.includes('people')">
               <router-link to="/people/people">
-                <div class="circle">
+                <div class="tile">
+                  <font-awesome-icon class="fa-5x mb-3" icon="user-friends"/>
                   <span>People</span>
                 </div>
               </router-link>
@@ -78,30 +81,30 @@
     }
   }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
   @import "../css/variables";
 
   .background-primary {
     background-color: $color_primary;
   }
 
-  .circle {
-    background-color: $color_primary;
-    border-radius: 50%;
+  a:hover {
+    text-decoration: none;
+  }
+
+  .tile {
+    border: 2px solid $color_primary;
+    border-radius: 5px;
     display: flex;
+    flex-direction: column;
     width: 100%;
     justify-content: center;
     align-items: center;
-    padding-bottom: 100%;
     cursor: pointer;
+    padding: 40px;
 
-    span {
-      position: absolute;
-      top: 43%;
-      left: 22%;
-      color: white;
-      font-size: 26px;
-      font-weight: bold;
+    &:hover:not(.disabled) {
+      background-color: lighten($color_primary, 50%);
     }
 
     &.disabled {
@@ -113,5 +116,11 @@
   h1 {
     font-size: 32px;
     font-weight: bold;
+    color: $color_primary;
+  }
+
+  span {
+    font-weight: bold;
+    font-size: 20px;
   }
 </style>
