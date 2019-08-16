@@ -64,7 +64,7 @@ module.exports = {
     // Doc: https://buefy.github.io/#/documentation
     // 'nuxt-buefy',
     'bootstrap-vue/nuxt',
-    '@nuxtjs/toast',
+    '@nuxtjs/toast'
   ],
   toast: {
     position: 'bottom-center',

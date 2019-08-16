@@ -6,7 +6,7 @@
     <div class="container-fluid mt-5" style="padding-top: 30px">
 
       <div class="row mt-1 mb-3">
-        <div class="col-6">
+        <div class="col-xl-10 col-lg-12 m-auto">
           <div class="go-back cursor-pointer" @click="goToEventList()">
             <font-awesome-icon icon="chevron-left" class="mr-2"/>
             Event list
@@ -360,7 +360,6 @@
 <script>
   import Vue from 'vue'
   import VueCtkDateTimePicker from 'vue-ctk-date-time-picker'
-  import 'vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css'
   import modal from '../../../components/History.vue'
   import people from '../../../components/PeopleAssigned.vue'
   import statusupdatemodal from '../../../components/StatusUpdateModal.vue'
