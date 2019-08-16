@@ -26,7 +26,7 @@
     },
     mounted: function () {
       this.$router.push({
-        path: '/admin/clients/cf72db35-82f9-4053-a7a0-96cecc516664'
+        path: '/system-pick'
       });
       authService.authenticated.subscribe(val => !val ? this.goToLoginPage() : null);
     },

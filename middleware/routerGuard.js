@@ -3,9 +3,8 @@ import get from 'lodash.get';
 import {PERMISSIONS} from '../const/permissions';
 
 export default function ({app, route, redirect}) {
-  if ((route.path !== '/callback' && route.path !== '/login') && !app.router.app.$auth.isAuthenticated()) {
+  if ((!unprotectedRoutes.includes(route.path)) && !app.router.app.$auth.isAuthenticated()) {
     localStorage.setItem('requestedUrl', route.path);
-    console.log(route.path);
     redirect('/login');
     return;
   }
@@ -31,4 +30,5 @@ export default function ({app, route, redirect}) {
 }
 
 const guardedRoutes = ['admin', 'products', 'people'];
+const unprotectedRoutes = ['/callback', '/login', '/event-form-open'];
 

@@ -73,11 +73,11 @@
                       formatted="YYYY-MM-DD HH:mm"
                       :no-header=true
                       color="#0097e1"
-                      :min-date="form.estimated_time ? form.estimated_time : timeNow"
+                      :min-date="timeNow"
+                      :max-date="form.estimated_time ? form.estimated_time : ''"
                       minute-interval="15"
                       v-validate="'required'"
                       name="contactDateTime"
-                      @input="validateTime"
                       :class="{'input': true, 'is-danger': errors.has('contactDateTime') }"
                     ></VueCtkDateTimePicker>
                     <div class="text-danger font-xs" v-show="errors.has('contactDateTime')">The field is required
@@ -112,8 +112,8 @@
   import VueCtkDateTimePicker from 'vue-ctk-date-time-picker';
   import VeeValidate from 'vee-validate';
   import {VueReCaptcha} from 'vue-recaptcha-v3'
-  import {RECAPTCHA} from '../../const/recaptcha';
-  import {restService} from '../../plugins/axios';
+  import {RECAPTCHA} from '../const/recaptcha';
+  import {restService} from '../plugins/axios';
   import get from 'lodash.get';
   import * as moment from 'moment';
 
@@ -159,11 +159,6 @@
         restService.post('api/v3/tentative-events', this.form).then(resp => {
           console.log(resp);
         });
-      },
-      validateTime() {
-        // if (this.form.estimated_time && moment(this.form.estimated_time).isBefore(moment(this.form.call_time))) {
-        //
-        // }
       }
     }
   }
