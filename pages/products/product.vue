@@ -3,7 +3,18 @@
     <div class="main">
       <clientheader :clientid="clientid ? clientid : ''" :sidebarOff="true" change-system="true"></clientheader>
 
-      <div class="container-fluid mt-5" style="padding-top: 30px">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-xl-11 col-lg-12 m-auto">
+            <div class="go-back-button cursor-pointer" @click="goHome()">
+              <font-awesome-icon icon="chevron-left" class="mr-2"/>
+              Home
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container-fluid">
         <div class="row">
           <div class="col-xl-11 col-lg-12 m-auto">
             <div class="row d-flex justify-content-end">
@@ -291,7 +302,7 @@
               ref="modal"
               :title="'Edit ' + selectedModal"
             >
-              <table class="modal-tbl">
+              <table class="modal-tbl w-100">
                 <thead>
                 <tr>
                   <th class="cursor-pointer" @click="sort('tag_name', true)">
@@ -679,6 +690,9 @@
           let data = this.modalData.map(i => ({...i, updated: moment(i.updated).toDate()}));
           this.modalData = orderBy(data, ['updated', 'tag_value'], [this.modalTableSort.dir, 'asc']);
         }
+      },
+      goHome() {
+        this.$router.push('/system-pick');
       }
     },
     watch: {

@@ -7,35 +7,45 @@
       </clientheader>
     </div>
     <div class="container-fluid" style="max-width: 1200px; height: 100vh">
-      <div style="height: 36%;" class="d-flex justify-content-center align-items-end mb-5">
+      <div style="height: 26%;" class="d-flex justify-content-center align-items-end mb-5">
         <h1>PICK A SYSTEM:</h1>
       </div>
       <div style="height: 40%;">
         <div class="row">
-          <div class="col-8 p-0 offset-2 d-flex justify-content-center">
-            <div class="col-4" v-if="visibleParts.includes('admin')">
-              <router-link to="/admin/clients/cf72db35-82f9-4053-a7a0-96cecc516664">
-                <div class="tile">
-                  <font-awesome-icon class="fa-5x mb-3" icon="calendar-week"/>
-                  <span>Events</span>
-                </div>
-              </router-link>
-            </div>
-            <div class="col-4" v-if="visibleParts.includes('products')">
-              <router-link to="/products/product">
-                <div class="tile">
-                  <font-awesome-icon class="fa-5x mb-3" icon="box-open"/>
-                  <span>Products</span>
-                </div>
-              </router-link>
-            </div>
-            <div class="col-4" v-if="visibleParts.includes('people')">
-              <router-link to="/people/people">
-                <div class="tile">
-                  <font-awesome-icon class="fa-5x mb-3" icon="user-friends"/>
-                  <span>People</span>
-                </div>
-              </router-link>
+          <div class="col-8 p-0 offset-2">
+            <div class="row d-flex justify-content-center">
+              <div class="col-4" v-if="visibleParts.includes('admin')">
+                <router-link to="/admin/clients/cf72db35-82f9-4053-a7a0-96cecc516664">
+                  <div class="tile">
+                    <font-awesome-icon class="fa-5x mb-3" icon="calendar-week"/>
+                    <span>Events</span>
+                  </div>
+                </router-link>
+              </div>
+              <div class="col-4" v-if="visibleParts.includes('products')">
+                <router-link to="/products/product">
+                  <div class="tile">
+                    <font-awesome-icon class="fa-5x mb-3" icon="box-open"/>
+                    <span>Products</span>
+                  </div>
+                </router-link>
+              </div>
+              <div class="col-4" v-if="visibleParts.includes('people')">
+                <router-link to="/people/people">
+                  <div class="tile">
+                    <font-awesome-icon class="fa-5x mb-3" icon="user-friends"/>
+                    <span>People</span>
+                  </div>
+                </router-link>
+              </div>
+              <div class="col-4" v-if="visibleParts.includes('people')">
+                <router-link to="/tentative-events">
+                  <div class="tile">
+                    <font-awesome-icon class="fa-5x mb-3" icon="calendar-day"/>
+                    <span>T-events</span>
+                  </div>
+                </router-link>
+              </div>
             </div>
           </div>
         </div>
@@ -102,6 +112,7 @@
     align-items: center;
     cursor: pointer;
     padding: 40px;
+    margin-bottom: 24px;
 
     &:hover:not(.disabled) {
       background-color: lighten($color_primary, 50%);

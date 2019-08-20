@@ -1,7 +1,7 @@
 <template>
   <section>
     <clientheader :clientid="this.$route.params.client_id"></clientheader>
-    <section class="main-content content main" id="page-wrap">
+    <section class="main-content content" id="page-wrap">
       <div id="wrap">
         <div class="filter-container right-align" style="margin-bottom: 25px">
           <addeventmodal ref="add_event_modal" :client-id="this.$route.params.client_id"></addeventmodal>

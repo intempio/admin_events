@@ -3,11 +3,11 @@
 
     <clientheader :clientid="clientid" change-system="true"></clientheader>
 
-    <div class="container-fluid mt-5" style="padding-top: 30px">
+    <div class="container-fluid">
 
-      <div class="row mt-1 mb-3">
+      <div class="row">
         <div class="col-xl-10 col-lg-12 m-auto">
-          <div class="go-back cursor-pointer" @click="goToEventList()">
+          <div class="go-back-button cursor-pointer" @click="goToEventList()">
             <font-awesome-icon icon="chevron-left" class="mr-2"/>
             Event list
           </div>
@@ -574,11 +574,6 @@
     .card-header {
       background-color: $color_primary;
     }
-  }
-
-  .go-back {
-    width: 100px;
-    color: darken($color_primary, 10%);
   }
 
 </style>

@@ -4,7 +4,18 @@
 
       <clientheader :clientid="clientid ? clientid : ''" :sidebarOff="true" change-system="true"></clientheader>
 
-      <div class="container-fluid mt-5" style="padding-top: 30px">
+      <div class="container-fluid">
+        <div class="row mt-1 mb-3">
+          <div class="col-xl-10 col-lg-12 m-auto">
+            <div class="go-back-button cursor-pointer" @click="goHome()">
+              <font-awesome-icon icon="chevron-left" class="mr-2"/>
+              Home
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container-fluid">
         <div class="row">
           <div class="col-xl-10 col-lg-12 m-auto">
             <div class="row mt-3">
@@ -448,6 +459,9 @@
         });
 
         this.persons = list;
+      },
+      goHome() {
+        this.$router.push('/system-pick');
       }
     },
     watch: {
@@ -461,6 +475,6 @@
     }
   };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
   @import "../../css/people-products";
 </style>

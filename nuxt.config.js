@@ -5,6 +5,7 @@ module.exports = {
     /*API ENVIRONMENT VARIABLES*/
     VUE_APP_API:
       process.env.VUE_APP_API || 'https://api-staging.cribs.intemp.io',
+      // process.env.VUE_APP_API || 'https://intempio-cribs-api-qa-pr-32.herokuapp.com',
 
     /*PEOPLEASSIGNED and EVENTTAG ENVIRONMENT VARIABLES*/
     CHECKLIST_ITEMS: process.env.CHECKLIST_ITEMS,

@@ -1,65 +1,81 @@
 <template>
   <section>
     <clientheader :clientid="this.$route.params.client_id" change-system="true"></clientheader>
-    <div class="col-xl-10 col-lg-12 m-auto">
 
-      <section class="main-content content main" id="page-wrap">
-        <div id="wrap">
-          <div class="filter-container" style="margin-bottom: 25px">
-            <div class="row w-100 ml-0">
-              <div class="col-4 px-0">
-                <b-form-input
-                  type="text"
-                  class="filter-item search-input input"
-                  placeholder="Search"
-                  v-model="search"
-                ></b-form-input>
-              </div>
-              <div class="col-4 pr-0">
-                <div class="date-time-picker-wrap">
-                  <VueCtkDateTimePicker
-                    id="CtkDateTimePicker"
-                    v-model="dateRange"
-                    :no-button-now=true
-                    :range="true"
-                    color="#0097e1"
-                    :only-date=true
-                    formatted="YYYY-MM-DD"
-                    format="YYYY-MM-DD"
-                  ></VueCtkDateTimePicker>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-xl-10 col-lg-12 m-auto">
+          <div class="go-back-button cursor-pointer" @click="goHome()">
+            <font-awesome-icon icon="chevron-left" class="mr-2"/>
+            Home
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-xl-10 col-lg-12 m-auto">
+          <section class="main-content content" id="page-wrap">
+            <div id="wrap">
+              <div class="filter-container" style="margin-bottom: 25px">
+                <div class="row w-100 ml-0">
+                  <div class="col-4 px-0">
+                    <b-form-input
+                      type="text"
+                      class="filter-item search-input input"
+                      placeholder="Search"
+                      v-model="search"
+                    ></b-form-input>
+                  </div>
+                  <div class="col-4 pr-0">
+                    <div class="date-time-picker-wrap">
+                      <VueCtkDateTimePicker
+                        id="CtkDateTimePicker"
+                        v-model="dateRange"
+                        :no-button-now=true
+                        :range="true"
+                        color="#0097e1"
+                        :only-date=true
+                        formatted="YYYY-MM-DD"
+                        format="YYYY-MM-DD"
+                      ></VueCtkDateTimePicker>
+                    </div>
+                  </div>
+                  <div class="col-2 pr-0">
+                    <button @click="onSearch()" class="search-icon cstm">
+                      <font-awesome-icon icon="search"/>
+                    </button>
+                    <button @click="onClear()"
+                            class="search-icon cstm"
+                            v-if="dateRange || search">
+                      <font-awesome-icon icon="times"/>
+                    </button>
+                  </div>
+                  <div class="col-2 pr-0 d-flex justify-content-end" v-if="permissions.includes('CREATE')">
+                    <addeventmodal ref="add_event_modal" :client-id="this.$route.params.client_id"></addeventmodal>
+                    <button class="add_btn cstm" @click="AddEventModal">
+                      <font-awesome-icon class="icon" icon="calendar-plus"/>
+                      Add
+                    </button>
+                  </div>
                 </div>
               </div>
-              <div class="col-2 pr-0">
-                <button @click="onSearch()" class="search-icon cstm">
-                  <font-awesome-icon icon="search"/>
-                </button>
-                <button @click="onClear()"
-                        class="search-icon cstm"
-                        v-if="dateRange || search">
-                  <font-awesome-icon icon="times"/>
-                </button>
-              </div>
-              <div class="col-2 pr-0 d-flex justify-content-end" v-if="permissions.includes('CREATE')">
-                <addeventmodal ref="add_event_modal" :client-id="this.$route.params.client_id"></addeventmodal>
-                <button class="add_btn cstm" @click="AddEventModal">
-                  <font-awesome-icon class="icon" icon="calendar-plus"/>
-                  Add
-                </button>
-              </div>
-            </div>
-          </div>
-          <events-list :events="events"
-                       :fetchEvents="fetchEvents"
-                       table-name="eventsList">
-          </events-list>
+              <events-list :events="events"
+                           :fetchEvents="fetchEvents"
+                           table-name="eventsList">
+              </events-list>
 
-          <h2 class="mt-5">Recent Updates:</h2>
-          <events-list :events="recentEvents"
-                       table-name="recentEvents">
-          </events-list>
+              <h2 class="mt-5">Recent Updates:</h2>
+              <events-list :events="recentEvents"
+                           table-name="recentEvents">
+              </events-list>
+            </div>
+          </section>
         </div>
-      </section>
+      </div>
     </div>
+
 
   </section>
 </template>
@@ -178,6 +194,9 @@
         this.dateRange = null;
         this.fetchEvents();
         this.fetchRecentEvents();
+      },
+      goHome() {
+        this.$router.push('/system-pick');
       }
     },
     components: {

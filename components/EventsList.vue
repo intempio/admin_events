@@ -166,7 +166,7 @@
         }
       },
       clone: async function (event_id) {
-        const url = '/api/v3/events/'
+        const url = '/api/v3/events/';
         var data = {
           event_id: event_id,
           clone: 'True'
