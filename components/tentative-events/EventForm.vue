@@ -87,6 +87,7 @@
   import get from 'lodash.get';
   import VeeValidate from 'vee-validate';
   import VueCtkDateTimePicker from 'vue-ctk-date-time-picker';
+  import {OpenForm} from '../../pages/open-form';
 
   Vue.component('VueCtkDateTimePicker', VueCtkDateTimePicker);
   Vue.use(VeeValidate);
@@ -96,14 +97,7 @@
     props: {isOpen: Boolean, eventForm: Object},
     data() {
       return {
-        form: {
-          name: '',
-          email: '',
-          estimated_time: '',
-          call_time: '',
-          comments: '',
-          token: ''
-        },
+        form: new OpenForm,
         timeNow: moment().toISOString()
       }
     },
@@ -114,6 +108,9 @@
             this.$emit('form', this.form);
           }
         });
+      },
+      clearForm() {
+        this.form = new OpenForm;
       }
     },
     watch: {

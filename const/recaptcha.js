@@ -1,3 +1,3 @@
 export const RECAPTCHA = {
-  siteKey: '6LdJv7MUAAAAACfG86wwFt2eo2YkENORhQOxSrgW'
+  siteKey: '6LeKOLUUAAAAAMGk_a5QJBXBfr2aia5ptyKO6lOb'
 };

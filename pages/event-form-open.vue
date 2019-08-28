@@ -52,16 +52,15 @@
     methods: {
       captcha(form) {
         this.$recaptcha('login').then(token => {
-          console.log('token');
-          console.log(token);
           form.token = token;
           this.sendForm(form);
         }).catch(error => this.$toast.error(error));
       },
       sendForm(form) {
-        restService.post('api/v3/tentative-events', form).then(resp => {
-          console.log(resp);
-        });
+        restService.post('api/v3/tentative-events', form).then(() => {
+          this.$toast.success('Form submitted successfully!');
+          this.$refs['openForm'].clearForm();
+        }, err => this.$toast.error(err));
       },
       submit() {
         this.$refs['openForm'].emitForm();
