@@ -37,7 +37,7 @@
       updateEvent() {
         const data = this.context;
         data.assigned_to = this.selectedItem;
-        restService.post('api/v3/tentative-events', data)
+        restService.put('api/v3/tentative-events', data)
           .then(() => {
             this.$toast.success('Event updated successfully');
             this.oldValue = this.selectedItem;

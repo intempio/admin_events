@@ -1,8 +1,9 @@
 export class OpenForm {
   name = '';
   email = '';
-  estimated_time = '';
+  phone = '';
   call_time = '';
   comments = '';
   token = '';
+  time_zone = '';
 }

@@ -13,7 +13,7 @@
         </div>
       </div>
       <div class="container-fluid">
-        <div class="row mt-3">
+        <div class="row mt-3 mb-5">
           <div class="col-xl-11 col-lg-12 m-auto">
             <c-table :items="events"
                      :cols="cols"
@@ -66,7 +66,7 @@
       this.cols = [
         {name: 'name', key: 'name'},
         {name: 'email', key: 'email'},
-        {name: 'event date', key: 'estimated_time', type: 'date'},
+        {name: 'phone', key: 'phone', type: 'date'},
         {name: 'contact', key: 'call_time', type: 'date'},
         {name: 'assigned to', key: 'assigned_to', type: 'component', component: AssignedTo, width: '180px'},
         {name: 'complete', key: 'complete', type: 'component', component: CompletedCheckbox},

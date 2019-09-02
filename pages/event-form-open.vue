@@ -46,9 +46,6 @@
   export default {
     name: 'event-form-open',
     components: {EventForm},
-    data() {
-      return {}
-    },
     methods: {
       captcha(form) {
         this.$recaptcha('login').then(token => {
@@ -60,7 +57,9 @@
         restService.post('api/v3/tentative-events', form).then(() => {
           this.$toast.success('Form submitted successfully!');
           this.$refs['openForm'].clearForm();
-        }, err => this.$toast.error(err));
+        }, err => {
+          this.$toast.error(err);
+        });
       },
       submit() {
         this.$refs['openForm'].emitForm();

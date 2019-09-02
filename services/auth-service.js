@@ -35,7 +35,7 @@ export const authService = new Vue({
     },
     getUserPermissions() {
       const userRoles = JSON.parse(localStorage.getItem('user_roles'));
-      const permissions = userRoles.reduce((prev, role) => {
+      return userRoles.reduce((prev, role) => {
         Object.keys(PERMISSIONS[role]).forEach(key => {
           if (prev.hasOwnProperty(key)) {
             prev[key] = union(prev[key], PERMISSIONS[role][key]);
@@ -46,7 +46,6 @@ export const authService = new Vue({
         });
         return prev;
       }, {});
-      return permissions;
     },
     setSession(data) {
       this.token = data.accessToken;

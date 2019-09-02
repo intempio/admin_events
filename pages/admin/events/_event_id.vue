@@ -330,6 +330,7 @@
 
       <modal ref="history_modal"
              :data="event[hModalKey]"
+             :class="{'c-modal-xl': hModalKey.includes('notes_hist')}"
              :table="hModal">
       </modal>
 

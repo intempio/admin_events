@@ -38,7 +38,7 @@
                   </div>
                 </router-link>
               </div>
-              <div class="col-4" v-if="visibleParts.includes('people')">
+              <div class="col-4" v-if="visibleParts.includes('t_events')">
                 <router-link to="/tentative-events">
                   <div class="tile">
                     <font-awesome-icon class="fa-5x mb-3" icon="calendar-day"/>
@@ -103,7 +103,7 @@
   }
 
   .tile {
-    border: 2px solid $color_primary;
+    border: 1px solid $color_primary;
     border-radius: 5px;
     display: flex;
     flex-direction: column;
@@ -126,7 +126,6 @@
 
   h1 {
     font-size: 32px;
-    font-weight: bold;
     color: $color_primary;
   }
 

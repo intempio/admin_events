@@ -734,6 +734,11 @@ table.assignee .add_btn,
   margin-top: 0;
 }
 
+.c-modal-xl .modal-container {
+  width: 90% !important;
+  max-width: 98% !important;
+}
+
 button.close {
   text-align: center;
   margin: 0 !important;
@@ -1249,10 +1254,8 @@ a {
 
 // VALIDATION
 
-.is-danger {
-  input {
-    border: 1px solid red !important;
-  }
+.vue-tel-input.is-danger, input.is-danger, .is-danger .field-input {
+  border: 1px solid red !important;
 }
 
 // TABLE
@@ -1270,4 +1273,6 @@ a {
   }
 }
 
-
+body .card-body .form-group .vue-tel-input {
+  border: 1px solid #ced4da;
+}

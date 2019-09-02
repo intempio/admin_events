@@ -26,7 +26,7 @@
       updateEvent() {
         const data = this.context;
         data.complete = this.checked;
-        restService.post('api/v3/tentative-events', data)
+        restService.put('api/v3/tentative-events', data)
           .then(() => this.$toast.success('Event updated successfully'))
           .catch(error => {
             this.checked = !this.checked;

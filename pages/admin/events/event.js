@@ -17,4 +17,5 @@ export class EventObject {
   qa_status;
   time_zone;
   send_email;
+  email_external_notes;
 }
