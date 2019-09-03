@@ -53,6 +53,17 @@
               <div v-if="col.type && col.type === 'component'">
                 <component :is="col.component" :context="item"></component>
               </div>
+              <div v-if="col.type === 'checkbox'">
+<!--                <b-form-checkbox-->
+<!--                  class="table-checkbox"-->
+<!--                  @change="col.action($event, item)"-->
+<!--                  :name="item['tentative_event_id']">-->
+<!--                </b-form-checkbox>-->
+                <input type="checkbox"
+                       :checked="item.complete === 'Y'"
+                       @change="col.action($event, item)">
+                {{item.complete === 'Y'}}
+              </div>
             </td>
           </tr>
         </tbody>

@@ -46,14 +46,13 @@
 <script>
   import clientheader from '../components/Header.vue';
   import AssignedTo from '../components/tentative-events/AssignedTo.vue';
-  import CompletedCheckbox from '../components/tentative-events/CompletedCheckbox.vue'
   import {restService} from '../plugins/axios';
   import CTable from '../components/c-table';
   import EventForm from '../components/tentative-events/EventForm';
 
   export default {
     name: 'tentative-events',
-    components: {EventForm, CTable, clientheader, AssignedTo, CompletedCheckbox},
+    components: {EventForm, CTable, clientheader, AssignedTo},
     data() {
       return {
         events: [],
@@ -69,7 +68,7 @@
         {name: 'phone', key: 'phone', type: 'date'},
         {name: 'contact', key: 'call_time', type: 'date'},
         {name: 'assigned to', key: 'assigned_to', type: 'component', component: AssignedTo, width: '180px'},
-        {name: 'complete', key: 'complete', type: 'component', component: CompletedCheckbox},
+        {name: 'complete', key: 'complete', type: 'checkbox', action: this.updateEvent.bind(this)},
         {name: 'updated', key: 'updated', type: 'date'},
       ];
       this.actions = [
@@ -98,6 +97,16 @@
       },
       goHome() {
         this.$router.push('/system-pick');
+      },
+      updateEvent(val, item) {
+        console.log(val);
+        item.complete = val === true ? 'Y' : 'N';
+        restService.put('api/v3/tentative-events', item)
+          .then(() => this.$toast.success('Event updated successfully'))
+          .catch(error => {
+            this.checked = !this.checked;
+            this.$toast.error(error);
+          });
       }
     }
   }

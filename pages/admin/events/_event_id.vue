@@ -7,7 +7,7 @@
 
       <div class="row">
         <div class="col-xl-10 col-lg-12 m-auto">
-          <div class="go-back-button cursor-pointer" @click="goToEventList()">
+          <div class="go-back-button cursor-pointer mb-3" @click="goToEventList()">
             <font-awesome-icon icon="chevron-left" class="mr-2"/>
             Event list
           </div>
