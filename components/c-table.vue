@@ -8,8 +8,13 @@
             <h3 class="m-0 font-weight-bold text-white">{{title}}</h3>
           </div>
           <div class="col-3 d-flex justify-content-end align-items-center">
-            <button class="btn btn-light btn-sm" v-if="!isCustomFilter" @click="customFilter('complete', true)">Show completed</button>
-            <button class="btn btn-light btn-sm" v-else @click="customFilter('complete', '')">Show all</button>
+            <button class="btn btn-light btn-sm"
+                    v-if="!filter"
+                    @click="customFilter('complete', 'Y')">Show completed
+            </button>
+            <button class="btn btn-light btn-sm"
+                    v-else
+                    @click="customFilter">Show all</button>
           </div>
           <div class="col-3 pl-0 d-flex justify-content-end align-items-center">
             <b-form-input
@@ -18,7 +23,7 @@
               v-model="search"
               placeholder="Search"
             ></b-form-input>
-            <font-awesome-icon class="search-input-clear"
+            <font-awesome-icon class="search-input-clear in-table"
                                icon="times"
                                v-if="search"
                                @click="search = ''"/>
@@ -28,44 +33,55 @@
       <table>
 
         <thead>
-          <tr>
-            <th></th>
-            <th v-for="col in cols" class="tbl-sort" @click="sort(col.key)"
-                :style="{'width': col.width ? col.width : ''}">
-              <span class="text-capitalize">{{col.name}}</span>
-              <font-awesome-icon icon="sort" size="lg" v-if="currentSort !== col.key"/>
-              <font-awesome-icon icon="caret-down" size="lg"
-                                 v-if="currentSort === col.key && currentSortDir === 'asc'"/>
-              <font-awesome-icon icon="caret-up" size="lg"
-                                 v-if="currentSort === col.key && currentSortDir === 'desc'"/>
-            </th>
-          </tr>
+        <tr>
+          <th></th>
+          <th v-for="col in cols" class="tbl-sort" @click="sort(col.key)"
+              :style="{'width': col.width ? col.width : ''}">
+            <span class="text-capitalize">{{col.name}}</span>
+            <font-awesome-icon icon="sort" size="lg" v-if="currentSort !== col.key"/>
+            <font-awesome-icon icon="caret-down" size="lg"
+                               v-if="currentSort === col.key && currentSortDir === 'asc'"/>
+            <font-awesome-icon icon="caret-up" size="lg"
+                               v-if="currentSort === col.key && currentSortDir === 'desc'"/>
+          </th>
+        </tr>
         </thead>
 
         <tbody>
-          <tr v-for="(item, index) in sortedItems" v-bind:key="index">
-            <td v-if="actions">
-              <button v-for="btn in actions" type="button" class="btn btn-info btn-sm" @click="btn.action(item)">{{btn.label}}</button>
-            </td>
-            <td v-for="col in cols">
-              <span v-if="!col.type">{{item[col.key]}}</span>
-              <span v-if="col.type && col.type === 'date'">{{getDateTime(item[col.key], col.dateFormat)}}</span>
-              <div v-if="col.type && col.type === 'component'">
-                <component :is="col.component" :context="item"></component>
-              </div>
-              <div v-if="col.type === 'checkbox'">
-<!--                <b-form-checkbox-->
-<!--                  class="table-checkbox"-->
-<!--                  @change="col.action($event, item)"-->
-<!--                  :name="item['tentative_event_id']">-->
-<!--                </b-form-checkbox>-->
-                <input type="checkbox"
-                       :checked="item.complete === 'Y'"
-                       @change="col.action($event, item)">
-                {{item.complete === 'Y'}}
-              </div>
-            </td>
-          </tr>
+        <tr v-for="(item, index) in sortedItems" v-bind:key="index">
+          <td v-if="actions">
+            <button v-for="btn in actions" type="button" class="btn btn-info btn-sm" @click="btn.action(item)">
+              {{btn.label}}
+            </button>
+          </td>
+          <td v-for="col in cols">
+            <span v-if="!col.type">{{item[col.key]}}</span>
+            <span v-if="col.type && col.type === 'date'">{{getDateTime(item[col.key], col.dateFormat)}}</span>
+            <div v-if="col.type && col.type === 'component'">
+              <component :is="col.component" :context="item"></component>
+            </div>
+            <div v-if="col.type === 'checkbox'">
+              <b-form-checkbox
+                class="table-checkbox"
+                :checked="item.complete === 'Y'"
+                @change="col.action($event, item, col.name)">
+              </b-form-checkbox>
+            </div>
+            <div v-if="col.type === 'select'">
+              <multiselect :options="col.items"
+                           name="sel"
+                           :value="item[col.key]"
+                           selectLabel="Select"
+                           deselectLabel="Clear"
+                           selectedLabel=""
+                           :searchable="false"
+                           :allowEmpty="true"
+                           placeholder="Management"
+                           @input="col.action($event, item, col.name)">
+              </multiselect>
+            </div>
+          </td>
+        </tr>
         </tbody>
 
       </table>
@@ -99,9 +115,13 @@
   import {authService} from '../services/auth-service';
   import orderBy from 'lodash.orderby';
   import * as moment from 'moment';
+  import Multiselect from 'vue-multiselect';
 
   export default {
     name: 'c-table',
+    components: {
+      Multiselect
+    },
     props: {
       title: String,
       items: Array,
@@ -121,7 +141,7 @@
         currentSortDir: 'asc',
         permissions: [],
         sortedItems: [],
-        isCustomFilter: false
+        filter: ''
       }
     },
     created() {
@@ -163,12 +183,10 @@
           this.sortItems();
         }
       },
-      sortItems(list) {
-        const originalList = list ? list : this.items;
+      sortItems() {
         let items;
-
         if (this.search) {
-          items = originalList.filter(tag => {
+          items = this.items.filter(tag => {
             const results = Object.keys(tag).reduce((prev, key) => {
               if ((typeof tag[key] === 'string' || typeof tag[key] === 'number') && key !== 'tag_type') {
                 const text = tag[key].toString().toLowerCase();
@@ -180,7 +198,11 @@
             return results.some(e => !!e);
           })
         } else {
-          items = originalList;
+          items = this.items;
+        }
+
+        if (this.filter) {
+          items = items.filter(item => item[this.filter.key] === this.filter.value);
         }
 
         items = orderBy(items, [this.currentSort], [this.currentSortDir]);
@@ -202,14 +224,15 @@
         this.sortedItems = items;
       },
       customFilter(key, value) {
-        if (value) {
-          this.sortedItems = this.sortedItems.filter(i => i[key] === value);
-          this.sortItems(this.sortedItems);
-          this.isCustomFilter = true;
+        if (key && value) {
+          this.filter = {
+            key: key,
+            value: value
+          };
         } else {
-          this.isCustomFilter = false;
-          this.sortItems();
+          this.filter = '';
         }
+        this.sortItems();
       },
     },
     watch: {

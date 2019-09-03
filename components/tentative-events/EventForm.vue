@@ -154,9 +154,10 @@
       },
       updateFormValues() {
         if (this.isOpen) {
+          const timezone = get(this.$route.query, 'timezone');
           this.form.name = get(this.$route.query, 'name');
           this.form.email = get(this.$route.query, 'email');
-          this.form.time_zone = get(this.$route.query, 'timezone');
+          this.form.time_zone = timezone ? timezone : 'EST';
         } else {
           this.form = this.eventForm;
         }
