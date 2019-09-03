@@ -39,7 +39,8 @@
     "vue-burger-menu": "^1.0.9",
     "vue-ctk-date-time-picker": "^2.0.4",
     "vue-multiselect": "^2.1.6",
-    "vue-recaptcha-v3": "^1.5.0"
+    "vue-recaptcha-v3": "^1.5.0",
+    "vue-tel-input": "^3.1.6"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.1",
