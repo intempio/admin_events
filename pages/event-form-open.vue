@@ -10,8 +10,8 @@
       </div>
     </div>
 
-    <div class="container">
-      <div class="row mt-5 pt-4">
+    <div class="container mb-5">
+      <div class="row mt-5 pt-4 mb-4">
         <div class="col-xl-8 col-lg-9 col-md-10 col-sm-12 col-12 m-auto">
 
           <div class="card w-100 mt-4">
@@ -21,15 +21,26 @@
               <EventForm :is-open="true" @form="captcha" ref="openForm"></EventForm>
             </div>
 
-            <div class="card-footer d-flex justify-content-end">
-              <button type="button" class="cstm" @click="submit">Submit</button>
+            <div class="card-footer">
+              <div class="row d-flex justify-content-end">
+                <div class="col-12 m-0 d-flex justify-content-end">
+                  <button type="button" class="cstm" @click="submit">Submit</button>
+                </div>
+
+                <div class="col-8 col-md-7 col-lg-6 mt-3 d-flex justify-content-end align-items-center">
+                <span class="text-right text-muted font-xs">This site is protected by reCAPTCHA and the Google
+                  <a href="https://policies.google.com/privacy">Privacy Policy</a> and
+                  <a href="https://policies.google.com/terms">Terms of Service</a> apply.
+                </span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </section>
 
+  </section>
 </template>
 
 <script>
@@ -40,7 +51,8 @@
   import EventForm from '../components/tentative-events/EventForm';
 
   Vue.use(VueReCaptcha, {
-    siteKey: RECAPTCHA.siteKey
+    siteKey: RECAPTCHA.siteKey,
+    autoHideBadge: true
   });
 
   export default {

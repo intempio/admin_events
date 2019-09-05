@@ -65,7 +65,7 @@
       this.cols = [
         {name: 'name', key: 'name'},
         {name: 'email', key: 'email'},
-        {name: 'phone', key: 'phone', type: 'date'},
+        {name: 'phone', key: 'phone'},
         {name: 'contact', key: 'call_time', type: 'date'},
         {name: 'assigned to', key: 'assigned_to', type: 'select', action: this.updateEvent.bind(this), items: this.items},
         {name: 'complete', key: 'complete', type: 'checkbox', action: this.updateEvent.bind(this)},

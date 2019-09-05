@@ -1,5 +1,11 @@
-@media screen and (max-width: 415px) {
+@media screen and (max-width: 812px) {
   .pickers-container {
     height: 100%;
+  }
+}
+
+@media screen and (max-width: 812px), screen and (orientation: landscape) and (max-width: 740px) {
+  .vue-tel-input .dropdown ul {
+    transform: translate(-160px, 10px);
   }
 }

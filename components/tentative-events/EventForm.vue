@@ -78,7 +78,7 @@
         <label>Time zone:</label>
       </div>
       <div class="col-8">
-        <b-form-input v-model="form.time_zone" disabled></b-form-input>
+        <b-form-input v-model="form.time_zone" readonly></b-form-input>
       </div>
     </div>
 

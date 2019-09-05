@@ -454,6 +454,7 @@
           .then(() => {
             this.isEventChanged = false;
             this.isEventSaved = true;
+            this.event.external_notes = '';
             this.fetchEvent();
             setTimeout(() => {
               this.isEventSaved = false;

@@ -52,6 +52,10 @@ body, #app {
   font-size: 12px;
 }
 
+.font-sm {
+  font-size: 14px;
+}
+
 .c-flex-center-center {
   display: flex;
   justify-content: center;
@@ -922,6 +926,8 @@ input.filter-item.search-input {
 
 .modal-container {
   width: 80%;
+  max-height: 90vh;
+  overflow-y: auto;
   max-width: 800px;
   margin: 0 auto;
   padding: 20px 20px 30px;
@@ -1282,3 +1288,10 @@ a {
 body .card-body .form-group .vue-tel-input {
   border: 1px solid #ced4da;
 }
+
+// recaptcha
+
+.grecaptcha-badge {
+  visibility: hidden;
+}
+
