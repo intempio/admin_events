@@ -29,6 +29,6 @@ export default function ({app, route, redirect}) {
   }
 }
 
-const guardedRoutes = ['admin', 'products', 'people'];
+const guardedRoutes = ['admin', 'products', 'people', 'tentative-events'];
 const unprotectedRoutes = ['/callback', '/login', '/event-form-open'];
 

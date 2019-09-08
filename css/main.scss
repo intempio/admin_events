@@ -774,7 +774,7 @@ button.close {
     }
   }
 
-  header {
+  header.modal-header {
     background-color: $color_dark_green;
     color: #ffffff;
   }
@@ -1266,7 +1266,7 @@ a {
 
 // VALIDATION
 
-.vue-tel-input.is-danger, input.is-danger, .is-danger .field-input {
+.vue-tel-input.is-danger, input.is-danger, .is-danger .field-input, .vdp-datepicker.is-danger input {
   border: 1px solid red !important;
 }
 
@@ -1295,3 +1295,8 @@ body .card-body .form-group .vue-tel-input {
   visibility: hidden;
 }
 
+// vdp-datepicker input
+
+.vdp-datepicker input {
+  background-color: transparent !important;
+}
