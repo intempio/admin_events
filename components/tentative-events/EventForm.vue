@@ -66,7 +66,7 @@
           </div>
           <div class="col-sm-1 col-6 d-none p-0 d-sm-flex justify-content-end align-items-center">time:</div>
           <div class="col-sm-5 col-6 d-none d-sm-block m-0">
-            <b-form-input v-model="form.time" type="time"></b-form-input>
+            <b-form-input v-model="time" type="time"></b-form-input>
           </div>
         </div>
         <div class="row">
@@ -82,7 +82,7 @@
         <label>Call time:</label>
       </div>
       <div class="col-8">
-        <b-form-input v-model="form.time" type="time"></b-form-input>
+        <b-form-input v-model="time" type="time"></b-form-input>
       </div>
     </div>
 
@@ -139,18 +139,22 @@
         validated: false,
         disabledDates: {
           to: moment().toDate()
-        }
+        },
+        time: ''
       }
-    },
-    created() {
-      this.updateFormValues();
     },
     methods: {
       emitForm() {
         this.validated = true;
         this.$validator.validateAll().then((result) => {
           if (result) {
-            this.$emit('form', this.form);
+            const data = this.form;
+            if (this.time) {
+              const hour = Number(this.time.split(':')[0]);
+              const minute = Number(this.time.split(':')[1]);
+              data.call_time = moment(data.call_time).set('hour', hour).set('minute', minute).utc(true).toDate();
+            }
+            this.$emit('form', data);
           }
         });
       },
@@ -178,13 +182,15 @@
           this.form.time_zone = timezone ? timezone : 'EST';
         } else {
           this.form = JSON.parse(JSON.stringify(this.eventForm));
+          const hour = moment(this.eventForm.call_time).format('HH');
+          const minute = moment(this.eventForm.call_time).format('mm');
+          this.time = `${hour}:${minute}`;
         }
       }
     },
     watch: {
       eventForm: function (val) {
         if (val) {
-          this.disabledDates.to = null;
           this.updateFormValues();
         }
       }

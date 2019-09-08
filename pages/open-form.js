@@ -6,5 +6,4 @@ export class OpenForm {
   comments = '';
   token = '';
   time_zone = '';
-  time = '';
 }
