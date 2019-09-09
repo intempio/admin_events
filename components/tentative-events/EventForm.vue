@@ -127,6 +127,14 @@
       Datepicker
     },
     props: {isOpen: Boolean, eventForm: Object},
+    created() {
+      if (this.isOpen) {
+        const timezone = get(this.$route.query, 'timezone');
+        this.form.name = get(this.$route.query, 'name');
+        this.form.email = get(this.$route.query, 'email');
+        this.form.time_zone = timezone ? timezone : 'EST';
+      }
+    },
     data() {
       return {
         form: new OpenForm,
@@ -175,12 +183,7 @@
         this.phone.country = country && country.name;
       },
       updateFormValues() {
-        if (this.isOpen) {
-          const timezone = get(this.$route.query, 'timezone');
-          this.form.name = get(this.$route.query, 'name');
-          this.form.email = get(this.$route.query, 'email');
-          this.form.time_zone = timezone ? timezone : 'EST';
-        } else {
+        if (!this.isOpen) {
           this.form = JSON.parse(JSON.stringify(this.eventForm));
           const hour = moment(this.eventForm.call_time).format('HH');
           const minute = moment(this.eventForm.call_time).format('mm');
