@@ -15,5 +15,11 @@ export const PERMISSIONS = {
   OpsAdmin: {
     admin: ['CREATE', 'READ', 'EDIT'],
     people: ['CREATE', 'READ', 'EDIT']
+  },
+  AccountManagement: {
+    admin: ['READ'],
+    products: ['READ'],
+    people: ['READ'],
+    t_events: ['CREATE', 'READ', 'EDIT']
   }
 };
