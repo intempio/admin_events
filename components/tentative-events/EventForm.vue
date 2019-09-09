@@ -34,11 +34,12 @@
                        :required="true"
                        placeholder=""
                        name="phoneInput"
-                       v-validate="'required'"
+                       :v-validate="isOpen ? 'required' : ''"
                        :default-country="'us'"
                        @input="onPhoneChange">
         </vue-tel-input>
-        <div class="text-danger font-xs" v-show="errors.has('phoneInput')">The field is required</div>
+        <div class="text-danger font-xs" v-show="!phone.valid && (phone.number || validated)">Phone number not valid
+        </div>
       </div>
     </div>
     <div class="row form-group">
@@ -194,6 +195,7 @@
     watch: {
       eventForm: function (val) {
         if (val) {
+          this.validated = false;
           this.updateFormValues();
         }
       }

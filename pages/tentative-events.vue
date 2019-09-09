@@ -89,7 +89,10 @@
       formSave(form) {
         this.$refs['eventEdit'].hide();
         restService.put('api/v3/tentative-events', form)
-          .then(() => this.$toast.success('Event updated successfully'))
+          .then(() => {
+            this.getEvents();
+            this.$toast.success('Event updated successfully');
+          })
           .catch(error => this.$toast.error(`Error: ${error}`))
       },
       formUpdate() {

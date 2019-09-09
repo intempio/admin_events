@@ -1295,6 +1295,12 @@ body .card-body .form-group .vue-tel-input {
   visibility: hidden;
 }
 
+// vue-tel-input
+
+body .vue-tel-input.form-control {
+  border: 1px solid #ced4da;
+}
+
 // vdp-datepicker input
 
 .vdp-datepicker input {
