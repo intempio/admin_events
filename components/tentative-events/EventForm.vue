@@ -113,12 +113,10 @@
   import * as moment from 'moment';
   import get from 'lodash.get';
   import VeeValidate from 'vee-validate';
-  import VueCtkDateTimePicker from 'vue-ctk-date-time-picker';
   import {OpenForm} from '../../pages/open-form';
   import {VueTelInput} from 'vue-tel-input';
   import Datepicker from 'vuejs-datepicker';
 
-  Vue.component('VueCtkDateTimePicker', VueCtkDateTimePicker);
   Vue.use(VeeValidate);
 
   export default {
@@ -130,10 +128,7 @@
     props: {isOpen: Boolean, eventForm: Object},
     created() {
       if (this.isOpen) {
-        const timezone = get(this.$route.query, 'timezone');
-        this.form.name = get(this.$route.query, 'name');
-        this.form.email = get(this.$route.query, 'email');
-        this.form.time_zone = timezone ? timezone : 'EST';
+        this.setQueryValues();
       }
     },
     data() {
@@ -161,22 +156,19 @@
             if (this.time) {
               const hour = Number(this.time.split(':')[0]);
               const minute = Number(this.time.split(':')[1]);
-              data.call_time = moment(data.call_time).set('hour', hour).set('minute', minute).utc(true).toDate();
+              data.call_time = moment(data.call_time).set('hour', hour).set('minute', minute).utc(true).format('MM-DD-YYYY HH:mm:ss');
+            } else {
+              data.call_time = moment(data.call_time).startOf('day').format('MM-DD-YYYY HH:mm:ss');
             }
             this.$emit('form', data);
           }
         });
       },
-      clearForm() {
-        this.validated = false;
-        this.form = new OpenForm;
-        this.$validator.pause();
-        this.$nextTick(() => {
-          this.$validator.errors.clear();
-          this.$validator.fields.items.forEach(field => field.reset());
-          this.$validator.fields.items.forEach(field => this.errors.remove(field));
-          this.$validator.resume();
-        })
+      setQueryValues() {
+        const timezone = get(this.$route.query, 'timezone');
+        this.form.name = get(this.$route.query, 'name');
+        this.form.email = get(this.$route.query, 'email');
+        this.form.time_zone = timezone ? timezone : 'EST';
       },
       onPhoneChange(formattedNumber, {number, valid, country}) {
         this.phone.number = number['international'];
