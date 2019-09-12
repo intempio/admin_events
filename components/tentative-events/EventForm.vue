@@ -112,6 +112,7 @@
   import Vue from 'vue';
   import * as moment from 'moment';
   import get from 'lodash.get';
+  import isEqual from 'lodash.isequal';
   import VeeValidate from 'vee-validate';
   import {OpenForm} from '../../pages/open-form';
   import {VueTelInput} from 'vue-tel-input';
@@ -148,11 +149,23 @@
       }
     },
     methods: {
+      prepareForm() {
+        if (!this.isOpen) {
+          if (!isEqual(this.form, this.eventForm)) {
+            this.emitForm();
+          } else {
+            this.$emit('form', null);
+          }
+        } else {
+          this.emitForm();
+        }
+      },
       emitForm() {
         this.validated = true;
         this.$validator.validateAll().then((result) => {
           if (result) {
             const data = this.form;
+            data.phone = this.phone.number || this.form.phone;
             if (this.time) {
               const hour = Number(this.time.split(':')[0]);
               const minute = Number(this.time.split(':')[1]);

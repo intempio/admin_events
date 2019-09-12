@@ -101,7 +101,7 @@
         });
       },
       submit() {
-        this.$refs['openForm'].emitForm();
+        this.$refs['openForm'].prepareForm();
       }
     }
   }
