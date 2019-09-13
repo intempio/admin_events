@@ -143,11 +143,13 @@
                       </b-select>
                     </div>
                     <div class="col-1 p-0 d-flex align-items-end">
-
                       <button class="history cstm" @click="openHistoryModal('production_status_hist')">
                         <font-awesome-icon class="icon" icon="history"/>
                       </button>
                     </div>
+                  </div>
+                  <div class="col-12 m-3">
+                    <a :href="calendarLink" target="_blank">See calendar event</a><br>
                   </div>
                 </div>
               </div>
@@ -241,7 +243,6 @@
                     </b-form-textarea>
                   </div>
                   <div class="col-2 pl-2 d-flex align-items-end">
-
                     <button class="history cstm" @click="openHistoryModal('internal_notes_hist')">
                       <font-awesome-icon class="icon" icon="history"/>
                     </button>
@@ -294,20 +295,32 @@
                     </b-form-textarea>
                   </div>
                   <div class="col-2 pl-2 d-flex align-items-end">
-
                     <button class="history cstm" @click="openHistoryModal('external_notes_hist')">
                       <font-awesome-icon class="icon" icon="history"/>
                     </button>
                   </div>
                 </div>
-                <div class="col-12 p-0" v-if="!isHidden">
-                  <b-form-checkbox
-                    id="checkbox-1"
-                    v-model="event.send_email"
-                    :disabled="!permissions.includes('EDIT')"
-                    name="checkbox-1"
-                  >Send notes to clients?
-                  </b-form-checkbox>
+
+                <div class="col-12 p-0 d-flex mt-2" v-if="!isHidden">
+                  <div class="col-7 p-0 pr-1">
+                    <multiselect v-model="event.email_external_notes"
+                                 :options="peopleAssigned"
+                                 label="label"
+                                 placeholder="Person"
+                                 track-by="value">
+                    </multiselect>
+                  </div>
+                  <div class="col-3 p-0">
+                    <b-button class="history secondary cstm w-100" @click="saveEventDetails()">Send</b-button>
+                  </div>
+
+                  <!--                  <b-form-checkbox-->
+                  <!--                    id="checkbox-1"-->
+                  <!--                    v-model="event.send_email"-->
+                  <!--                    :disabled="!permissions.includes('EDIT')"-->
+                  <!--                    name="checkbox-1"-->
+                  <!--                  >Send notes to clients?-->
+                  <!--                  </b-form-checkbox>-->
                 </div>
               </div>
             </div>
@@ -341,7 +354,8 @@
               <people :event-id="event.event_id"></people>
             </b-tab>
             <b-tab title="Checklist">
-              <eventtag :event-id="event.event_id" tag-type="checklist" title="Checklist" :is-checklist="true"></eventtag>
+              <eventtag :event-id="event.event_id" tag-type="checklist" title="Checklist"
+                        :is-checklist="true"></eventtag>
             </b-tab>
             <b-tab title="Product">
               <eventtag :event-id="event.event_id" tag-type="product" title="Product"></eventtag>
@@ -376,6 +390,7 @@
   import {EventObject} from './event';
   import {authService} from '../../../services/auth-service';
   import {HISTORY_MODALS} from '../../../const/history-modals';
+  import Multiselect from 'vue-multiselect';
 
   Vue.component('VueCtkDateTimePicker', VueCtkDateTimePicker);
 
@@ -387,26 +402,22 @@
           item.trim()
         )
       }
-
       let operation_statuses = OPERATION_STATUSES
       if (process.env.OPERATION_STATUSES) {
         operation_statuses = process.env.OPERATION_STATUSES.split(',').map(item =>
           item.trim()
         )
       }
-
       let qa_statuses = QA_STATUSES
       if (process.env.QA_STATUSES) {
         qa_statuses = process.env.QA_STATUSES.split(',').map(item => item.trim())
       }
-
       let production_statuses = PRODUCTION_STATUSES
       if (process.env.PRODUCTION_STATUSES) {
         production_statuses = process.env.PRODUCTION_STATUSES.split(',').map(
           item => item.trim()
         )
       }
-
       return {
         value: null,
         isHidden: true,
@@ -424,7 +435,11 @@
         permissions: [],
         hModal: {},
         hModalKey: '',
-        historyModals: HISTORY_MODALS
+        historyModals: HISTORY_MODALS,
+        calendarLink: '',
+        peopleAssigned: [
+
+        ]
       }
     },
     created() {
@@ -492,6 +507,11 @@
                 this.eventOld[key] = data[key];
               }
             }
+            if (process.env.VUE_APP_API.includes('api-staging')) {
+              this.calendarLink = 'http://qa-event-details.cribs.intemp.io/producer?id=' + this.event.event_id;
+            } else {
+              this.calendarLink = 'http://prod-event-details.cribs.intemp.io/producer?id=' + this.event.event_id;
+            }
             this.projects = response.data['project_list'];
             this.clientid = this.event.client_id;
             if (modal) {
@@ -515,7 +535,8 @@
       people,
       statusupdatemodal,
       eventtag,
-      clientheader
+      clientheader,
+      Multiselect
     }
   }
 </script>

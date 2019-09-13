@@ -3,71 +3,21 @@
     <table border="1" class="w-100">
       <thead>
       <tr>
-        <th class="tbl-sort" @click="sort('contact')">
+        <th class="tbl-sort" v-for="(header, i) in columns" :key="i" @click="sort(header.key)">
           <div class="d-flex align-items-center flex-nowrap">
-            <span class="mr-2">Contact</span>
-            <font-awesome-icon icon="sort" size="lg" v-if="currentSort !== 'contact'"/>
+            <span class="mr-2">{{header.label}}</span>
+            <font-awesome-icon icon="sort" size="lg" v-if="currentSort !== header.key"/>
             <font-awesome-icon icon="caret-down" size="lg"
-                               v-if="currentSort === 'contact' && currentSortDir === 'asc'"/>
+                               v-if="currentSort === header.key && currentSortDir === 'asc'"/>
             <font-awesome-icon icon="caret-up" size="lg"
-                               v-if="currentSort === 'contact' && currentSortDir === 'desc'"/>
-          </div>
-        </th>
-        <th class="tbl-sort" @click="sort('event_code')">
-          <div class="d-flex align-items-center flex-nowrap">
-            <span class="mr-2">Event Code</span>
-            <font-awesome-icon icon="sort" size="lg" v-if="currentSort !== 'event_code'"/>
-            <font-awesome-icon icon="caret-down" size="lg"
-                               v-if="currentSort === 'event_code' && currentSortDir === 'asc'"/>
-            <font-awesome-icon icon="caret-up" size="lg"
-                               v-if="currentSort === 'event_code' && currentSortDir === 'desc'"/>
-          </div>
-        </th>
-        <th class="tbl-sort" @click="sort('event_name')">
-          <div class="d-flex align-items-center flex-nowrap">
-            <span class="mr-2">Event Name</span>
-            <font-awesome-icon icon="sort" size="lg" v-if="currentSort !== 'event_name'"/>
-            <font-awesome-icon icon="caret-down" size="lg"
-                               v-if="currentSort === 'event_name' && currentSortDir === 'asc'"/>
-            <font-awesome-icon icon="caret-up" size="lg"
-                               v-if="currentSort === 'event_name' && currentSortDir === 'desc'"/>
-          </div>
-        </th>
-        <th class="tbl-sort" @click="sort('event_start')">
-          <div class="d-flex align-items-center flex-nowrap">
-            <span class="mr-2">Event Date</span>
-            <font-awesome-icon icon="sort" size="lg" v-if="currentSort !== 'event_start'"/>
-            <font-awesome-icon icon="caret-down" size="lg"
-                               v-if="currentSort === 'event_start' && currentSortDir === 'asc'"/>
-            <font-awesome-icon icon="caret-up" size="lg"
-                               v-if="currentSort === 'event_start' && currentSortDir === 'desc'"/>
-          </div>
-        </th>
-        <th class="tbl-sort" @click="sort('updated')">
-          <div class="d-flex align-items-center flex-nowrap">
-            <span class="mr-2">Last Updated</span>
-            <font-awesome-icon icon="sort" size="lg" v-if="currentSort !== 'updated'"/>
-            <font-awesome-icon icon="caret-down" size="lg"
-                               v-if="currentSort === 'updated' && currentSortDir === 'asc'"/>
-            <font-awesome-icon icon="caret-up" size="lg"
-                               v-if="currentSort === 'updated' && currentSortDir === 'desc'"/>
-          </div>
-        </th>
-        <th class="tbl-sort" @click="sort('client_status')">
-          <div class="d-flex align-items-center flex-nowrap">
-            <span class="mr-2">Client Status</span>
-            <font-awesome-icon icon="sort" size="lg" v-if="currentSort !== 'client_status'"/>
-            <font-awesome-icon icon="caret-down" size="lg"
-                               v-if="currentSort === 'client_status' && currentSortDir === 'asc'"/>
-            <font-awesome-icon icon="caret-up" size="lg"
-                               v-if="currentSort === 'client_status' && currentSortDir === 'desc'"/>
+                               v-if="currentSort === header.key && currentSortDir === 'desc'"/>
           </div>
         </th>
         <th style="min-width: 170px;">Actions</th>
       </tr>
       </thead>
       <tbody>
-      <tr class="sub" v-for="event in eventList" v-bind:key="event.event_id">
+      <tr class="sub" v-for="(event, i) in eventList" :key="i">
         <td>
           {{ event.contact }}
         </td>
@@ -122,6 +72,7 @@
     props: {events: Array, fetchEvents: Function, tableName: String},
     data() {
       return {
+        columns: [],
         eventList: [],
         currentSort: 'event_code',
         currentSortDir: 'asc',
@@ -141,6 +92,14 @@
         {label: '50', value: 50},
       ];
       this.pageSize = tableService.getTableSettings(this.tableName);
+      this.columns = [
+        {label: 'Contact', key: 'contact'},
+        {label: 'Event Code', key: 'event_code'},
+        {label: 'Event Name', key: 'event_name'},
+        {label: 'Event Date', key: 'event_start'},
+        {label: 'Last Updated', key: 'updated'},
+        {label: 'Client Status', key: 'client_status'}
+      ]
     },
     methods: {
       sort: function (s) {

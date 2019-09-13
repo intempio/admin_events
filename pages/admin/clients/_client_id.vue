@@ -62,7 +62,6 @@
                 </div>
               </div>
               <events-list :events="events"
-                           :fetchEvents="fetchEvents"
                            table-name="eventsList">
               </events-list>
 
@@ -112,7 +111,8 @@
       this.fetchRecentEvents();
     },
     mounted: function () {
-      this.search = this.$route.query.search
+      this.search = this.$route.query.search;
+      console.log(this.events);
     },
     methods: {
       fetchEvents: function () {
@@ -135,21 +135,14 @@
           })
       },
       fetchRecentEvents: function () {
-        let url =
-          '/api/v3/events/?clientID=' +
-          this.$route.params.client_id +
-          '&recentUpdates=true'
-
-        restService
-          .get(url)
-          .then(response => {
+        let url = '/api/v3/events/?clientID=' + this.$route.params.client_id + '&recentUpdates=true';
+        restService.get(url).then(response => {
             if (response.data['records'].length) {
               this.recentEvents = response.data['records'];
             }
-          })
-          .catch(error => {
+          }).catch(error => {
             this.$toast.error(`Error: ${error}`)
-          })
+          });
       },
       AddEventModal: function (addeventmodal) {
         this.$refs.add_event_modal.open()
