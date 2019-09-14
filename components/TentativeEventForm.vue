@@ -34,7 +34,7 @@
                        :required="true"
                        placeholder=""
                        name="phoneInput"
-                       :v-validate="isOpen ? 'required' : ''"
+                       :v-validate="'required'"
                        :default-country="'us'"
                        @input="onPhoneChange">
         </vue-tel-input>
@@ -114,14 +114,14 @@
   import get from 'lodash.get';
   import isEqual from 'lodash.isequal';
   import VeeValidate from 'vee-validate';
-  import {OpenForm} from '../../pages/open-form';
+  import {OpenForm} from '../pages/open-form';
   import {VueTelInput} from 'vue-tel-input';
   import Datepicker from 'vuejs-datepicker';
 
   Vue.use(VeeValidate);
 
   export default {
-    name: 'EventForm',
+    name: 'TentativeEventForm',
     components: {
       VueTelInput,
       Datepicker
@@ -151,7 +151,7 @@
     methods: {
       prepareForm() {
         if (!this.isOpen) {
-          if (!isEqual(this.form, this.eventForm)) {
+          if (!isEqual(this.form, this.eventForm) || moment(this.eventForm.call_time).format('HH:mm') !== this.time) {
             this.emitForm();
           } else {
             this.$emit('form', null);
@@ -163,7 +163,7 @@
       emitForm() {
         this.validated = true;
         this.$validator.validateAll().then((result) => {
-          if (result) {
+          if (result && this.phone.valid) {
             const data = this.form;
             data.phone = this.phone.number || this.form.phone;
             if (this.time) {
@@ -194,6 +194,9 @@
           const hour = moment(this.eventForm.call_time).format('HH');
           const minute = moment(this.eventForm.call_time).format('mm');
           this.time = `${hour}:${minute}`;
+          this.phone.number = this.eventForm.phone;
+          this.phone.valid = true;
+          console.log(this.phone);
         }
       }
     },

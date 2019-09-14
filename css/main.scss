@@ -928,7 +928,6 @@ input.filter-item.search-input {
 .modal-container {
   width: 80%;
   max-height: 90vh;
-  overflow-y: auto;
   max-width: 800px;
   margin: 0 auto;
   padding: 20px 20px 30px;
@@ -940,7 +939,8 @@ input.filter-item.search-input {
 }
 
 .modal-body {
-  //margin: 20px 0;
+  max-height: 70vh;
+  overflow-y: auto;
 }
 
 .modal-footer {
@@ -1267,7 +1267,7 @@ a {
 
 // VALIDATION
 
-.vue-tel-input.is-danger, input.is-danger, .is-danger .field-input, .vdp-datepicker.is-danger input {
+.vue-tel-input.is-danger, input.is-danger, .is-danger .field-input, .vdp-datepicker.is-danger input, textarea.is-danger, .multiselect.is-danger .multiselect__tags {
   border: 1px solid red !important;
 }
 

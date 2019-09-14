@@ -271,56 +271,25 @@
                 </div>
 
                 <div class="col-12 p-0">
-                  <button
-                    @click="toggleExternalNotes()"
-                    v-if="permissions.includes('EDIT')"
-                    class="history secondary cstm"
-                    id="showNotesBtn"
-                    style="margin-top: 21px"
-                  >{{isHidden ? 'Add External Notes' : 'Remove External Notes'}}
-                  </button>
+                  <label>External notes:</label>
                 </div>
 
-                <div class="col-12 p-0 d-flex" v-if="!isHidden">
+                <div class="col-12 p-0 d-flex">
                   <div class="col-10 p-0">
-                    <label>External notes:</label>
-                    <b-form-textarea
-                      v-model="event.external_notes"
-                      placeholder="External notes"
+                    <button
+                      @click="openExternalNotesModal()"
+                      v-if="permissions.includes('EDIT')"
+                      class="history secondary cstm"
                       :disabled="!permissions.includes('EDIT')"
-                      class="input"
-                      rows="2"
-                      @input="onChange"
-                    >event.external_notes
-                    </b-form-textarea>
+                      id="showNotesBtn"
+                    >Add External Notes
+                    </button>
                   </div>
                   <div class="col-2 pl-2 d-flex align-items-end">
                     <button class="history cstm" @click="openHistoryModal('external_notes_hist')">
                       <font-awesome-icon class="icon" icon="history"/>
                     </button>
                   </div>
-                </div>
-
-                <div class="col-12 p-0 d-flex mt-2" v-if="!isHidden">
-                  <div class="col-7 p-0 pr-1">
-                    <multiselect v-model="event.email_external_notes"
-                                 :options="peopleAssigned"
-                                 label="label"
-                                 placeholder="Person"
-                                 track-by="value">
-                    </multiselect>
-                  </div>
-                  <div class="col-3 p-0">
-                    <b-button class="history secondary cstm w-100" @click="saveEventDetails()">Send</b-button>
-                  </div>
-
-                  <!--                  <b-form-checkbox-->
-                  <!--                    id="checkbox-1"-->
-                  <!--                    v-model="event.send_email"-->
-                  <!--                    :disabled="!permissions.includes('EDIT')"-->
-                  <!--                    name="checkbox-1"-->
-                  <!--                  >Send notes to clients?-->
-                  <!--                  </b-form-checkbox>-->
                 </div>
               </div>
             </div>
@@ -342,16 +311,21 @@
       </div>
 
       <modal ref="history_modal"
-             :data="event[hModalKey]"
+             :data="modalData"
              :class="{'c-modal-xl': hModalKey.includes('notes_hist')}"
              :table="hModal">
       </modal>
+
+      <ExternalNotesModal ref="external_notes_modal"
+                          :data="externalNotesModalData"
+                          @external="saveExternalNote($event)"
+      ></ExternalNotesModal>
 
       <div class="row mt-3">
         <div class="col-xl-10 col-lg-12 m-auto">
           <b-tabs>
             <b-tab title="People assigned" active>
-              <people :event-id="event.event_id"></people>
+              <people :event-id="event.event_id" @update="getPeopleAssigned"></people>
             </b-tab>
             <b-tab title="Checklist">
               <eventtag :event-id="event.event_id" tag-type="checklist" title="Checklist"
@@ -367,7 +341,6 @@
         </div>
       </div>
     </div>
-
   </div>
 
 </template>
@@ -376,6 +349,7 @@
   import Vue from 'vue'
   import VueCtkDateTimePicker from 'vue-ctk-date-time-picker'
   import modal from '../../../components/History.vue'
+  import ExternalNotesModal from '../../../components/ExternalNotesModal'
   import people from '../../../components/PeopleAssigned.vue'
   import statusupdatemodal from '../../../components/StatusUpdateModal.vue'
   import eventtag from '../../../components/Eventtag.vue'
@@ -422,6 +396,7 @@
         value: null,
         isHidden: true,
         event: new EventObject,
+        eventId: '',
         eventOld: new EventObject,
         projects: [],
         clientid: null,
@@ -437,12 +412,13 @@
         hModalKey: '',
         historyModals: HISTORY_MODALS,
         calendarLink: '',
-        peopleAssigned: [
-
-        ]
+        peopleAssigned: [],
+        externalNotesModalData: {},
+        modalData: []
       }
     },
     created() {
+      this.eventId = this.$route.params.event_id;
       this.permissions = authService.getUserPermissions().admin;
       this.fetchEvent();
     },
@@ -450,7 +426,15 @@
       openHistoryModal(name) {
         this.hModal = this.historyModals[name];
         this.hModalKey = name;
-        this.fetchEvent(true);
+        this.fetchEvent(name);
+      },
+      openExternalNotesModal() {
+        this.externalNotesModalData = {
+          people: this.peopleAssigned,
+          notes: this.event.external_notes,
+          eventId: this.eventId
+        };
+        this.$refs['external_notes_modal'].open();
       },
       onChange: function () {
         this.isEventChanged = !isEqual(this.event, this.eventOld);
@@ -464,8 +448,7 @@
             }
           }
         });
-        const url = process.env.VUE_APP_API + '/api/v3/events/';
-        restService.put(url, data)
+        restService.put('/api/v3/events/', data)
           .then(() => {
             this.isEventChanged = false;
             this.isEventSaved = true;
@@ -482,17 +465,9 @@
       discardEventChanges() {
         this.fetchEvent();
       },
-      toggleExternalNotes() {
-        this.isHidden = !this.isHidden;
-        if (this.isHidden) {
-          this.event.external_notes = '';
-          this.event.send_email = undefined;
-          this.onChange();
-        }
-      },
       fetchEvent: function (modal) {
         this.isDataPatched = false;
-        const url = '/api/v3/events/' + this.$route.params.event_id;
+        const url = '/api/v3/events/' + this.eventId;
         restService.get(url)
           .then(response => {
             const data = response.data['event_records'][0];
@@ -515,6 +490,7 @@
             this.projects = response.data['project_list'];
             this.clientid = this.event.client_id;
             if (modal) {
+              this.modalData = data[modal];
               this.$refs['history_modal'].open();
             }
             setTimeout(() => {
@@ -526,8 +502,16 @@
             this.$toast.error(`Error: ${error}`)
           });
       },
+      getPeopleAssigned(list) {
+        this.peopleAssigned = list;
+      },
       goToEventList() {
         this.$router.push('/admin/clients/' + this.clientid);
+      },
+      saveExternalNote(note) {
+        console.log(note);
+        this.event.external_notes = note;
+        this.onChange();
       }
     },
     components: {
@@ -536,7 +520,8 @@
       statusupdatemodal,
       eventtag,
       clientheader,
-      Multiselect
+      Multiselect,
+      ExternalNotesModal
     }
   }
 </script>

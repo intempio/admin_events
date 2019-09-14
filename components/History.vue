@@ -1,9 +1,12 @@
 <template id="modal-template">
   <div class="modal-mask" v-show="show" transition="modal">
     <div class="modal-wrapper">
-      <div class="modal-container" v-if="data && table">
-        <div class="modal-header">
-          <h2>{{table.header}}</h2>
+      <div class="modal-container" v-if="rows.length && tab">
+        <div class="modal-header d-flex justify-content-between">
+          <h3>{{tab.header}}</h3>
+          <div class="p-2 cursor-pointer" @click="close">
+            <font-awesome-icon icon="times"/>
+          </div>
         </div>
 
         <div class="modal-body">
@@ -11,18 +14,18 @@
             <table border="0" class="history-table">
               <thead>
                 <tr>
-                  <th>{{table.colNames[0]}}</th>
-                  <th>{{table.colNames[1]}}</th>
-                  <th>{{table.colNames[2]}}</th>
+                  <th>{{tab.colNames[0]}}</th>
+                  <th>{{tab.colNames[1]}}</th>
+                  <th>{{tab.colNames[2]}}</th>
                 </tr>
               </thead>
               <tbody>
               <tr v-for="(item, i) in data" :key="i">
-                <td>{{item[table.colKeys[0]]}}</td>
-                <td>{{item[table.colKeys[1]]}}</td>
-                <td>{{item[table.colKeys[2]]}}</td>
+                <td>{{item[tab.colKeys[0]]}}</td>
+                <td>{{item[tab.colKeys[1]]}}</td>
+                <td>{{item[tab.colKeys[2]]}}</td>
               </tr>
-              <tr v-if="!data.length">
+              <tr v-if="!rows.length">
                 <td colspan="3">
                   No history records.
                 </td>
@@ -48,7 +51,11 @@
     template: '#modal-template',
     props: {data: Array, table: Object},
     data: function () {
-      return {show: false}
+      return {
+        show: false,
+        rows: [],
+        tab: ''
+      }
     },
     methods: {
       open: function () {
@@ -58,11 +65,22 @@
         this.show = false
       }
     },
-    computed: {}
+    watch: {
+      data: function (val) {
+        this.rows = val;
+        console.log('data');
+        console.log(val);
+      },
+      table: function (val) {
+        this.tab = val;
+        console.log('table');
+        console.log(val);
+      }
+    }
   }
 </script>
 <style>
-  h2 {
+  h3 {
     font-weight: bold;
   }
 </style>

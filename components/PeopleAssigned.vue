@@ -102,11 +102,11 @@
 <script>
   import {restService} from '../plugins/axios';
   import {PEOPLE_ASSIGNED_ROLES} from '../const/constants.js';
-  import get from 'lodash.get';
   import sortBy from 'lodash.sortby';
   import Multiselect from 'vue-multiselect';
   import {authService} from '../services/auth-service';
   import {tableService} from '../services/table-service';
+  import {apiService} from '../services/api-service';
 
   export default {
     name: 'people',
@@ -234,21 +234,19 @@
           .then(response => {
             const data = response.data.map(person => ({value: person.person_id, label: `${person.first_name} ${person.last_name}`}));
             this.persons = sortBy(data, 'label');
-            this.fetchPeopleAssigned()
           })
           .catch(error => {
             console.log(error);
             this.$toast.error(`Error: ${error}`)
           })
       },
-      fetchPeopleAssigned: function (personsDict) {
-        const url = '/api/v3/eventpersons/?eventID=' + this.eventId
-        restService
-          .get(url)
+      fetchPeopleAssigned: function () {
+        apiService.getPeopleAssigned(this.eventId)
           .then(response => {
             this.allPersons = response.data;
             this.peopleAssigned = response.data;
             this.filtered();
+            this.$emit('update', response.data);
           })
           .catch(err => {
             this.$toast.error(`Error: ${err}`)
@@ -265,7 +263,7 @@
           .post(url, data)
           .then(() => {
             this.$toast.success(`Added successfully`);
-            this.fetchPeopleAssigned()
+            this.fetchPeopleAssigned();
           })
           .catch(error => {
             console.log(error);
@@ -280,9 +278,9 @@
         }
         restService
           .delete(url, {data})
-          .then(response => {
+          .then(() => {
             this.peopleAssigned.splice(index, 1);
-            this.$toast.success(`Deleted successfully`)
+            this.$toast.success(`Deleted successfully`);
           })
           .catch(error => {
             console.log(error);

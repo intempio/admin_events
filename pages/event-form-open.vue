@@ -19,13 +19,13 @@
             <div class="card-header">Form</div>
 
             <div class="card-body">
-              <EventForm :is-open="true" @form="captcha" ref="openForm"></EventForm>
+              <TentativeEventForm :is-open="true" @form="captcha" ref="openForm"></TentativeEventForm>
             </div>
 
             <div class="card-footer">
               <div class="row d-flex justify-content-end">
                 <div class="col-12 m-0 d-flex justify-content-end">
-                  <button id="formSubmit" type="button" class="cstm">Submit</button>
+                  <button id="formSubmit" type="button" class="cstm" :disabled="disabled">Submit</button>
                 </div>
 
                 <div class="col-8 col-md-7 col-lg-6 mt-3 d-flex justify-content-end align-items-center">
@@ -50,7 +50,7 @@
   import {RECAPTCHA} from '../const/recaptcha';
   import {restService} from '../plugins/axios';
   import {authService} from '../services/auth-service';
-  import EventForm from '../components/tentative-events/EventForm';
+  import TentativeEventForm from '../components/TentativeEventForm';
   import Spinner from '../components/Spinner';
   import {fromEvent, Subject, interval} from 'rxjs';
   import {takeUntil, throttle} from 'rxjs/operators';
@@ -62,12 +62,13 @@
 
   export default {
     name: 'event-form-open',
-    components: {EventForm, Spinner},
+    components: {TentativeEventForm, Spinner},
     data() {
       return {
         isLoading: false,
         submission$: '',
-        onDestroy$: new Subject()
+        onDestroy$: new Subject(),
+        disabled: false
       }
     },
     created() {
@@ -80,7 +81,9 @@
         takeUntil(this.onDestroy$),
         throttle(() => interval(2000))
       ).subscribe(() => {
-        this.submit();
+        if (!this.disabled) {
+          this.submit();
+        }
       });
     },
     destroyed() {
@@ -91,7 +94,10 @@
         this.$recaptcha('login').then(token => {
           form.token = token;
           this.sendForm(form);
-        }).catch(error => this.$toast.error(error));
+        }).catch(error => {
+          this.$toast.error(error);
+          this.disableForm();
+        });
       },
       sendForm(form) {
         restService.post('api/v3/tentative-events', form).then(() => {
@@ -102,7 +108,20 @@
       },
       submit() {
         this.$refs['openForm'].prepareForm();
+      },
+      disableForm() {
+        this.disabled = true;
+        setTimeout(() => {
+          this.disabled = false;
+        }, 1000 * 10)
       }
     }
   }
 </script>
+<style scoped lang="scss">
+  button[disabled], button[disabled]:hover {
+    background-color: darkgrey;
+    opacity: 1;
+    cursor: initial;
+  }
+</style>

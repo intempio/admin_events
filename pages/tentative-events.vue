@@ -35,7 +35,7 @@
     >
       <div class="row p-5 pl-0">
         <div class="col-12">
-          <EventForm :is-open="false" :event-form="selectedEvent" @form="formSave" ref="eventForm"></EventForm>
+          <TentativeEventForm :is-open="false" :event-form="selectedEvent" @form="formSave" ref="eventForm"></TentativeEventForm>
         </div>
       </div>
     </b-modal>
@@ -47,11 +47,11 @@
   import clientheader from '../components/Header.vue';
   import {restService} from '../plugins/axios';
   import CTable from '../components/c-table';
-  import EventForm from '../components/tentative-events/EventForm';
+  import TentativeEventForm from '../components/TentativeEventForm';
 
   export default {
     name: 'tentative-events',
-    components: {EventForm, CTable, clientheader},
+    components: {TentativeEventForm, CTable, clientheader},
     data() {
       return {
         events: [],
