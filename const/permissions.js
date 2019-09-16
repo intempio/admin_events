@@ -18,8 +18,6 @@ export const PERMISSIONS = {
   },
   AccountManagement: {
     admin: ['READ'],
-    products: ['READ'],
-    people: ['READ'],
     t_events: ['CREATE', 'READ', 'EDIT']
   }
 };
