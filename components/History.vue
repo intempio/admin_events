@@ -1,7 +1,7 @@
 <template id="modal-template">
   <div class="modal-mask" v-show="show" transition="modal">
     <div class="modal-wrapper">
-      <div class="modal-container" v-if="rows.length && tab">
+      <div class="modal-container" v-if="tab">
         <div class="modal-header d-flex justify-content-between">
           <h3>{{tab.header}}</h3>
           <div class="p-2 cursor-pointer" @click="close">
@@ -68,13 +68,9 @@
     watch: {
       data: function (val) {
         this.rows = val;
-        console.log('data');
-        console.log(val);
       },
       table: function (val) {
         this.tab = val;
-        console.log('table');
-        console.log(val);
       }
     }
   }
