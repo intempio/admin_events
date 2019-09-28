@@ -112,7 +112,6 @@
     },
     mounted: function () {
       this.search = this.$route.query.search;
-      console.log(this.events);
     },
     methods: {
       fetchEvents: function () {

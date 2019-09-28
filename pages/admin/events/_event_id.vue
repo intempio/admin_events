@@ -263,7 +263,6 @@
                     </b-form-textarea>
                   </div>
                   <div class="col-2 pl-2 d-flex align-items-end">
-
                     <button class="history cstm" @click="openHistoryModal('producer_notes_hist')">
                       <font-awesome-icon class="icon" icon="history"/>
                     </button>
@@ -465,7 +464,7 @@
       discardEventChanges() {
         this.fetchEvent();
       },
-      fetchEvent: function (modal) {
+      fetchEvent(modal) {
         this.isDataPatched = false;
         const url = '/api/v3/events/' + this.eventId;
         restService.get(url)
@@ -509,7 +508,6 @@
         this.$router.push('/admin/clients/' + this.clientid);
       },
       saveExternalNote(note) {
-        console.log(note);
         this.event.external_notes = note;
         this.onChange();
       }

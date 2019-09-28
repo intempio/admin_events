@@ -9,7 +9,7 @@
           </div>
         </div>
 
-        <div class="modal-body">
+        <div class="modal-body" style="overflow-y: visible">
           <div class="row">
             <div class="col-12">
               <b-form-textarea

@@ -196,7 +196,6 @@
           this.time = `${hour}:${minute}`;
           this.phone.number = this.eventForm.phone;
           this.phone.valid = true;
-          console.log(this.phone);
         }
       }
     },
