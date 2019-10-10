@@ -439,12 +439,17 @@
         this.isEventChanged = !isEqual(this.event, this.eventOld);
       },
       saveEventDetails() {
-        const data = {};
+        let data = {};
         forOwn(this.event, (val, key) => {
           if (typeof val !== 'object') {
             if (this.eventOld[key] !== val || key === 'event_id' || key === 'client_id') {
               data[key] = val;
             }
+          }
+        });
+        Object.keys(data).map(v => {
+          if (typeof data[v] === 'string') {
+            data[v] = data[v].trim();
           }
         });
         restService.put('/api/v3/events/', data)
@@ -520,7 +525,7 @@
       clientheader,
       Multiselect,
       ExternalNotesModal
-    }
+    },
   }
 </script>
 <style lang="scss">
