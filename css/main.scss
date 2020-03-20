@@ -49,6 +49,10 @@ body, #app {
   padding-right: 2% !important;
 }
 
+.f-30 {
+  font-size: 30px !important;
+}
+
 .font-xs {
   font-size: 12px;
 }
@@ -160,6 +164,17 @@ button.cstm {
   border-radius: 3px;
   cursor: pointer;
   height: 36px;
+}
+
+button.icon-btn {
+  display: flex;
+  align-items: center;
+
+  span {
+    margin-top: 4px;
+    font-size: 15px;
+    margin-left: 8px;
+  }
 }
 
 input.filter-item {
@@ -802,6 +817,13 @@ button.close {
   margin-top: 80px;
   width: 100px;
   color: darken($color_primary, 10%);
+  display: flex;
+
+  h6 {
+    margin-bottom: 0;
+    padding: 0;
+    margin-top: 3px;
+  }
 }
 
 .form-row.first-row {
@@ -1243,16 +1265,8 @@ a {
 }
 
 .search-input-clear {
-  position: absolute;
-  top: 14px;
-  right: 13px;
-  height: 20px !important;
-  width: 20px !important;
-  padding: 4px;
   cursor: pointer;
-  color: white;
   border-radius: 50%;
-  background-color: $color_primary;
 
   &.regular {
     top: 9px;

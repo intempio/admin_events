@@ -45,7 +45,6 @@ module.exports = {
    */
   css: [
     '~/css/main.scss',
-    '@fortawesome/fontawesome-svg-core/styles.css',
     'assets/styles.scss',
     'vue-multiselect/dist/vue-multiselect.min.css',
     'vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css'
@@ -54,7 +53,7 @@ module.exports = {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ['~/plugins/fontawesome.js', '~/plugins/auth.js'],
+  plugins: ['~/plugins/auth.js'],
 
   /*
    ** Nuxt.js modules
@@ -65,7 +64,8 @@ module.exports = {
     // Doc: https://buefy.github.io/#/documentation
     // 'nuxt-buefy',
     'bootstrap-vue/nuxt',
-    '@nuxtjs/toast'
+    '@nuxtjs/toast',
+    'nuxt-material-design-icons'
   ],
   toast: {
     position: 'bottom-center',

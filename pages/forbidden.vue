@@ -4,8 +4,7 @@
       <div class="d-flex justify-content-center align-items-center h-25 w-100 text-white">
         <div class="row w-75">
           <div class="col-3 d-flex mt-2 justify-content-end">
-            <font-awesome-icon icon="times-circle"
-                               :style="{'color': 'white', 'fontSize': '100px' }"></font-awesome-icon>
+            <i class="material-icons" :style="{'color': 'white', 'fontSize': '100px' }">clear</i>
           </div>
           <div class="col-9 d-flex flex-column">
             <h1>403</h1>

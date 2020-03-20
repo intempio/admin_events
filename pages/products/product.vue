@@ -7,8 +7,8 @@
         <div class="row">
           <div class="col-xl-11 col-lg-12 m-auto">
             <div class="go-back-button cursor-pointer" @click="goHome()">
-              <font-awesome-icon icon="chevron-left" class="mr-2"/>
-              Home
+              <i class="material-icons mr-2">chevron_left</i>
+              <h6>Home</h6>
             </div>
           </div>
         </div>
@@ -24,10 +24,9 @@
                   v-model="search"
                   placeholder="Search"
                 ></b-form-input>
-                <font-awesome-icon class="search-input-clear regular"
-                                   icon="times"
-                                   v-if="search"
-                                   @click="search = ''"/>
+                <i class="material-icons search-input-clear regular"
+                   v-if="search"
+                   @click="search = ''">clear</i>
               </div>
             </div>
             <table
@@ -40,11 +39,9 @@
                 <th @click="sort('client_name')" class="cursor-pointer">
                   <div class="d-flex align-items-center flex-nowrap">
                     <span class="mr-2">Client Name</span>
-                    <font-awesome-icon icon="sort" size="lg" v-if="currentSort !== 'client_name'"/>
-                    <font-awesome-icon icon="caret-down" size="lg"
-                                       v-if="currentSort === 'client_name' && currentSortDir === 'asc'"/>
-                    <font-awesome-icon icon="caret-up" size="lg"
-                                       v-if="currentSort === 'client_name' && currentSortDir === 'desc'"/>
+                    <i class="material-icons" v-if="currentSort !== 'client_name'">unfold_more</i>
+                    <i class="material-icons" v-if="currentSort === 'client_name' && currentSortDir === 'asc'">expand_more</i>
+                    <i class="material-icons" v-if="currentSort === 'client_name' && currentSortDir === 'desc'">expand_less</i>
                   </div>
                 </th>
                 <th
@@ -53,11 +50,9 @@
                 >
                   <div class="d-flex align-items-center flex-nowrap">
                     <span class="mr-2">Product Name</span>
-                    <font-awesome-icon icon="sort" size="lg" v-if="currentSort !== 'product_name'"/>
-                    <font-awesome-icon icon="caret-down" size="lg"
-                                       v-if="currentSort === 'product_name' && currentSortDir === 'asc'"/>
-                    <font-awesome-icon icon="caret-up" size="lg"
-                                       v-if="currentSort === 'product_name' && currentSortDir === 'desc'"/>
+                    <i class="material-icons" v-if="currentSort !== 'client_name'">unfold_more</i>
+                    <i class="material-icons" v-if="currentSort === 'client_name' && currentSortDir === 'asc'">expand_more</i>
+                    <i class="material-icons" v-if="currentSort === 'client_name' && currentSortDir === 'desc'">expand_less</i>
                   </div>
                 </th>
 
@@ -67,11 +62,9 @@
                 >
                   <div class="d-flex align-items-center flex-nowrap">
                     <span class="mr-2">Product Description</span>
-                    <font-awesome-icon icon="sort" size="lg" v-if="currentSort !== 'product_description'"/>
-                    <font-awesome-icon icon="caret-down" size="lg"
-                                       v-if="currentSort === 'product_description' && currentSortDir === 'asc'"/>
-                    <font-awesome-icon icon="caret-up" size="lg"
-                                       v-if="currentSort === 'product_description' && currentSortDir === 'desc'"/>
+                    <i class="material-icons" v-if="currentSort !== 'client_name'">unfold_more</i>
+                    <i class="material-icons" v-if="currentSort === 'client_name' && currentSortDir === 'asc'">expand_more</i>
+                    <i class="material-icons" v-if="currentSort === 'client_name' && currentSortDir === 'desc'">expand_less</i>
                   </div>
                 </th>
 
@@ -151,7 +144,7 @@
                   :value="getPages()"
                   name="url"
                   readonly
-                  style="width: 50px;"
+                  style="width: 60px;"
                   class="input input-items mx-1 cstm"
                 ></b-form-input>
                 <b-select v-model="pageSize" placeholder="Items" style="width: 100px">
@@ -308,21 +301,17 @@
                   <th class="cursor-pointer" @click="sort('tag_name', true)">
                     <div class="d-flex align-items-center flex-nowrap">
                       <span class="mr-2">Items</span>
-                      <font-awesome-icon icon="sort" size="lg" v-if="modalTableSort.field !== 'tag_name'"/>
-                      <font-awesome-icon icon="caret-down" size="lg"
-                                         v-if="modalTableSort.field === 'tag_name' && modalTableSort.dir === 'asc'"/>
-                      <font-awesome-icon icon="caret-up" size="lg"
-                                         v-if="modalTableSort.field === 'tag_name' && modalTableSort.dir === 'desc'"/>
+                      <i class="material-icons" v-if="currentSort !== 'client_name'">unfold_more</i>
+                      <i class="material-icons" v-if="currentSort === 'client_name' && currentSortDir === 'asc'">expand_more</i>
+                      <i class="material-icons" v-if="currentSort === 'client_name' && currentSortDir === 'desc'">expand_less</i>
                     </div>
                   </th>
                   <th class="cursor-pointer" @click="sort('updated', true)">
                     <div class="d-flex align-items-center flex-nowrap">
                       <span class="mr-2">Content</span>
-                      <font-awesome-icon icon="sort" size="lg" v-if="modalTableSort.field !== 'updated'"/>
-                      <font-awesome-icon icon="caret-down" size="lg"
-                                         v-if="modalTableSort.field === 'updated' && modalTableSort.dir === 'asc'"/>
-                      <font-awesome-icon icon="caret-up" size="lg"
-                                         v-if="modalTableSort.field === 'updated' && modalTableSort.dir === 'desc'"/>
+                      <i class="material-icons" v-if="currentSort !== 'client_name'">unfold_more</i>
+                      <i class="material-icons" v-if="currentSort === 'client_name' && currentSortDir === 'asc'">expand_more</i>
+                      <i class="material-icons" v-if="currentSort === 'client_name' && currentSortDir === 'desc'">expand_less</i>
                     </div>
                   </th>
                   <th>Action</th>

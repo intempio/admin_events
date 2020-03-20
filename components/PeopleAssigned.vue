@@ -12,10 +12,9 @@
             v-model="search"
             placeholder="Search"
           ></b-form-input>
-          <font-awesome-icon class="search-input-clear"
-                             icon="times"
-                             v-if="search"
-                             @click="search = ''"/>
+          <i class="material-icons search-input-clear"
+             v-if="search"
+             @click="search = ''">clear</i>
         </div>
       </div>
     </div>
@@ -23,18 +22,22 @@
       <thead>
       <tr>
         <td class="tbl-sort" @click="sort('person')">
-          Person
-          <font-awesome-icon icon="sort" size="lg" v-if="currentSort !== 'person'"/>
-          <font-awesome-icon icon="caret-down" size="lg" v-if="currentSort === 'person' && currentSortDir === 'asc'"/>
-          <font-awesome-icon icon="caret-up" size="lg" v-if="currentSort === 'person' && currentSortDir === 'desc'"/>
+          <div class="d-flex align-items-center">
+            <span>Person</span>
+            <i class="material-icons" v-if="currentSort !== 'person'">unfold_more</i>
+            <i class="material-icons" v-if="currentSort === 'person' && currentSortDir === 'asc'">expand_more</i>
+            <i class="material-icons"
+               v-if="currentSort === 'person' && currentSortDir === 'desc'">expand_less</i>
+          </div>
         </td>
         <td class="tbl-sort" @click="sort('person_role')">
-          Role
-          <font-awesome-icon icon="sort" size="lg" v-if="currentSort !== 'person_role'"/>
-          <font-awesome-icon icon="caret-down" size="lg"
-                             v-if="currentSort === 'person_role' && currentSortDir === 'asc'"/>
-          <font-awesome-icon icon="caret-up" size="lg"
-                             v-if="currentSort === 'person_role' && currentSortDir === 'desc'"/>
+          <div class="d-flex align-items-center">
+            <span>Role</span>
+            <i class="material-icons" v-if="currentSort !== 'person_role'">unfold_more</i>
+            <i class="material-icons" v-if="currentSort === 'person_role' && currentSortDir === 'asc'">expand_more</i>
+            <i class="material-icons"
+               v-if="currentSort === 'person_role' && currentSortDir === 'desc'">expand_less</i>
+          </div>
         </td>
         <td v-if="permissions.includes('EDIT')">Action</td>
       </tr>
@@ -44,9 +47,9 @@
         <td>{{item.person}}</td>
         <td>{{item.person_role}}</td>
         <td v-if="permissions.includes('EDIT')">
-          <a @click="remove(index, item.person_id)">
-            <font-awesome-icon icon="times-circle"/>
-            Remove
+          <a @click="remove(index, item.person_id)" style="display: flex; align-items: center;">
+            <i class="material-icons search-input-clear">clear</i>
+            <span>Remove</span>
           </a>
         </td>
       </tr>
@@ -60,7 +63,7 @@
           :value="getPages()"
           name="url"
           readonly
-          style="width: 50px;"
+          style="width: 60px;"
           class="input input-items mx-1"
         ></b-form-input>
         <b-select v-model="pageSize" placeholder="Items" style="width: 100px">

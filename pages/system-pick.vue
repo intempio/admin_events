@@ -17,7 +17,7 @@
               <div class="col-4" v-if="visibleParts.includes('admin')">
                 <router-link to="/admin/clients/cf72db35-82f9-4053-a7a0-96cecc516664">
                   <div class="tile">
-                    <font-awesome-icon class="fa-5x mb-3" icon="calendar-week"/>
+                    <i class="material-icons mb-3">event</i>
                     <span>Events</span>
                   </div>
                 </router-link>
@@ -25,7 +25,7 @@
               <div class="col-4" v-if="visibleParts.includes('products')">
                 <router-link to="/products/product">
                   <div class="tile">
-                    <font-awesome-icon class="fa-5x mb-3" icon="box-open"/>
+                    <i class="material-icons mb-3">card_giftcard</i>
                     <span>Products</span>
                   </div>
                 </router-link>
@@ -33,7 +33,7 @@
               <div class="col-4" v-if="visibleParts.includes('people')">
                 <router-link to="/people/people">
                   <div class="tile">
-                    <font-awesome-icon class="fa-5x mb-3" icon="user-friends"/>
+                    <i class="material-icons mb-3">supervisor_account</i>
                     <span>People</span>
                   </div>
                 </router-link>
@@ -41,7 +41,7 @@
               <div class="col-4" v-if="visibleParts.includes('t_events')">
                 <router-link to="/tentative-events">
                   <div class="tile">
-                    <font-awesome-icon class="fa-5x mb-3" icon="calendar-day"/>
+                    <i class="material-icons mb-3">event_note</i>
                     <span>T-events</span>
                   </div>
                 </router-link>
@@ -80,6 +80,7 @@
     },
     mounted: function () {
       this.appVersion = packageJson.version;
+      localStorage.removeItem('eventSearch');
     },
     created() {
       this.visibleParts = Object.keys(authService.getUserPermissions());
@@ -100,6 +101,10 @@
 
   a:hover {
     text-decoration: none;
+  }
+
+  i {
+    font-size: 80px;
   }
 
   .tile {

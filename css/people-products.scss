@@ -40,7 +40,7 @@ button.btn-secondary {
 
 }
 
-button,
+button:not(.datepicker-day),
 button.btn.btn-primary {
   border: 0;
   margin-right: 10px;

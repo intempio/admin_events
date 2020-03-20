@@ -6,8 +6,8 @@
       <div class="row">
         <div class="col-xl-11 col-lg-12 m-auto">
           <div class="go-back-button cursor-pointer" @click="goHome()">
-            <font-awesome-icon icon="chevron-left" class="mr-2"/>
-            Home
+            <i class="material-icons mr-2">chevron_left</i>
+            <h6>Home</h6>
           </div>
         </div>
       </div>

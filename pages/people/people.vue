@@ -8,8 +8,8 @@
         <div class="row mt-1 mb-3">
           <div class="col-xl-10 col-lg-12 m-auto">
             <div class="go-back-button cursor-pointer" @click="goHome()">
-              <font-awesome-icon icon="chevron-left" class="mr-2"/>
-              Home
+              <i class="material-icons mr-2">chevron_left</i>
+              <h6>Home</h6>
             </div>
           </div>
         </div>
@@ -34,10 +34,9 @@
                     placeholder="Search"
                   ></b-form-input>
                 </div>
-                <font-awesome-icon class="search-input-clear regular"
-                                   icon="times"
-                                   v-if="search"
-                                   @click="search = ''"/>
+                <i class="material-icons search-input-clear regular"
+                   v-if="search"
+                   @click="search = ''">date_range</i>
                 <!-- Modal Component -->
                 <b-modal
                   id="modalAdd"
@@ -112,11 +111,10 @@
                     >
                       <div class="d-flex align-items-center flex-nowrap">
                         <span class="mr-2">First Name</span>
-                        <font-awesome-icon icon="sort" size="lg" v-if="currentSort !== 'first_name'"/>
-                        <font-awesome-icon icon="caret-down" size="lg"
-                                           v-if="currentSort === 'first_name' && currentSortDir === 'asc'"/>
-                        <font-awesome-icon icon="caret-up" size="lg"
-                                           v-if="currentSort === 'first_name' && currentSortDir === 'desc'"/>
+                        <i class="material-icons" v-if="currentSort !== 'first_name'">unfold_more</i>
+                        <i class="material-icons" v-if="currentSort === 'first_name' && currentSortDir === 'asc'">expand_more</i>
+                        <i class="material-icons"
+                           v-if="currentSort === 'first_name' && currentSortDir === 'desc'">expand_less</i>
                       </div>
                     </th>
                     <th
@@ -125,11 +123,10 @@
                     >
                       <div class="d-flex align-items-center flex-nowrap">
                         <span class="mr-2">Last Name</span>
-                        <font-awesome-icon icon="sort" size="lg" v-if="currentSort !== 'last_name'"/>
-                        <font-awesome-icon icon="caret-down" size="lg"
-                                           v-if="currentSort === 'last_name' && currentSortDir === 'asc'"/>
-                        <font-awesome-icon icon="caret-up" size="lg"
-                                           v-if="currentSort === 'last_name' && currentSortDir === 'desc'"/>
+                        <i class="material-icons" v-if="currentSort !== 'last_name'">unfold_more</i>
+                        <i class="material-icons" v-if="currentSort === 'last_name' && currentSortDir === 'asc'">expand_more</i>
+                        <i class="material-icons"
+                           v-if="currentSort === 'last_name' && currentSortDir === 'desc'">expand_less</i>
                       </div>
                     </th>
                     <th
@@ -138,11 +135,10 @@
                     >
                       <div class="d-flex align-items-center flex-nowrap">
                         <span class="mr-2">Email</span>
-                        <font-awesome-icon icon="sort" size="lg" v-if="currentSort !== 'email'"/>
-                        <font-awesome-icon icon="caret-down" size="lg"
-                                           v-if="currentSort === 'email' && currentSortDir === 'asc'"/>
-                        <font-awesome-icon icon="caret-up" size="lg"
-                                           v-if="currentSort === 'email' && currentSortDir === 'desc'"/>
+                        <i class="material-icons" v-if="currentSort !== 'email'">unfold_more</i>
+                        <i class="material-icons" v-if="currentSort === 'email' && currentSortDir === 'asc'">expand_more</i>
+                        <i class="material-icons"
+                           v-if="currentSort === 'email' && currentSortDir === 'desc'">expand_less</i>
                       </div>
                     </th>
                     <th>Cell</th>
@@ -153,11 +149,10 @@
                     >
                       <div class="d-flex align-items-center flex-nowrap">
                         <span class="mr-2">Notes</span>
-                        <font-awesome-icon icon="sort" size="lg" v-if="currentSort !== 'notes'"/>
-                        <font-awesome-icon icon="caret-down" size="lg"
-                                           v-if="currentSort === 'notes' && currentSortDir === 'asc'"/>
-                        <font-awesome-icon icon="caret-up" size="lg"
-                                           v-if="currentSort === 'notes' && currentSortDir === 'desc'"/>
+                        <i class="material-icons" v-if="currentSort !== 'notes'">unfold_more</i>
+                        <i class="material-icons" v-if="currentSort === 'notes' && currentSortDir === 'asc'">expand_more</i>
+                        <i class="material-icons"
+                           v-if="currentSort === 'notes' && currentSortDir === 'desc'">expand_less</i>
                       </div>
                     </th>
                     <th>Actions</th>
@@ -202,7 +197,7 @@
                       :value="getPages()"
                       name="url"
                       readonly
-                      style="width: 50px;"
+                      style="width: 60px;"
                       class="input input-items mx-1"
                     ></b-form-input>
                     <b-select v-model="pageSize" placeholder="Items" style="width: 100px">

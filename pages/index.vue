@@ -8,9 +8,13 @@
 </template>
 
 <script>
+  import Vue from 'vue';
   import clientheader from '../components/Header.vue'
   import Spinner from '../components/Spinner'
   import {authService} from '../services/auth-service';
+  import MenuIcon from 'vue-material-design-icons/Menu.vue';
+
+  Vue.component('menu-icon', MenuIcon);
 
   export default {
     name: 'index',

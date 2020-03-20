@@ -5,7 +5,7 @@
         <div class="modal-header d-flex justify-content-between">
           <h3>{{tab.header}}</h3>
           <div class="p-2 cursor-pointer" @click="close">
-            <font-awesome-icon icon="times"/>
+            <i class="material-icons">clear</i>
           </div>
         </div>
 

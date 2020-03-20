@@ -6,9 +6,9 @@
         <div class="filter-container right-align" style="margin-bottom: 25px">
           <addeventmodal ref="add_event_modal" :client-id="this.$route.params.client_id"></addeventmodal>
 
-          <button class="add_btn" @click="AddEventModal">
-            <font-awesome-icon class="icon" icon="calendar-plus"/>
-            Add
+          <button class="add_btn icon-btn" @click="AddEventModal">
+            <i class="material-icons mb-3">date_range</i>
+            <span>Add</span>
           </button>
         </div>
 

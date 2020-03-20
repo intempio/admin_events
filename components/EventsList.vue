@@ -6,11 +6,10 @@
         <th class="tbl-sort" v-for="(header, i) in columns" :key="i" @click="sort(header.key)">
           <div class="d-flex align-items-center flex-nowrap">
             <span class="mr-2">{{header.label}}</span>
-            <font-awesome-icon icon="sort" size="lg" v-if="currentSort !== header.key"/>
-            <font-awesome-icon icon="caret-down" size="lg"
-                               v-if="currentSort === header.key && currentSortDir === 'asc'"/>
-            <font-awesome-icon icon="caret-up" size="lg"
-                               v-if="currentSort === header.key && currentSortDir === 'desc'"/>
+            <i class="material-icons" v-if="currentSort !== header.key">unfold_more</i>
+            <i class="material-icons" v-if="currentSort === header.key && currentSortDir === 'asc'">expand_more</i>
+            <i class="material-icons"
+               v-if="currentSort === header.key && currentSortDir === 'desc'">expand_less</i>
           </div>
         </th>
         <th style="min-width: 170px;">Actions</th>
@@ -31,7 +30,10 @@
             <button class="cstm" v-if="permissions.includes('EDIT')">Edit</button>
             <button class="cstm" v-else>See details</button>
           </router-link>
-          <button @click="clone(event.event_id)" class="clone cstm" v-if="permissions.includes('EDIT')">Clone</button>
+          <button @click="clone(event.event_id)"
+                  class="clone cstm"
+                  style="padding: 5px 10px;"
+                  v-if="permissions.includes('EDIT')">Clone</button>
         </td>
       </tr>
       <tr v-if="!eventList.length">
@@ -48,7 +50,7 @@
         :value="getPages()"
         name="url"
         readonly
-        style="width: 50px;"
+        style="width: 60px;"
         class="input input-items mx-1"
       ></b-form-input>
       <b-select v-model="pageSize" placeholder="Items" style="width: 100px">

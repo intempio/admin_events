@@ -8,8 +8,8 @@
       <div class="row">
         <div class="col-xl-10 col-lg-12 m-auto">
           <div class="go-back-button cursor-pointer mb-3" @click="goToEventList()">
-            <font-awesome-icon icon="chevron-left" class="mr-2"/>
-            Event list
+            <i class="material-icons mr-2">chevron_left</i>
+            <h6>Event list</h6>
           </div>
         </div>
       </div>
@@ -76,7 +76,7 @@
                     </div>
                     <div class="d-flex col-1 p-0 d-flex align-items-end">
                       <button class="history cstm" @click="openHistoryModal('client_status_hist')">
-                        <font-awesome-icon class="icon" icon="history"/>
+                        <i class="material-icons mb-3">history</i>
                       </button>
                     </div>
                   </div>
@@ -100,7 +100,7 @@
                     <div class="col-1 p-0 d-flex align-items-end">
 
                       <button class="history cstm" @click="openHistoryModal('operations_status_hist')">
-                        <font-awesome-icon class="icon" icon="history"/>
+                        <i class="material-icons mb-3">history</i>
                       </button>
                     </div>
                   </div>
@@ -120,7 +120,7 @@
                     <div class="col-1 p-0 d-flex align-items-end">
 
                       <button class="history cstm" @click="openHistoryModal('qa_status_hist')">
-                        <font-awesome-icon class="icon" icon="history"/>
+                        <i class="material-icons mb-3">history</i>
                       </button>
                     </div>
                   </div>
@@ -144,7 +144,7 @@
                     </div>
                     <div class="col-1 p-0 d-flex align-items-end">
                       <button class="history cstm" @click="openHistoryModal('production_status_hist')">
-                        <font-awesome-icon class="icon" icon="history"/>
+                        <i class="material-icons mb-3">history</i>
                       </button>
                     </div>
                   </div>
@@ -244,7 +244,7 @@
                   </div>
                   <div class="col-2 pl-2 d-flex align-items-end">
                     <button class="history cstm" @click="openHistoryModal('internal_notes_hist')">
-                      <font-awesome-icon class="icon" icon="history"/>
+                      <i class="material-icons mb-3">history</i>
                     </button>
                   </div>
                 </div>
@@ -264,7 +264,7 @@
                   </div>
                   <div class="col-2 pl-2 d-flex align-items-end">
                     <button class="history cstm" @click="openHistoryModal('producer_notes_hist')">
-                      <font-awesome-icon class="icon" icon="history"/>
+                      <i class="material-icons mb-3">history</i>
                     </button>
                   </div>
                 </div>
@@ -286,7 +286,7 @@
                   </div>
                   <div class="col-2 pl-2 d-flex align-items-end">
                     <button class="history cstm" @click="openHistoryModal('external_notes_hist')">
-                      <font-awesome-icon class="icon" icon="history"/>
+                      <i class="material-icons mb-3">history</i>
                     </button>
                   </div>
                 </div>

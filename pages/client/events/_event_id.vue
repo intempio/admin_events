@@ -68,7 +68,7 @@
               </tbody>
             </modal>
             <button class="history" @click="ClientStatusHistory">
-              <font-awesome-icon class="icon" icon="history"/>History
+               <i class="material-icons mb-3">history</i>History
             </button>
           </div>
         </div>

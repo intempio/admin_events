@@ -14,7 +14,8 @@
             </button>
             <button class="btn btn-light btn-sm"
                     v-else
-                    @click="customFilter">Show all</button>
+                    @click="customFilter">Show all
+            </button>
           </div>
           <div class="col-3 pl-0 d-flex justify-content-end align-items-center">
             <b-form-input
@@ -23,10 +24,9 @@
               v-model="search"
               placeholder="Search"
             ></b-form-input>
-            <font-awesome-icon class="search-input-clear in-table"
-                               icon="times"
-                               v-if="search"
-                               @click="search = ''"/>
+            <i class="material-icons search-input-clear"
+               v-if="search"
+               @click="search = ''">clear</i>
           </div>
         </div>
       </div>
@@ -37,12 +37,13 @@
           <th></th>
           <th v-for="col in cols" class="tbl-sort" @click="sort(col.key)"
               :style="{'width': col.width ? col.width : ''}">
-            <span class="text-capitalize">{{col.name}}</span>
-            <font-awesome-icon icon="sort" size="lg" v-if="currentSort !== col.key"/>
-            <font-awesome-icon icon="caret-down" size="lg"
-                               v-if="currentSort === col.key && currentSortDir === 'asc'"/>
-            <font-awesome-icon icon="caret-up" size="lg"
-                               v-if="currentSort === col.key && currentSortDir === 'desc'"/>
+            <div class="d-flex align-items-center">
+              <span class="text-capitalize">{{col.name}}</span>
+              <i class="material-icons" v-if="currentSort !== col.key">unfold_more</i>
+              <i class="material-icons" v-if="currentSort === col.key && currentSortDir === 'asc'">expand_more</i>
+              <i class="material-icons"
+                 v-if="currentSort === col.key && currentSortDir === 'desc'">expand_less</i>
+            </div>
           </th>
         </tr>
         </thead>
@@ -93,7 +94,7 @@
             type="text"
             name="url"
             readonly
-            style="width: 50px;"
+            style="width: 60px;"
             class="input input-items mx-1"
           ></b-form-input>
           <b-select v-model="pageSize" placeholder="Items" style="width: 100px">

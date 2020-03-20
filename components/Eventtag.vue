@@ -12,10 +12,9 @@
             v-model="search"
             placeholder="Search"
           ></b-form-input>
-          <font-awesome-icon class="search-input-clear"
-                             icon="times"
-                             v-if="search"
-                             @click="search = ''"/>
+          <i class="material-icons search-input-clear"
+             v-if="search"
+             @click="search = ''">clear</i>
         </div>
       </div>
     </div>
@@ -23,17 +22,22 @@
       <thead>
       <tr>
         <td class="tbl-sort" @click="sort('tag_name')">
-          Items
-          <font-awesome-icon icon="sort" size="lg" v-if="currentSort !== 'tag_name'"/>
-          <font-awesome-icon icon="caret-down" size="lg" v-if="currentSort === 'tag_name' && currentSortDir === 'asc'"/>
-          <font-awesome-icon icon="caret-up" size="lg" v-if="currentSort === 'tag_name' && currentSortDir === 'desc'"/>
+          <div class="d-flex align-items-center">
+            <span>Items</span>
+            <i class="material-icons" v-if="currentSort !== 'tag_name'">unfold_more</i>
+            <i class="material-icons" v-if="currentSort === 'tag_name' && currentSortDir === 'asc'">expand_more</i>
+            <i class="material-icons"
+               v-if="currentSort === 'tag_name' && currentSortDir === 'desc'">expand_less</i>
+          </div>
         </td>
         <td class="tbl-sort" @click="sort('tag_value')">
-          Content
-          <font-awesome-icon icon="sort" size="lg" v-if="currentSort !== 'tag_value'"/>
-          <font-awesome-icon icon="caret-down" size="lg"
-                             v-if="currentSort === 'tag_value' && currentSortDir === 'asc'"/>
-          <font-awesome-icon icon="caret-up" size="lg" v-if="currentSort === 'tag_value' && currentSortDir === 'desc'"/>
+          <div class="d-flex align-items-center">
+            <span>Content</span>
+            <i class="material-icons" v-if="currentSort !== 'tag_value'">unfold_more</i>
+            <i class="material-icons" v-if="currentSort === 'tag_value' && currentSortDir === 'asc'">expand_more</i>
+            <i class="material-icons"
+               v-if="currentSort === 'tag_value' && currentSortDir === 'desc'">expand_less</i>
+          </div>
         </td>
         <td v-if="permissions.includes('EDIT')">Action</td>
       </tr>
@@ -54,13 +58,13 @@
           >
         </td>
         <td v-if="permissions.includes('EDIT')">
-          <a @click="edit(index, item.tag_value)" v-if="index != currentIndex">
-            <font-awesome-icon class="mr-1" icon="edit"/>
-            Edit
+          <a @click="edit(index, item.tag_value)" v-if="index != currentIndex" class="d-flex align-items-center">
+            <i class="material-icons mr-1">create</i>
+            <span>Edit</span>
           </a>
-          <a @click="onChange(item.tag_value, item.tag_name), currentIndex=-1" v-else>
-            <font-awesome-icon class="mr-1" icon="save"/>
-            Save
+          <a @click="onChange(item.tag_value, item.tag_name), currentIndex=-1" v-else class="d-flex align-items-center">
+            <i class="material-icons mr-1">save</i>
+            <span>Save</span>
           </a>
         </td>
       </tr>
@@ -74,7 +78,7 @@
           type="text"
           name="url"
           readonly
-          style="width: 50px;"
+          style="width: 60px;"
           class="input input-items mx-1"
         ></b-form-input>
         <b-select v-model="pageSize" placeholder="Items" style="width: 100px">
@@ -188,7 +192,7 @@
         }).catch(err => this.$toast.error(`Error getting event tag: ${err}`));
       },
       add: function (field_name) {
-        const url = '/api/v3/eventtags/'
+        const url = '/api/v3/eventtags/';
         var data = {
           event_id: this.eventId,
           tag_type: this.tagType.charAt(0).toUpperCase() + this.tagType.slice(1),
@@ -197,7 +201,9 @@
         };
 
         restService.post(url, data)
-          .then(response => {
+          .then(() => {
+            this.InputTagName = '';
+            this.selectedItem = '';
             this.fetchEventtag();
             this.$toast.success(`Added successfully`)
           })
@@ -297,6 +303,8 @@
           if (index >= start && index < end) return true
         });
         this.events = eventtags;
+        console.log('this.events');
+        console.log(this.events);
       }
     },
     computed: {
