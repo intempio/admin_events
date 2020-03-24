@@ -144,7 +144,7 @@
                   :value="getPages()"
                   name="url"
                   readonly
-                  style="width: 60px;"
+                  style="width: 68px;"
                   class="input input-items mx-1 cstm"
                 ></b-form-input>
                 <b-select v-model="pageSize" placeholder="Items" style="width: 100px">
@@ -656,14 +656,7 @@
           this.currentPage = 1;
         }
 
-        list = list
-          .sort((a, b) => {
-            let modifier = 1;
-            if (this.currentSortDir === 'desc') modifier = -1;
-            if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
-            if (a[this.currentSort] > b[this.currentSort]) return modifier;
-            return 0;
-          })
+        list = orderBy(list, [this.currentSort], [this.currentSortDir])
           .filter((row, index) => {
             let start = (this.currentPage - 1) * this.pageSize;
             let end = this.currentPage * this.pageSize;

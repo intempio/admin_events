@@ -63,7 +63,7 @@
           :value="getPages()"
           name="url"
           readonly
-          style="width: 60px;"
+          style="width: 68px;"
           class="input input-items mx-1"
         ></b-form-input>
         <b-select v-model="pageSize" placeholder="Items" style="width: 100px">

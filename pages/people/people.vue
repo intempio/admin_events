@@ -197,7 +197,7 @@
                       :value="getPages()"
                       name="url"
                       readonly
-                      style="width: 60px;"
+                      style="width: 68px;"
                       class="input input-items mx-1"
                     ></b-form-input>
                     <b-select v-model="pageSize" placeholder="Items" style="width: 100px">
@@ -277,6 +277,7 @@
   import clientheader from '../../components/Header.vue'
   import {restService} from '../../plugins/axios';
   import {tableService} from '../../services/table-service';
+  import orderBy from 'lodash.orderby';
 
   export default {
     components: {clientheader},
@@ -429,13 +430,7 @@
           });
         }
 
-        list = list.sort((a, b) => {
-          let modifier = 1;
-          if (this.currentSortDir === 'desc') modifier = -1;
-          if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
-          if (a[this.currentSort] > b[this.currentSort]) return modifier;
-          return 0;
-        });
+        list = orderBy(list, [this.currentSort], [this.currentSortDir]);
 
         this.allPages = Math.ceil(list.length / this.pageSize);
 

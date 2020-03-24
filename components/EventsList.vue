@@ -22,8 +22,8 @@
         </td>
         <td>{{ event.event_code }}</td>
         <td>{{ event.event_name }}</td>
-        <td>{{ event.event_start }}</td>
-        <td>{{ event.updated }}</td>
+        <td class="text-nowrap">{{ event.event_start }}</td>
+        <td class="text-nowrap">{{ event.updated }}</td>
         <td>{{ event.client_status }}</td>
         <td>
           <router-link :to="'/admin/events/' + event.event_id">
@@ -33,7 +33,8 @@
           <button @click="clone(event.event_id)"
                   class="clone cstm"
                   style="padding: 5px 10px;"
-                  v-if="permissions.includes('EDIT')">Clone</button>
+                  v-if="permissions.includes('EDIT')">Clone
+          </button>
         </td>
       </tr>
       <tr v-if="!eventList.length">
@@ -50,7 +51,7 @@
         :value="getPages()"
         name="url"
         readonly
-        style="width: 60px;"
+        style="width: 68px;"
         class="input input-items mx-1"
       ></b-form-input>
       <b-select v-model="pageSize" placeholder="Items" style="width: 100px">
@@ -68,6 +69,7 @@
   import {restService} from '../plugins/axios';
   import {authService} from '../services/auth-service';
   import {tableService} from '../services/table-service';
+  import orderBy from 'lodash.orderby';
 
   export default {
     name: 'EventsList',
@@ -76,8 +78,8 @@
       return {
         columns: [],
         eventList: [],
-        currentSort: 'event_code',
-        currentSortDir: 'asc',
+        currentSort: 'event_start',
+        currentSortDir: 'desc',
         pageSize: 10,
         currentPage: 1,
         paginationOptions: [],
@@ -144,14 +146,7 @@
       },
       sortedEvents() {
         let data = JSON.parse(JSON.stringify(this.events));
-        this.eventList = data
-          .sort((a, b) => {
-            let modifier = 1;
-            if (this.currentSortDir === 'desc') modifier = -1;
-            if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
-            if (a[this.currentSort] > b[this.currentSort]) return modifier;
-            return 0;
-          })
+        this.eventList = orderBy(data, [this.currentSort], [this.currentSortDir])
           .filter((event, index) => {
             let start = (this.currentPage - 1) * this.pageSize;
             let end = this.currentPage * this.pageSize;
