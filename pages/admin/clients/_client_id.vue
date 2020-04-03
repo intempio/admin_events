@@ -60,11 +60,14 @@
                 </div>
               </div>
               <events-list :events="events"
+                           :pagination="true"
                            table-name="eventsList">
               </events-list>
 
               <h2 class="mt-5">Recent Updates:</h2>
               <events-list :events="recentEvents"
+                           :pagination="false"
+                           class="mb-3"
                            table-name="recentEvents">
               </events-list>
             </div>
@@ -85,7 +88,9 @@
   import 'vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css'
   import {restService} from '../../../plugins/axios';
   import {authService} from '../../../services/auth-service';
+  import {tableService} from '../../../services/table-service';
   import debounce from 'lodash.debounce';
+  import orderBy from 'lodash.orderby';
 
   Vue.component('VueCtkDateTimePicker', VueCtkDateTimePicker);
 
@@ -135,7 +140,7 @@
         let url = '/api/v3/events/?clientID=' + this.$route.params.client_id + '&recentUpdates=true';
         restService.get(url).then(response => {
           if (response.data['records'].length) {
-            this.recentEvents = response.data['records'];
+            this.recentEvents = orderBy(response.data['records'], 'updated').splice(0, 10);
           }
         }).catch(error => {
           this.$toast.error(`Error: ${error}`)
@@ -192,12 +197,13 @@
       },
       saveSearch() {
         if (this.search) {
-          localStorage.setItem('eventSearch', this.search);
+          tableService.saveEventSearch(this.search);
+        } else {
+          this.clearSearch();
         }
       },
       clearSearch() {
-        console.log('clearSearch')
-        localStorage.removeItem('eventSearch');
+        tableService.clearEventSearch();
       }
     },
     watch: {

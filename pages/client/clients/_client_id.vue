@@ -12,7 +12,11 @@
           </button>
         </div>
 
-        <events-list-client :events="events" :fetchEvents="fetchEvents"></events-list-client>
+        <events-list-client
+          :events="events"
+          :pagination="true"
+          :fetchEvents="fetchEvents">
+        </events-list-client>
       </div>
     </section>
   </section>

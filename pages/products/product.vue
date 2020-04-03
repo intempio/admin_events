@@ -173,7 +173,7 @@
                   </thead>
                   <tbody>
                   <tr>
-                    <td>Product Name</td>
+                    <td class="first-row">Product Name</td>
                     <td>
                       <b-form-group>
                         <b-form-input
@@ -186,7 +186,7 @@
                     </td>
                   </tr>
                   <tr>
-                    <td>Product Description</td>
+                    <td class="first-row">Product Description</td>
                     <td>
                       <b-form-group>
                         <b-form-input
@@ -199,7 +199,7 @@
                     </td>
                   </tr>
                   <tr>
-                    <td>Client Name</td>
+                    <td class="first-row">Client Name</td>
                     <td>
                       <b-form-group>
                         <b-form-select
@@ -212,7 +212,7 @@
                     </td>
                   </tr>
                   <tr>
-                    <td>Client ID</td>
+                    <td class="first-row">Client ID</td>
                     <td>
                       <b-form-group>
                         <b-form-input
@@ -225,7 +225,7 @@
                     </td>
                   </tr>
                   <tr>
-                    <td>Duration Minutes</td>
+                    <td class="first-row">Duration Minutes</td>
                     <td>
                       <b-form-group>
                         <b-form-input
@@ -238,7 +238,7 @@
                     </td>
                   </tr>
                   <tr>
-                    <td>Producer Offset Minutes</td>
+                    <td class="first-row">Producer Offset Minutes</td>
                     <td>
                       <b-form-group>
                         <b-form-input
@@ -251,7 +251,7 @@
                     </td>
                   </tr>
                   <tr>
-                    <td>Producer Count</td>
+                    <td class="first-row">Producer Count</td>
                     <td>
                       <b-form-group>
                         <b-form-input
@@ -486,7 +486,9 @@
             product_name: this.updateModal.product_name,
             product_description: this.updateModal.product_description,
             client_id: this.updateModal.client_id,
-            duration_minutes: this.updateModal.duration_minutes
+            duration_minutes: this.updateModal.duration_minutes,
+            producer_offset_minutes: this.updateModal.producer_offset_minutes,
+            producer_count: this.updateModal.producer_count
           };
           await restService.put(update_url, data);
           this.$refs.modalUpdate.hide();
@@ -697,5 +699,9 @@
 
   img {
     cursor: pointer;
+  }
+
+  td.first-row {
+    min-width: 200px;
   }
 </style>

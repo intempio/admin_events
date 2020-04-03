@@ -22,9 +22,7 @@
       <template>
         <Slide noOverlay width="190">
           <div v-for="(item) in clients" v-bind:key="item.client_name" class="popup-menu-item">
-            <router-link :id="item.client_name" :to="'/admin/clients/' + item.client_id">
-              <span>{{item.client_name}}</span>
-            </router-link>
+            <span class="cursor-pointer" @click="goToClient(item.client_id)">{{item.client_name}}</span>
           </div>
           <div style="position: absolute; bottom: 8%">
             <span style="font-size: 14px">Version: {{appVersion}}</span>
@@ -39,6 +37,7 @@
   import {Slide} from 'vue-burger-menu'
   import {restService} from '../plugins/axios';
   import {authService} from '../services/auth-service';
+  import {tableService} from '../services/table-service';
   import Spinner from '../components/Spinner'
   import * as packageJson from '../package.json';
 
@@ -51,7 +50,7 @@
         clients: [],
         currentclient: '',
         isAuthenticated: false,
-        appVersion: ''
+        appVersion: '',
       }
     },
     created() {
@@ -74,6 +73,10 @@
       goToSystemPick() {
         this.$router.push('/system-pick');
       },
+      goToClient(clientId) {
+        tableService.clearEventSearch();
+        this.$router.push('/admin/clients/' + clientId);
+      },
       fetchClients: function () {
         const url = '/api/v3/clients/';
 
@@ -87,7 +90,7 @@
           })
       },
       currentclientname: function () {
-        let filteredclient
+        let filteredclient;
         if (this.clientid == undefined || this.clients == []) {
           this.currentclient = ''
         } else {

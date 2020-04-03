@@ -95,7 +95,7 @@
           this.errors.push('people');
         }
         if (!this.errors.length) {
-          this.saveDataToDb();
+          this.saveDataToDb('email');
         }
       },
       saveNote() {
@@ -107,7 +107,7 @@
           this.saveNoteToDb();
         }
       },
-      saveDataToDb() {
+      saveDataToDb(withEmail) {
         const data = {
           event_id: this.data.eventId,
           send_email: true,
@@ -116,8 +116,12 @@
         };
         restService.put('/api/v3/events/', data)
           .then(() => {
-            this.show = false;
-            this.$toast.success('External notes saved')
+            if (!withEmail) {
+              this.show = false;
+              this.$toast.success('External notes saved');
+            } else {
+              this.$emit('sendemail');
+            }
           })
           .catch(error => {
             this.$toast.error(`Error: ${error}`)

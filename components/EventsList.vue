@@ -44,7 +44,7 @@
       </tr>
       </tbody>
     </table>
-    <div class="pagination-wrap mt-1">
+    <div class="pagination-wrap mt-1" v-if="pagination">
       <button class="cstm" @click="prevPage">&laquo;</button>
       <b-form-input
         type="text"
@@ -73,7 +73,7 @@
 
   export default {
     name: 'EventsList',
-    props: {events: Array, fetchEvents: Function, tableName: String},
+    props: {events: Array, fetchEvents: Function, tableName: String, pagination: Boolean},
     data() {
       return {
         columns: [],

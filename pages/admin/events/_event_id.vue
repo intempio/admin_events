@@ -317,6 +317,7 @@
 
       <ExternalNotesModal ref="external_notes_modal"
                           :data="externalNotesModalData"
+                          @sendemail="sendEmail('external_notes')"
                           @external="saveExternalNote($event)"
       ></ExternalNotesModal>
 
@@ -340,6 +341,21 @@
         </div>
       </div>
     </div>
+
+    <b-modal
+      size="sm"
+      id="customerEmail"
+      ref="customerEmail"
+      class="custom-modal"
+      title="Customer contact e-mail"
+      @ok="sendEmail('scheduled')"
+    >
+      <div class="row p-5 pl-0">
+        <div class="col-12">
+          <h5>Would you like to send an email to the customer contact for this event?</h5>
+        </div>
+      </div>
+    </b-modal>
   </div>
 
 </template>
@@ -364,6 +380,7 @@
   import {authService} from '../../../services/auth-service';
   import {HISTORY_MODALS} from '../../../const/history-modals';
   import Multiselect from 'vue-multiselect';
+  import {EMAIL_PROCESS_TYPES} from '../../../const/constants';
 
   Vue.component('VueCtkDateTimePicker', VueCtkDateTimePicker);
 
@@ -438,6 +455,17 @@
       onChange: function () {
         this.isEventChanged = !isEqual(this.event, this.eventOld);
       },
+      sendEmail(type) {
+        const url = '/api/v3/send-email';
+        restService.post(url, {
+          event_id: this.eventId,
+          process_type: type === 'scheduled' ? EMAIL_PROCESS_TYPES.scheduled : EMAIL_PROCESS_TYPES.external_notes,
+        }).then(() => {
+          this.$toast.success(`Done!`);
+        }).catch(error => {
+          this.$toast.error(`Error: ${error}`)
+        });
+      },
       saveEventDetails() {
         let data = {};
         forOwn(this.event, (val, key) => {
@@ -452,12 +480,16 @@
             data[v] = data[v].trim();
           }
         });
+
         restService.put('/api/v3/events/', data)
           .then(() => {
             this.isEventChanged = false;
             this.isEventSaved = true;
             this.event.external_notes = '';
             this.fetchEvent();
+            if ('client_status' in data && data.client_status === 'Scheduled') {
+              this.$refs['customerEmail'].show();
+            }
             setTimeout(() => {
               this.isEventSaved = false;
             }, 3500);

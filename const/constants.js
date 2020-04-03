@@ -180,3 +180,8 @@ export const CHECKLIST_ITEMS = [
   'Video Link',
   'Webcam'
 ]
+
+export const EMAIL_PROCESS_TYPES = {
+  scheduled: 'scheduled',
+  external_notes: 'external_notes'
+};

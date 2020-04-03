@@ -23,6 +23,12 @@ export const tableService = new Vue({
         }
       }
       localStorage.setItem('tableSizes', JSON.stringify(tableSettings));
+    },
+    saveEventSearch(search) {
+      localStorage.setItem('eventSearch', search);
+    },
+    clearEventSearch() {
+      localStorage.removeItem('eventSearch');
     }
   }
 });
