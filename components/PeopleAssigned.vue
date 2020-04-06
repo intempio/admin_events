@@ -267,6 +267,8 @@
           .then(() => {
             this.$toast.success(`Added successfully`);
             this.fetchPeopleAssigned();
+            this.selectedRole = '';
+            this.selectedPersonId = '';
           })
           .catch(error => {
             console.log(error);
@@ -274,11 +276,11 @@
           })
       },
       remove: function (index, person_id) {
-        const url = '/api/v3/eventpersons/'
+        const url = '/api/v3/eventpersons/';
         var data = {
           event_id: this.eventId,
           person_id: person_id
-        }
+        };
         restService
           .delete(url, {data})
           .then(() => {

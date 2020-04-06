@@ -181,6 +181,12 @@ input.filter-item {
   padding: 7px 20px 7px 10px;
 }
 
+input::placeholder {
+  color: #adadad !important;
+  font-size: 14px;
+  text-transform: capitalize;
+}
+
 div.head {
   background: #0097e1;
   padding: 20px;
@@ -1257,6 +1263,10 @@ table.tblProdUpdate {
 
   .multiselect__option--highlight, .multiselect__option--highlight:after {
     background: $color_primary;
+  }
+
+  .multiselect__placeholder {
+    padding-top: 0;
   }
 }
 

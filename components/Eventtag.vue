@@ -46,11 +46,16 @@
       <tr v-for="(item, index) in events" v-bind:key="index">
         <td>{{item.tag_name}}</td>
         <td>
-          <div v-show="index != currentIndex">
-            <label>{{item.tag_value}}</label>
+          <div v-show="index != currentIndex" class="align-items-center" :style="{display: 'flex'}">
+            <label id="tooltip-button-interactive">{{item.tag_value}}</label>
+            <i class="material-icons ml-1 cursor-pointer"
+               :style="{fontSize: 16 + 'px', fontWeight: 'bold'}"
+               v-if="replaceURLWithHTMLLinks(item.tag_value)"
+               @click="goToLink(replaceURLWithHTMLLinks(item.tag_value))">arrow_forward</i>
           </div>
           <input
             id="descriptionEdit"
+            :style="{width: 100 + '%'}"
             v-if="index == currentIndex"
             ref="descriptionEdit"
             v-model="item.tag_value"
@@ -152,7 +157,8 @@
         oldDescriptionValue: '',
         search: '',
         paginationOptions: [],
-        permissions: []
+        permissions: [],
+        urlRegex: /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/
       }
     },
     created() {
@@ -186,14 +192,16 @@
       fetchEventtag: function () {
         const url = '/api/v3/eventtags/?eventID=' + this.eventId + '&tagType=' + this.tagType;
         restService.get(url).then(response => {
-          this.Eventtag = response.data;
-          this.events = response.data;
-          this.filtered();
+          if (response && response.data.length) {
+            this.Eventtag = response.data;
+            this.events = response.data;
+            this.filtered();
+          }
         }).catch(err => this.$toast.error(`Error getting event tag: ${err}`));
       },
       add: function (field_name) {
         const url = '/api/v3/eventtags/';
-        var data = {
+        const data = {
           event_id: this.eventId,
           tag_type: this.tagType.charAt(0).toUpperCase() + this.tagType.slice(1),
           tag_name: this.selectedItem,
@@ -303,8 +311,12 @@
           if (index >= start && index < end) return true
         });
         this.events = eventtags;
-        console.log('this.events');
-        console.log(this.events);
+      },
+      replaceURLWithHTMLLinks: function (text) {
+        return text.match(this.urlRegex) ? text.match(this.urlRegex)[0] : null;
+      },
+      goToLink: link => {
+        window.open(link, '_blank');
       }
     },
     computed: {
