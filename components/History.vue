@@ -22,7 +22,7 @@
               <tbody>
               <tr v-for="(item, i) in data" :key="i">
                 <td>{{item[tab.colKeys[0]]}}</td>
-                <td>{{item[tab.colKeys[1]]}}</td>
+                <td v-html=item[tab.colKeys[1]]></td>
                 <td>{{item[tab.colKeys[2]]}}</td>
               </tr>
               <tr v-if="!rows.length">
