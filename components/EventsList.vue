@@ -3,13 +3,18 @@
     <table border="1" class="w-100">
       <thead>
       <tr>
-        <th class="tbl-sort" v-for="(header, i) in columns" :key="i" @click="sort(header.key)">
+        <th :class="{'tbl-sort': sorting}"
+            v-for="(header, i) in columns"
+            :key="i"
+            @click="sort(header.key)">
           <div class="d-flex align-items-center flex-nowrap">
             <span class="mr-2">{{header.label}}</span>
-            <i class="material-icons" v-if="currentSort !== header.key">unfold_more</i>
-            <i class="material-icons" v-if="currentSort === header.key && currentSortDir === 'asc'">expand_more</i>
-            <i class="material-icons"
-               v-if="currentSort === header.key && currentSortDir === 'desc'">expand_less</i>
+            <div v-if="sorting">
+              <i class="material-icons" v-if="currentSort !== header.key">unfold_more</i>
+              <i class="material-icons" v-if="currentSort === header.key && currentSortDir === 'asc'">expand_more</i>
+              <i class="material-icons"
+                 v-if="currentSort === header.key && currentSortDir === 'desc'">expand_less</i>
+            </div>
           </div>
         </th>
         <th style="min-width: 170px;">Actions</th>
@@ -73,7 +78,13 @@
 
   export default {
     name: 'EventsList',
-    props: {events: Array, fetchEvents: Function, tableName: String, pagination: Boolean},
+    props: {
+      events: Array,
+      fetchEvents: Function,
+      tableName: String,
+      pagination: Boolean,
+      sorting: Boolean
+    },
     data() {
       return {
         columns: [],
@@ -107,6 +118,9 @@
     },
     methods: {
       sort: function (s) {
+        if (!this.sorting) {
+          return;
+        }
         if (s === this.currentSort) {
           this.currentSortDir = this.currentSortDir === 'asc' ? 'desc' : 'asc'
         }

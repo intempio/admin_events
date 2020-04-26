@@ -61,12 +61,14 @@
               </div>
               <events-list :events="events"
                            :pagination="true"
+                           :sorting="true"
                            table-name="eventsList">
               </events-list>
 
               <h2 class="mt-5">Recent Updates:</h2>
               <events-list :events="recentEvents"
                            :pagination="false"
+                           :sorting="false"
                            class="mb-3"
                            table-name="recentEvents">
               </events-list>
