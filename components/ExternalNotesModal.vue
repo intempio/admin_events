@@ -12,35 +12,13 @@
         <div class="modal-body" style="overflow-y: visible">
           <div class="row">
             <div class="col-12">
-              <editor-content :editor="editor"/>
-<!--              <b-form-textarea-->
-<!--                v-model="external_notes"-->
-<!--                placeholder="External notes"-->
-<!--                class="input"-->
-<!--                :class="{'input': true, 'is-danger': errors.includes('notes') && !external_notes }"-->
-<!--                rows="5"-->
-<!--              >event.external_notes-->
-<!--              </b-form-textarea>-->
+              <editor-content :editor="editor" class="editor-inside"/>
             </div>
             <div class="col-12 m-0">
               <div class="text-danger font-xs" v-if="errors.includes('notes') && !external_notes">This field is
                 required
               </div>
             </div>
-<!--            <div class="col-12 d-flex mt-2">-->
-<!--              <multiselect v-model="peopleAssigned"-->
-<!--                           :options="people"-->
-<!--                           label="person"-->
-<!--                           :class="{'input': true, 'is-danger': errors.includes('people') && !peopleAssigned }"-->
-<!--                           placeholder="Person"-->
-<!--                           track-by="value">-->
-<!--              </multiselect>-->
-<!--            </div>-->
-<!--            <div class="col-12 m-0">-->
-<!--              <div class="text-danger font-xs" v-if="errors.includes('people') && !peopleAssigned">This field is-->
-<!--                required-->
-<!--              </div>-->
-<!--            </div>-->
           </div>
           <div class="row mt-4">
             <div class="col-12 d-flex justify-content-end">
@@ -98,7 +76,8 @@
         this.show = true
       },
       close: function () {
-        this.show = false
+        this.editor.clearContent();
+        this.show = false;
       },
       saveNote(sendEmail) {
         this.errors = [];
@@ -115,6 +94,7 @@
           event_id: this.data.eventId,
           process_type: EMAIL_PROCESS_TYPES.external_notes,
         }).then(() => {
+          this.editor.clearContent();
           this.$toast.success(`E-mail sent`);
         }).catch(error => {
           this.$toast.error(`Error: ${error}`)
@@ -147,7 +127,7 @@
       },
     },
     beforeDestroy() {
-      this.editor.destroy()
+      this.editor.destroy();
     },
   }
 </script>
@@ -158,5 +138,14 @@
 
   textarea {
     max-height: 60vh;
+  }
+
+  .editor-inside > div {
+    border: 1px solid lightgray;
+    border-radius: 4px;
+    min-height: 300px;
+    padding: 10px 14px;
+    max-height: 64vh;
+    overflow: auto;
   }
 </style>
