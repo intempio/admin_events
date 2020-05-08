@@ -160,12 +160,16 @@
       },
       sortedEvents() {
         let data = JSON.parse(JSON.stringify(this.events));
-        this.eventList = orderBy(data, [this.currentSort], [this.currentSortDir])
-          .filter((event, index) => {
-            let start = (this.currentPage - 1) * this.pageSize;
-            let end = this.currentPage * this.pageSize;
-            if (index >= start && index < end) return true
-          });
+        if (this.sorting) {
+          this.eventList = orderBy(data, [this.currentSort], [this.currentSortDir])
+            .filter((event, index) => {
+              let start = (this.currentPage - 1) * this.pageSize;
+              let end = this.currentPage * this.pageSize;
+              if (index >= start && index < end) return true
+            });
+        } else {
+          this.eventList = data.reverse();
+        }
         this.allPages = Math.ceil(this.events.length / this.pageSize);
       }
     },
