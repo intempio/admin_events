@@ -584,6 +584,10 @@
     font-size: 14px;
   }
 
+  .history-table td:nth-of-type(2) {
+    word-break: break-all;
+  }
+
   .notification {
     position: absolute;
     bottom: 1px;
