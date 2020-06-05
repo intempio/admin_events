@@ -129,7 +129,7 @@ components: {clientheader},
     };
   },
   head: {
-    title: QA 1"
+    title: "QA 1"
   },
   created: function() {
     this.onLoadData();
