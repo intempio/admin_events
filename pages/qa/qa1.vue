@@ -90,8 +90,6 @@
   import {restService} from '../../plugins/axios';
   import {tableService} from '../../services/table-service';
   import orderBy from 'lodash.orderby';
-import VueMoment from "vue-moment";
-var moment = require("moment");
 
 export default {
 components: {clientheader},
@@ -143,28 +141,10 @@ components: {clientheader},
         this.dateTo = this.$route.query.dateTo;
         this.eventID = this.$route.query.eventID;
         this.current_date = new Date();
-        let etwo_days = moment(this.dateFrom, "YYYY-MM-DD").add(2, "days");
-        this.two_days = moment(etwo_days).format("YYYY-MM-DD");
         let page_url = window.location.href;
         console.log(this.two_days);
 
-        if (
-          (page_url.indexOf("eventID") != -1) &
-          (page_url.indexOf("dateFrom") != -1)
-        ) {
-          let url =
-            '/api/v3/qa-report/?clientID=' +
-            this.clientid +
-            "&eventID=" +
-            this.eventID +
-            "&dateFrom=" +
-            this.two_days +
-            "&dateTo=" +
-            this.two_days;
-          let response = await axios.get(url);
-          this.data = response.data;
-          console.log(this.data);
-        } else if (page_url.indexOf("eventID") != -1) {
+       if (page_url.indexOf("eventID") != -1) {
           let url =
             '/api/v3/qa-report/?clientID=' +
             this.clientid +
@@ -172,15 +152,6 @@ components: {clientheader},
             this.eventID;
           let response = await axios.get(url);
           this.data = response.data;
-        } else if (page_url.indexOf("dateFrom") != -1) {
-          let url =
-            '/api/v3/qa-report/?clientID=' +
-            this.clientid +
-            "&dateFrom=" +
-            this.two_days +
-            "&dateTo=" +
-            this.two_days;
-          let response = await axios.get(url);
         } else {
           let url =
             '/api/v3/qa-report/?clientID=' +
