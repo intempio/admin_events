@@ -182,18 +182,14 @@
       async onLoadData() {
         try {
           this.clientid = this.$route.query.clientID;
-          this.dateFrom = this.$route.query.dateFrom;
-          this.dateTo = this.$route.query.dateTo;
           this.eventID = this.$route.query.eventID;
-          this.current_date = new Date();
           let page_url = window.location.href;
-          console.log(this.two_days);
 ​
-          if (page_url.indexOf("eventID") != -1) {
+          if (page_url.indexOf('eventID') != -1) {
             let url =
               '/api/v3/qa-report?clientID=' +
               this.clientid +
-              "&eventID=" +
+              '&eventID=' +
               this.eventID;
             let response = await restService.get(url);
             this.data = response.data;
@@ -209,10 +205,10 @@
             let i;
             for (i = 0; i < this.data.length; i++) {
               let d = this.data[i];
-              this.event_code = d["event_cod e"];
-              this.event_name = d["event_name"];
-              this.event_start = d["event_start"];
-              this.time = d["time"];
+              this.event_code = d['event_code'];
+              this.event_name = d['event_name'];
+              this.event_start = d['event_start'];
+              this.time = d['time'];
               this.meeting_portal = d["cal_all Meeting Portal"];
               this.meeting_url = d["cal_all Meeting URL"];
               this.meeting_username = d["cal_all Meeting Username"];
