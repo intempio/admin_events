@@ -165,13 +165,13 @@ components: {clientheader},
             this.clientid +
             "&eventID=" +
             this.eventID;
-          let response = await axios.get(url);
+          let response = restService.get(url);
           this.data = response.data;
         } else {
           let url =
             '/api/v3/qa-report/?clientID=' +
             this.clientid;
-          let response = await axios.get(url);
+          let response = restService.get(url);
           this.data = response.data;
         }
         console.log(this.data);
