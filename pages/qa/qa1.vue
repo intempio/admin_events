@@ -2,6 +2,19 @@
   <section>
     <div class="main">
 	    <clientheader :clientid="clientid ? clientid : ''" :sidebarOff="true" change-system="true"></clientheader>
+		<div class="container-fluid">
+        <div class="row mt-1 mb-3">
+          <div class="col-xl-10 col-lg-12 m-auto">
+            <div class="go-back-button cursor-pointer" @click="goHome()">
+              <i class="material-icons mr-2">chevron_left</i>
+              <h6>Home</h6>
+            </div>
+          </div>
+        </div>
+      </div>
+	  <div class="container-fluid">
+        <div class="row mt-1 mb-3">
+          <div class="col-xl-10 col-lg-12 m-auto">
       <div class="header-event">
         <h3>Before Start QA</h3>
         <table
@@ -73,7 +86,9 @@
           </td>
         </tr>
       </table>
-
+      </div>
+    </div>
+	    </div>
       <div class="pagination">
         <button>&laquo;</button>
         <button>&raquo;</button>
