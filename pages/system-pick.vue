@@ -38,10 +38,10 @@
                   </div>
                 </router-link>
               </div>
-              <div class="col-4" v-if="visibleParts.includes('qa')">
+              <div class="col-4">
                 <a href="https://intempio-scheduler.herokuapp.com/qa-events">QA</a>
               </div>
-			  <div class="col-4" v-if="visibleParts.includes('qa')">
+			  <div class="col-4">
                 <a href="https://intempio-scheduler.herokuapp.com/qa-events">Emails</a>
               </div>
               <div class="col-4" v-if="visibleParts.includes('t_events')">
