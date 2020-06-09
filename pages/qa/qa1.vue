@@ -1,9 +1,25 @@
 <template>
-  <div class="main">
-    <clientheader :clientid="clientid ? clientid : ''" :sidebarOff="true" change-system="true"></clientheader>
-​
-    <section class="container mt-5 pt-4">
-      <div class="header-event">
+  <section>
+    <div class="main">
+
+      <clientheader :clientid="clientid ? clientid : ''" :sidebarOff="true" change-system="true"></clientheader>
+
+      <div class="container-fluid">
+        <div class="row mt-1 mb-3">
+          <div class="col-xl-10 col-lg-12 m-auto">
+            <div class="go-back-button cursor-pointer" @click="goHome()">
+              <i class="material-icons mr-2">chevron_left</i>
+              <h6>Home</h6>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-xl-10 col-lg-12 m-auto">
+            <div class="row mt-3">
+              <div class="header-event">
         <h3>Before Start QA</h3>
         <table
           id="event_details"
@@ -18,7 +34,11 @@
           </thead>
         </table>
       </div>
-      <table
+            </div>
+
+            <div class="row">
+              <div class="col-12">
+<table
         border="1"
         id="event_tags"
         v-for="event_data in filteredItems"
@@ -80,23 +100,42 @@
           </td>
         </tr>
       </table>
-​
-      <div class="pagination">
-        <button>&laquo;</button>
-        <button>&raquo;</button>
-      </div>
-      <div class="done">
+                <div class="pagination mb-5 mt-1">
+                  <div class="pagination-wrap">
+                    <button class="cstm" @click="prevPage">&laquo;</button>
+                    <b-form-input
+                      type="text"
+                      :value="getPages()"
+                      name="url"
+                      readonly
+                      style="width: 68px;"
+                      class="input input-items mx-1"
+                    ></b-form-input>
+                    <b-select v-model="pageSize" placeholder="Items" style="width: 100px">
+                      <option :value="item.value"
+                              v-for="item in paginationOptions"
+                              :key="item.value">{{item.label}}
+                      </option>
+                    </b-select>
+                    <button @click="nextPage" class="mx-1 cstm">&raquo;</button>
+                  </div>
+                </div>
+				<div class="done">
         <button @click="done">Done</button>
       </div>
-    </section>
-  </div>
-​
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 </template>
-​
+
 <script>
   import clientheader from '../../components/Header.vue';
   import {restService} from '../../plugins/axios';
-​
   export default {
     components: {clientheader},
     data() {
