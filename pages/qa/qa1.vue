@@ -89,9 +89,6 @@
       </div>
     </div>
 	    </div>
-			  <div class="container-fluid">
-        <div class="row mt-1 mb-3">
-          <div class="col-xl-10 col-lg-12 m-auto">
       <div class="pagination">
         <button>&laquo;</button>
         <button>&raquo;</button>
@@ -99,14 +96,12 @@
       <div class="done">
         <button @click="done">Done</button>
       </div>
-	        </div>
-    </div>
-	      </div>
     </div>
   </section>
 </template>
 
 <script>
+import axios from "axios";
   import clientheader from '../../components/Header.vue'
   import {restService} from '../../plugins/axios';
   import {tableService} from '../../services/table-service';
@@ -167,17 +162,17 @@ components: {clientheader},
 
        if (page_url.indexOf("eventID") != -1) {
           let url =
-            '/api/v3/qa-report/?clientID=' +
+            'https://intempio-scheduler.herokuapp.com/api/v3/qa-report/?clientID=' +
             this.clientid +
             "&eventID=" +
             this.eventID;
-          let response = restService.get(url);
+          let response = await axios.get(url);
           this.data = response.data;
         } else {
           let url =
-            '/api/v3/qa-report/?clientID=' +
+            'https://intempio-scheduler.herokuapp.com/api/v3/qa-report/?clientID=' +
             this.clientid;
-          let response = restService.get(url);
+          let response = await axios.get(url);
           this.data = response.data;
         }
         console.log(this.data);
