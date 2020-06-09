@@ -89,6 +89,9 @@
       </div>
     </div>
 	    </div>
+			  <div class="container-fluid">
+        <div class="row mt-1 mb-3">
+          <div class="col-xl-10 col-lg-12 m-auto">
       <div class="pagination">
         <button>&laquo;</button>
         <button>&raquo;</button>
@@ -96,6 +99,9 @@
       <div class="done">
         <button @click="done">Done</button>
       </div>
+	        </div>
+    </div>
+	      </div>
     </div>
   </section>
 </template>
