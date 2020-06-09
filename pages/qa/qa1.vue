@@ -185,19 +185,19 @@
           this.eventID = this.$route.query.eventID;
           let page_url = window.location.href;
 ​
-          if (page_url.indexOf('eventID') != -1) {
+           if (page_url.indexOf('eventID') != -1) {
             let url =
-              '/api/v3/qa-report?clientID=' +
+              'https://intempio-scheduler.herokuapp.com/api/v3/qa-report/?clientID=' +
               this.clientid +
               '&eventID=' +
               this.eventID;
-            let response = await restService.get(url);
+            let response = await axios.get(url);
             this.data = response.data;
           } else {
             let url =
-              '/api/v3/qa-report?clientID=' +
+              'https://intempio-scheduler.herokuapp.com/api/v3/qa-report/?clientID=' +
               this.clientid;
-            let response = await restService.get(url);
+            let response = await axios.get(url);
             this.data = response.data;
           }
           console.log(this.data);
