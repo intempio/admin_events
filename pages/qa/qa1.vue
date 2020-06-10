@@ -107,7 +107,6 @@
 </template>
 
 <script>
-import axios from "axios";
   import clientheader from '../../components/Header.vue'
   import {restService} from '../../plugins/axios';
   import {tableService} from '../../services/table-service';
@@ -172,13 +171,13 @@ components: {clientheader},
             this.clientid +
             "&eventID=" +
             this.eventID;
-          let response = await axios.get(url);
+          let response = restService.get(url);
           this.data = response.data;
         } else {
           let url =
             'https://intempio-scheduler.herokuapp.com/api/v3/qa-report/?clientID=' +
             this.clientid;
-          let response = await axios.get(url);
+          let response = restService.get(url);
           this.data = response.data;
         }
         console.log(this.data);
@@ -210,11 +209,12 @@ components: {clientheader},
           event_id: this.eventID,
           activity: "QA 1"
         };
-        let url = '/api/v3/qa-activity/';
-         axios.post(url, data)
+        let url = 'https://intempio-scheduler.herokuapp.com/api/v3/qa-activity/';
+         restService.post(url, data)
 		.then(() => {
             this.event_id = '';
             this.activity = '';
+            window.location.href = 'https://intempio-scheduler.herokuapp.com/qa-events';
           })
           .catch(error => {
             this.$toast.error(`Error: ${error}`)
