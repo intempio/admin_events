@@ -205,7 +205,7 @@ components: {clientheader},
           activity: "QA 1"
         };
         let url = '/api/v3/qa-activity/';
-        await axios.post(url, data)
+         axios.post(url, data)
 		.then(() => {
             this.event_id = '';
             this.activity = '';
