@@ -19,7 +19,7 @@
         <h3>Before Start QA</h3>
         <table
           id="event_details"
-          v-for="event_data in data"
+          v-for="event_data in edata"
           v-bind:key="event_data"
         >
           <tr>
@@ -31,7 +31,7 @@
       <table
         border="1"
         id="event_tags"
-        v-for="event_data in data"
+        v-for="event_data in edata"
         v-bind:key="event_data"
       >
         <tr>
@@ -56,7 +56,7 @@
           <td>{{ event_data["cal_all Meeting Username"] }} / {{ event_data["cal_all Meeting Password"] }}</td>
           <td>- Meeting USERNAME is Intempio or (client)? <br />
             - Check this link for reference:
-            <a v-bind:href="meeting_link">https://docs.google.com/spreadsheets/d/1k62mDH1pnn1PZTntgiNARZksbHzeTX7e5cO09tMQ1ZM/edit?ts=5a845fe2#gid=0"</a>
+            <a href="https://docs.google.com/spreadsheets/d/1k62mDH1pnn1PZTntgiNARZksbHzeTX7e5cO09tMQ1ZM/edit?ts=5a845fe2#gid=0">https://docs.google.com/spreadsheets/d/1k62mDH1pnn1PZTntgiNARZksbHzeTX7e5cO09tMQ1ZM/edit?ts=5a845fe2#gid=0</a>
           </td>
         </tr>
         <tr>
@@ -92,10 +92,6 @@
       <div class="container-fluid">
         <div class="row mt-1 mb-3">
           <div class="col-xl-10 col-lg-12 m-auto">
-      <div class="pagination">
-        <button>&laquo;</button>
-        <button>&raquo;</button>
-      </div>
       <div class="done">
         <button @click="done">Done</button>
       </div>
@@ -116,17 +112,7 @@ export default {
 components: {clientheader},
   data() {
     return {
-      data: [],
-      event_code: "",
-      event_name: "",
-      event_start: "",
-      time: "",
-      meeting_portal: "",
-      meeting_url: "",
-      meeting_username: "",
-      meeting_password: "",
-      presenter_name: "",
-      producer: "",
+      edata: [],
       event_id:"",
       activity:""
     };
@@ -138,38 +124,23 @@ components: {clientheader},
     this.onLoadData();
   },
   methods: {
-    async onLoadData() {
-      try {
+    onLoadData() {
         this.clientid = this.$route.query.clientID;
         this.eventID = this.$route.query.eventID;
         let page_url = window.location.href;
-
-    
-          let url =
-            'https://intempio-scheduler.herokuapp.com/api/v3/qa-report/?clientID=' +
-            this.clientid +
-            "&eventID=" +
-            this.eventID;
-          let response = restService.get(url);
-          this.data = response.data;
-       
-          let i;
-          for (i = 0; i < this.data.length; i++) {
-            let d = this.data[i];
-            this.event_code = d["event_code"];
-            this.event_name = d["event_name"];
-            this.event_start = d["event_start"];
-            this.time = d["time"];
-            this.meeting_portal = d["cal_all Meeting Portal"];
-            this.meeting_url = d["cal_all Meeting URL"];
-            this.meeting_username = d["cal_all Meeting Username"];
-            this.meeting_password = d["cal_all Meeting Password"];
-            this.presenter_name = d["cal_all Presenter 1 Name"];
-            this.producer = d["Producer"];
-          }
-      } catch (e) {
-        console.log("Error in function load data handleSubmit" + e);
-      }
+        let url =
+          'https://intempio-scheduler.herokuapp.com/api/v3/qa-report/?clientID=' +
+          this.clientid +
+          "&eventID=" +
+          this.eventID;
+        let response = restService.get(url)
+        .then(response => {
+          this.edata = response.data;
+        })
+        .catch(error => {
+          this.$toast.error(`Error: ${error}`)
+        });
+          
     },
     done: function() {
       this.eventID = this.$route.query.eventID;
