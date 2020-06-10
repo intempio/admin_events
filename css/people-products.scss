@@ -100,3 +100,20 @@ textarea.form-control {
 td.prod_name img {
   padding-right: 10px;
 }
+.header-event h3 {
+  text-align: center;
+  color: #333;
+  padding-bottom: 30px;
+}
+table#event_details, table#event_tags {
+  margin-bottom: 25px;
+width: 100%;
+}
+table#event_details td, table#event_tags td {
+  border: #eee solid 1px;
+  padding: 10px 30px 10px 10px;
+}
+table#event_tags th{
+background:#0097e1;
+color:#fff;
+}
