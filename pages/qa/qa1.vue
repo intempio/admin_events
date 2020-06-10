@@ -144,7 +144,7 @@ components: {clientheader},
         this.eventID = this.$route.query.eventID;
         let page_url = window.location.href;
 
-       if (page_url.indexOf("eventID") != -1) {
+    
           let url =
             'https://intempio-scheduler.herokuapp.com/api/v3/qa-report/?clientID=' +
             this.clientid +
@@ -152,15 +152,7 @@ components: {clientheader},
             this.eventID;
           let response = restService.get(url);
           this.data = response.data;
-        } else {
-          let url =
-            'https://intempio-scheduler.herokuapp.com/api/v3/qa-report/?clientID=' +
-            this.clientid;
-          let response = restService.get(url);
-          this.data = response.data;
-        }
-        console.log(this.data);
-        if (this.data.length > 0) {
+       
           let i;
           for (i = 0; i < this.data.length; i++) {
             let d = this.data[i];
@@ -175,7 +167,6 @@ components: {clientheader},
             this.presenter_name = d["cal_all Presenter 1 Name"];
             this.producer = d["Producer"];
           }
-        }
       } catch (e) {
         console.log("Error in function load data handleSubmit" + e);
       }
@@ -184,7 +175,7 @@ components: {clientheader},
       this.eventID = this.$route.query.eventID;
       let data = {
           event_id: this.eventID,
-          activity: "QA 1"
+          activity: "QA-1"
         };
         let url = 'https://intempio-scheduler.herokuapp.com/api/v3/qa-activity/';
          restService.post(url, data)
