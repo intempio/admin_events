@@ -19,7 +19,7 @@
         <h3>Before Start QA</h3>
         <table
           id="event_details"
-          v-for="event_data in filteredItems"
+          v-for="event_data in data"
           v-bind:key="event_data"
         >
           <tr>
@@ -31,7 +31,7 @@
       <table
         border="1"
         id="event_tags"
-        v-for="event_data in filteredItems"
+        v-for="event_data in data"
         v-bind:key="event_data"
       >
         <tr>
@@ -125,24 +125,8 @@ components: {clientheader},
       meeting_url: "",
       meeting_username: "",
       meeting_password: "",
-      host_code: "",
-      teleconference: "",
       presenter_name: "",
       producer: "",
-      clientOptions: [],
-      eventOptions: [],
-      selected_client: "",
-      selected_event: "",
-      pageSize: 1,
-      currentPage: 1,
-      current_date: "",
-      meeting_link:
-        "https://docs.google.com/spreadsheets/d/1k62mDH1pnn1PZTntgiNARZksbHzeTX7e5cO09tMQ1ZM/edit?ts=5a845fe2#gid=0",
-      host_link:
-        "https://docs.google.com/spreadsheets/d/1k62mDH1pnn1PZTntgiNARZksbHzeTX7e5cO09tMQ1ZM/edit?ts=5a845fe2#gid=0",
-      tele_link:
-        "https://docs.google.com/spreadsheets/d/1k62mDH1pnn1PZTntgiNARZksbHzeTX7e5cO09tMQ1ZM/edit?ts=5a845fe2#gid=0",
-      two_days: "",
       event_id:"",
       activity:""
     };
@@ -152,18 +136,13 @@ components: {clientheader},
   },
   created: function() {
     this.onLoadData();
-    //this.client();
   },
   methods: {
     async onLoadData() {
       try {
         this.clientid = this.$route.query.clientID;
-        this.dateFrom = this.$route.query.dateFrom;
-        this.dateTo = this.$route.query.dateTo;
         this.eventID = this.$route.query.eventID;
-        this.current_date = new Date();
         let page_url = window.location.href;
-        console.log(this.two_days);
 
        if (page_url.indexOf("eventID") != -1) {
           let url =
@@ -185,7 +164,7 @@ components: {clientheader},
           let i;
           for (i = 0; i < this.data.length; i++) {
             let d = this.data[i];
-            this.event_code = d["event_cod e"];
+            this.event_code = d["event_code"];
             this.event_name = d["event_name"];
             this.event_start = d["event_start"];
             this.time = d["time"];
@@ -193,8 +172,6 @@ components: {clientheader},
             this.meeting_url = d["cal_all Meeting URL"];
             this.meeting_username = d["cal_all Meeting Username"];
             this.meeting_password = d["cal_all Meeting Password"];
-            this.host_code = d["cal_producer Host Code"];
-            this.teleconference = d["cal_producer Teleconference #"];
             this.presenter_name = d["cal_all Presenter 1 Name"];
             this.producer = d["Producer"];
           }
@@ -219,36 +196,8 @@ components: {clientheader},
           .catch(error => {
             this.$toast.error(`Error: ${error}`)
           });
-    },
-    nextPage: function() {
-      if (this.currentPage * this.pageSize < this.data.length)
-        this.currentPage++;
-    },
-    prevPage: function() {
-      if (this.currentPage > 1) this.currentPage--;
-    },
-    sortedData: function() {
-      return this.data
-        .sort((a, b) => {
-          let modifier = 1;
-          if (this.currentSortDir === "desc") modifier = -1;
-          if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
-          if (a[this.currentSort] > b[this.currentSort]) return 1 * modifier;
-          return 0;
-        })
-        .filter((row, index) => {
-          let start = (this.currentPage - 1) * this.pageSize;
-          let end = this.currentPage * this.pageSize;
-          if (index >= start && index < end) return true;
-        });
     }
   },
-  computed: {
-    filteredItems: function() {
-      let items = this.items;
-      return this.sortedData();
-    }
-  }
 };
 </script>
 <style lang="scss" scoped>
