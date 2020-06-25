@@ -117,7 +117,7 @@ components: {clientheader},
       activity:""
     };
   },
-  head: {+
+  head: {
     title: "QA 1"
   },
   created: function() {
