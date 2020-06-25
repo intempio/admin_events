@@ -117,7 +117,7 @@ components: {clientheader},
       activity:""
     };
   },
-  head: {+
+  head: {
     title: "QA 1"
   },
   created: function() {
@@ -153,7 +153,7 @@ components: {clientheader},
 		.then(() => {
             this.event_id = '';
             this.activity = '';
-            window.location.href = 'https://intempio-scheduler.herokuapp.com/qa-events';
+            window.location.href = 'https://api-staging.cribs.intemp.io/qa-events';
           })
           .catch(error => {
             this.$toast.error(`Error: ${error}`)
