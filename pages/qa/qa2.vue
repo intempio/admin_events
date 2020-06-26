@@ -117,24 +117,31 @@ Zoom - Does the Audio Information match the data inside zoom meeting? </td>
           <td>Event Document</td>
           <td>{{ event_data["cal_all Event Documents"] }}</td>
           <td>
+            1. Is the Link directing to the correct Event Document Folder? <br/>
+(Event name should be the same as the event document name) <br/>
+2. Is the event document sharing settings set to "anyone with the link ... can edit"? <br/>
+3. Does the event document have a runsheet  in it?
            </td>
         </tr>
         <tr>
           <td>Breakouts</td>
           <td>{{ event_data["Breakouts"] }}</td>
-          <td>
+          <td>- Is there breakouts? <br/>
+Refer to Internal or Producer notes in Cribs
             </td>
         </tr>
         <tr>
           <td>Client Contact</td>
           <td>{{ event_data["Client Contact 1"] }}</td>
-          <td>
+          <td>- Is the client contact correct? <br/>
+Refer to emails received on this event - Client contact is the person who requested for the event.
            </td>
         </tr>
         <tr>
           <td>Internal Notes</td>
           <td>{{ event_data["internal_notes"] }}</td>
-          <td>
+          <td>Do Internal notes have any update on the event? <br/>
+Are tags accurate per updates on the internal notes?
            </td>
         </tr>
       </table>
@@ -170,7 +177,7 @@ components: {clientheader},
     };
   },
   head: {
-    title: "QA 1"
+    title: "QA 2"
   },
   created: function() {
     this.onLoadData();
@@ -205,7 +212,7 @@ components: {clientheader},
 		.then(() => {
             this.event_id = '';
             this.activity = '';
-            window.location.href = 'https://api-staging.cribs.intemp.io/qa-events';
+            window.location.href = 'https://intempio-scheduler.herokuapp.com/qa-events';
           })
           .catch(error => {
             this.$toast.error(`Error: ${error}`)
