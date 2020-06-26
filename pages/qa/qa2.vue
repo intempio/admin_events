@@ -45,45 +45,97 @@
           <td>Does date and time match the event request form from the Account Management folder, client email or calendar invite for this event?</td>
         </tr>
         <tr>
-          <td>Meeting Link</td>
-          <td>{{ event_data["cal_all Meeting URL"] }}</td>
-          <td>
-            - Check url and make sure it matches the one in client calendar
-          </td>
-        </tr>
-        <tr>
-          <td>Link Username/Password</td>
-          <td>{{ event_data["cal_all Meeting Username"] }} / {{ event_data["cal_all Meeting Password"] }}</td>
-          <td>- Meeting USERNAME is Intempio or (client)? <br />
-            - Check this link for reference:
-            <a href="https://docs.google.com/spreadsheets/d/1k62mDH1pnn1PZTntgiNARZksbHzeTX7e5cO09tMQ1ZM/edit?ts=5a845fe2#gid=0">https://docs.google.com/spreadsheets/d/1k62mDH1pnn1PZTntgiNARZksbHzeTX7e5cO09tMQ1ZM/edit?ts=5a845fe2#gid=0</a>
-          </td>
-        </tr>
-        <tr>
           <td>Producer Call Time</td>
           <td>{{ event_data["Producer offset"] }}</td>
-          <td>Is Producer Call time correct? <br />
-            0 - Rehearsal/DryRun, Demo &amp; Techcheck <br />
-            60 - Remote <br />
-            120 - Onsite</td>
+          <td>Is the producer call time correct?</td>
         </tr>
         <tr>
-          <td>Presenter Name</td>
-          <td>{{ event_data["cal_all Presenter 1 Name"] }}</td>
+          <td>Room Type</td>
+          <td>{{ event_data["cal_producer Room Type"] }}</td>
+          <td>- Meeting Room: 0-99 <br />
+            - Seminar Room: 100-1000
+            </td>
+        </tr>
+        <tr>
+          <td>Meeting Link Owner</td>
+          <td>{{ event_data["cal_all Meeting Link Owner"] }}</td>
+          <td>1. Is meeting link owned by Client or Intempio? <br />
+2. Is meeting link from Adobe Connect or Zoom?</td>
+        </tr>
+        <tr>
+          <td>Meeting Link</td>
+          <td>{{ event_data["cal_all Meeting Link"] }}</td>
           <td>
-            - Confirm Event Presenter. <br />
-            - Is presenter name existing?<br />
-            - Calendar with Speaker?<br />
-            - Calendar with Patient Speaker?<br />
+           1. Is Meeting link same as link from runsheet, Internal Calendar Invite and/or Client Invite (if any)? <br />
+2. Is Meeting link correct?
           </td>
+        </tr>
+        <tr>
+          <td>Meeting Username</td>
+          <td>{{ event_data["cal_all Meeting Username"] }}</td>
+          <td>
+            1. Are the Proper AC Host Credentials Assigned? ( NOTE: Seminar Room condition & Client Link condition)
+            </td>
+        </tr>
+        <tr>
+          <td>Meeting Password</td>
+          <td>{{ event_data["cal_all Meeting Password"] }}</td>
+          <td>
+          2. Enter AC using assigned Host Credentials. Did you enter as Host? </td>
+        </tr>
+        <tr>
+          <td>Recording</td>
+          <td>{{ event_data["Recording"] }}</td>
+          <td>
+            Does the event need to be recorded?</td>
+        </tr>
+        <tr>
+          <td>Audio License</td>
+          <td>{{ event_data["cal_producer Audio License"] }}</td>
+          <td>
+            1. Is audio owned by Client or Intempio? <br/>
+2. Is audio from Adobe Connect or Zoom? </td>
+        </tr>
+        <tr>
+          <td>Audio Name</td>
+          <td>{{ event_data["cal_producer Audio Name"] }}</td>
+          <td>
+            Adobe Connect <br/>
+1. Is the audio profile used simultaneously on other events? <br/>
+2. Is the TC, Host, Participant code correct per the AC Host Code Map <br/>
+3. Does the audio information match data from the runsheet, Internal Calendar Invite and/or Client Invite (if any)? <br/>
+4. Is the audio configured correctly? <br/>
+Zoom - Does the Audio Information match the data inside zoom meeting? </td>
+        </tr>
+        <tr>
+          <td>Audio Type</td>
+          <td>{{ event_data["cal_producer Audio Type"] }}</td>
+          <td>
+            For correct Audio type, refer to this link: t.ly/rx070</td>
+        </tr>
+        <tr>
+          <td>Event Document</td>
+          <td>{{ event_data["cal_all Event Documents"] }}</td>
+          <td>
+           </td>
+        </tr>
+        <tr>
+          <td>Breakouts</td>
+          <td>{{ event_data["Breakouts"] }}</td>
+          <td>
+            </td>
         </tr>
         <tr>
           <td>Client Contact</td>
-          <td>{{ event_data["Client Contact"] }}</td>
+          <td>{{ event_data["Client Contact 1"] }}</td>
           <td>
-            Is Client contact correct? <br />
-            Reference: <a href="https://docs.google.com/document/d/1UH8Yxr-tXpCkAaY9_Rq7Tk4uj35iWSyMwCwjA3viIH4/edit#">https://docs.google.com/document/d/1UH8Yxr-tXpCkAaY9_Rq7Tk4uj35iWSyMwCwjA3viIH4/edit#</a> <br />
-          </td>
+           </td>
+        </tr>
+        <tr>
+          <td>Internal Notes</td>
+          <td>{{ event_data["internal_notes"] }}</td>
+          <td>
+           </td>
         </tr>
       </table>
       </div>
@@ -146,7 +198,7 @@ components: {clientheader},
       this.eventID = this.$route.query.eventID;
       let data = {
           event_id: this.eventID,
-          activity: "QA-1"
+          activity: "QA-2"
         };
         let url = 'https://api-staging.cribs.intemp.io/api/v3/qa-activity/';
          restService.post(url, data)
