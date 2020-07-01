@@ -46,14 +46,14 @@
         </tr>
         <tr>
           <td>Meeting Link</td>
-          <td>{{ event_data["cal_all Meeting URL"] }}</td>
+          <td>{{ event_data["Meeting Link"] }}</td>
           <td>
             - Check url and make sure it matches the one in client calendar
           </td>
         </tr>
         <tr>
           <td>Link Username/Password</td>
-          <td>{{ event_data["cal_all Meeting Username"] }} / {{ event_data["cal_all Meeting Password"] }}</td>
+          <td>{{ event_data["Meeting Username"] }} / {{ event_data["Meeting Password"] }}</td>
           <td>- Meeting USERNAME is Intempio or (client)? <br />
             - Check this link for reference:
             <a href="https://docs.google.com/spreadsheets/d/1k62mDH1pnn1PZTntgiNARZksbHzeTX7e5cO09tMQ1ZM/edit?ts=5a845fe2#gid=0">https://docs.google.com/spreadsheets/d/1k62mDH1pnn1PZTntgiNARZksbHzeTX7e5cO09tMQ1ZM/edit?ts=5a845fe2#gid=0</a>
@@ -69,7 +69,7 @@
         </tr>
         <tr>
           <td>Presenter Name</td>
-          <td>{{ event_data["cal_all Presenter 1 Name"] }}</td>
+          <td>{{ event_data["Presenter 1 Name"] }}</td>
           <td>
             - Confirm Event Presenter. <br />
             - Is presenter name existing?<br />
