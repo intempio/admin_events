@@ -46,25 +46,25 @@
         </tr>
         <tr>
           <td>Producer Call Time</td>
-          <td>{{ event_data["Producer offset"] }}</td>
+          <td>{{ event_data["producer_offset_minutes"] }}</td>
           <td>Is the producer call time correct?</td>
         </tr>
         <tr>
           <td>Room Type</td>
-          <td>{{ event_data["Room Type"] }}</td>
+          <td>{{ event_data["cal_producer Room Type"] }}</td>
           <td>- Meeting Room: 0-99 <br />
             - Seminar Room: 100-1000
             </td>
         </tr>
         <tr>
           <td>Meeting Link Owner</td>
-          <td>{{ event_data["Meeting Link Owner"] }}</td>
+          <td>{{ event_data["cal_producer Meeting Link Owner"] }}</td>
           <td>1. Is meeting link owned by Client or Intempio? <br />
 2. Is meeting link from Adobe Connect or Zoom?</td>
         </tr>
         <tr>
           <td>Meeting Link</td>
-          <td>{{ event_data["Meeting Link"] }}</td>
+          <td>{{ event_data["cal_all Meeting Link"] }}</td>
           <td>
            1. Is Meeting link same as link from runsheet, Internal Calendar Invite and/or Client Invite (if any)? <br />
 2. Is Meeting link correct?
@@ -72,14 +72,14 @@
         </tr>
         <tr>
           <td>Meeting Username</td>
-          <td>{{ event_data["Meeting Username"] }}</td>
+          <td>{{ event_data["cal_all Meeting Username"] }}</td>
           <td>
             1. Are the Proper AC Host Credentials Assigned? ( NOTE: Seminar Room condition & Client Link condition)
             </td>
         </tr>
         <tr>
           <td>Meeting Password</td>
-          <td>{{ event_data["Meeting Password"] }}</td>
+          <td>{{ event_data["cal_all Meeting Password"] }}</td>
           <td>
           2. Enter AC using assigned Host Credentials. Did you enter as Host? </td>
         </tr>
@@ -91,14 +91,14 @@
         </tr>
         <tr>
           <td>Audio License</td>
-          <td>{{ event_data["Audio License"] }}</td>
+          <td>{{ event_data["cal_producer Audio License"] }}</td>
           <td>
             1. Is audio owned by Client or Intempio? <br/>
 2. Is audio from Adobe Connect or Zoom? </td>
         </tr>
         <tr>
           <td>Audio Name</td>
-          <td>{{ event_data["Audio Name"] }}</td>
+          <td>{{ event_data["cal_producer Audio Name"] }}</td>
           <td>
             Adobe Connect <br/>
 1. Is the audio profile used simultaneously on other events? <br/>
@@ -109,13 +109,13 @@ Zoom - Does the Audio Information match the data inside zoom meeting? </td>
         </tr>
         <tr>
           <td>Audio Type</td>
-          <td>{{ event_data["Audio Type"] }}</td>
+          <td>{{ event_data["cal_producer Audio Type"] }}</td>
           <td>
             For correct Audio type, refer to this link: t.ly/rx070</td>
         </tr>
         <tr>
           <td>Event Document</td>
-          <td>{{ event_data["Event Documents"] }}</td>
+          <td>{{ event_data["cal_all Event Documents"] }}</td>
           <td>
             1. Is the Link directing to the correct Event Document Folder? <br/>
 (Event name should be the same as the event document name) <br/>
