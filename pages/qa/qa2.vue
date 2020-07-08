@@ -188,7 +188,7 @@ components: {clientheader},
         this.eventID = this.$route.query.eventID;
         let page_url = window.location.href;
         let url =
-          'https://api-prod.cribs.intemp.io/api/v3/qa-report/?clientID=' +
+          'https://api-staging.cribs.intemp.io/api/v3/qa-report/?clientID=' +
           this.clientid +
           "&eventID=" +
           this.eventID;
@@ -208,12 +208,12 @@ components: {clientheader},
           event_id: this.eventID,
           activity: "QA-2"
         };
-        let url = 'https://api-prod.cribs.intemp.io/api/v3/qa-activity/';
+        let url = 'https://api-staging.cribs.intemp.io/api/v3/qa-activity/';
          restService.post(url, data)
 		.then(() => {
             this.event_id = '';
             this.activity = '';
-            window.location.href = 'https://intempio-support-prod.herokuapp.com/qa-events';
+            window.location.href = 'https://intempio-scheduler.herokuapp.com/qa-events';
           })
           .catch(error => {
             this.$toast.error(`Error: ${error}`)
