@@ -148,7 +148,7 @@ components: {clientheader},
           event_id: this.eventID,
           activity: "QA-1"
         };
-        let url = 'https://api-prod.cribs.intemp.io/api/v3/qa-activity/';
+        let url = 'https://api-staging.cribs.intemp.io/api/v3/qa-activity/';
          restService.post(url, data)
 		.then(() => {
             this.event_id = '';
