@@ -167,6 +167,7 @@ Are tags accurate per updates on the internal notes?
   import {tableService} from '../../services/table-service';
   import orderBy from 'lodash.orderby';
 
+
 export default {
 components: {clientheader},
   data() {
@@ -218,6 +219,9 @@ components: {clientheader},
           .catch(error => {
             this.$toast.error(`Error: ${error}`)
           });
+    },
+    goHome(){
+      this.$router.push('/system-pick');
     }
   },
 };

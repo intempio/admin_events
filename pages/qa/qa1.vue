@@ -52,11 +52,22 @@
           </td>
         </tr>
         <tr>
-          <td>Link Username/Password</td>
+          <t  d>Link Username/Password</td>
           <td>{{ event_data["cal_all Meeting Username"] }} / {{ event_data["cal_all Meeting Password"] }}</td>
           <td>- Meeting USERNAME is Intempio or (client)? <br />
             - Check this link for reference:
-            <a href="https://docs.google.com/spreadsheets/d/1k62mDH1pnn1PZTntgiNARZksbHzeTX7e5cO09tMQ1ZM/edit?ts=5a845fe2#gid=0">https://docs.google.com/spreadsheets/d/1k62mDH1pnn1PZTntgiNARZksbHzeTX7e5cO09tMQ1ZM/edit?ts=5a845fe2#gid=0</a>
+            <a href="
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            ://docs.google.com/spreadsheets/d/1k62mDH1pnn1PZTntgiNARZksbHzeTX7e5cO09tMQ1ZM/edit?ts=5a845fe2#gid=0">https://docs.google.com/spreadsheets/d/1k62mDH1pnn1PZTntgiNARZksbHzeTX7e5cO09tMQ1ZM/edit?ts=5a845fe2#gid=0</a>
           </td>
         </tr>
         <tr>
@@ -158,6 +169,9 @@ components: {clientheader},
           .catch(error => {
             this.$toast.error(`Error: ${error}`)
           });
+    },
+    goHome(){
+      this.$router.push('/system-pick');
     }
   },
 };
