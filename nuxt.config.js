@@ -6,6 +6,10 @@ module.exports = {
     VUE_APP_API:
       process.env.VUE_APP_API || 'https://api-staging.cribs.intemp.io',
       // process.env.VUE_APP_API || 'https://intempio-cribs-api-qa-pr-32.herokuapp.com',
+    QA_APP:
+      process.env.QA_APP || 'https://intempio-support-prod.herokuapp.com/qa-events',
+    EMAIL_APP:
+      process.env.EMAIL_APP || 'https://intempio-support-prod.herokuapp.com/view-email',
 
     /*PEOPLEASSIGNED and EVENTTAG ENVIRONMENT VARIABLES*/
     CHECKLIST_ITEMS: process.env.CHECKLIST_ITEMS,

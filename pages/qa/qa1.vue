@@ -135,11 +135,8 @@ components: {clientheader},
         this.clientid = this.$route.query.clientID;
         this.eventID = this.$route.query.eventID;
         let page_url = window.location.href;
-        let url =
-          'https://api-staging.cribs.intemp.io/api/v3/qa-report/?clientID=' +
-          this.clientid +
-          "&eventID=" +
-          this.eventID;
+
+        let url ='/api/v3/qa-report/?clientID=' +this.clientid + "&eventID=" + this.eventID;
         let response = restService.get(url)
         .then(response => {
           this.edata = response.data;
@@ -155,16 +152,15 @@ components: {clientheader},
           event_id: this.eventID,
           activity: "QA-1"
         };
-        let url = 'https://api-staging.cribs.intemp.io/api/v3/qa-activity/';
-         restService.post(url, data)
-		.then(() => {
-            this.event_id = '';
-            this.activity = '';
-            window.location.href = 'https://intempio-scheduler.herokuapp.com/qa-events';
-          })
-          .catch(error => {
-            this.$toast.error(`Error: ${error}`)
-          });
+      let url = '/api/v3/qa-activity/';
+      restService.post(url, data).then(() => {
+        this.event_id = '';
+        this.activity = '';
+        window.location.href = process.env.QA_APP;
+      })
+      .catch(error => {
+        this.$toast.error(`Error: ${error}`)
+      });
     },
     goHome(){
       this.$router.push('/system-pick');
