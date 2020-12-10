@@ -86,7 +86,7 @@
               </tr>
               <tr>
                 <td>Client Contact</td>
-                <td>{{ event_data["Client Contact 1"] }}</td>
+                <td>{{ event_data["Client Contact"] }}</td>
                 <td>
                   Is Client contact correct? <br />
                   Reference: <a href="https://docs.google.com/document/d/1UH8Yxr-tXpCkAaY9_Rq7Tk4uj35iWSyMwCwjA3viIH4/edit#">https://docs.google.com/document/d/1UH8Yxr-tXpCkAaY9_Rq7Tk4uj35iWSyMwCwjA3viIH4/edit#</a> <br />

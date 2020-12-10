@@ -61,7 +61,7 @@
               </tr>
               <tr>
                 <td>Recording</td>
-                <td>{{ event_data["Recording"] }}</td>
+                <td>{{ event_data["_cr Recording"] }}</td>
                 <td>
                   Does the event need to be recorded?</td>
               </tr>
