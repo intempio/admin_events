@@ -1102,7 +1102,14 @@ input.filter-item.search-input {
 }
 
 .bm-item-list {
-  margin-left: 6% !important;
+	margin-left: 10% !important;
+	padding-bottom: 100px;
+	position: relative;
+}
+.bm-item-list > div:last-child(){
+    background: #008065;
+    font-style: italic;
+    padding: .3em .7em;
 }
 
 .bm-item-list > .popup-menu-item > a {
