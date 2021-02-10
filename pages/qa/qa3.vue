@@ -48,14 +48,32 @@
               </tr>
               <tr>
                 <td>Number of Producers Required</td>
-                <td></td>
+                <td>{{ event_data["producer_count"] }}</td>
                 <td>Rich Collaboration = 2 producers <br/>
                     All other event type = 1 producer
                 </td>
               </tr>
               <tr>
                 <td>Number of Producers Assigned</td>
-                <td></td>
+                <td>
+                {{ event_data["Extra Remote Producer 1"] }} <br/>
+                {{ event_data["Extra Remote Producer 2"] }} <br/>
+                {{ event_data["Extra Remote Producer 3"] }} <br/>
+                {{ event_data["Extra Remote Producer 4"] }} <br/>
+                {{ event_data["Extra Onsite Producer 1"] }} <br/>
+                {{ event_data["Extra Onsite Producer 2"] }} <br/>
+                {{ event_data["Extra Onsite Producer 3"] }} <br/>
+                {{ event_data["Extra Onsite Producer 4"] }} <br/>
+                {{ event_data["Onsite Producer 1"] }} <br/>
+                {{ event_data["Onsite Producer 2"] }} <br/>
+                {{ event_data["Remote  Producer 1"] }} <br/>
+                {{ event_data["Remote  Producer 2"] }} <br/>
+                {{ event_data["Shadow Producer 1"] }} <br/>
+                {{ event_data["Shadow Producer 2"] }} <br/>
+                {{ event_data["Shadow Producer 3"] }} <br/>
+                {{ event_data["Shadow Producer 4"] }} <br/>
+                {{ event_data["Platform Producer"] }}
+                </td>
                 <td>Do the number of assigned producers Match the number for producers required?</td>
               </tr>
               <tr>
@@ -109,7 +127,7 @@
               </tr>
               <tr>
                 <td>Event Package</td>
-                <td>{{ event_data["Event Package"] }}</td>
+                <td>{{ event_data["Event Package"] }}</td>0
                 <td>Refer to the event request form on the Event Package. <br/>
                     If not specified in the event request form, this information can also be located in the Project's quote <br/>
                     Note! If event has breakouts: Event Package is Rich Collaboration</td>
@@ -166,7 +184,7 @@ components: {clientheader},
     };
   },
   head: {
-    title: "QA 2"
+    title: "QA 3"
   },
   created: function() {
     this.onLoadData();
@@ -191,7 +209,7 @@ components: {clientheader},
       this.eventID = this.$route.query.eventID;
       let data = {
           event_id: this.eventID,
-          activity: "QA-2"
+          activity: "QA-3"
       };
       let url = '/api/v3/qa-activity/';
      restService.post(url, data)
