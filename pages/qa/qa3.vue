@@ -127,7 +127,7 @@
               </tr>
               <tr>
                 <td>Event Package</td>
-                <td>{{ event_data["Event Package"] }}</td>0
+                <td>{{ event_data["Event Package"] }}</td>
                 <td>Refer to the event request form on the Event Package. <br/>
                     If not specified in the event request form, this information can also be located in the Project's quote <br/>
                     Note! If event has breakouts: Event Package is Rich Collaboration</td>
