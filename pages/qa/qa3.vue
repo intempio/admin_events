@@ -78,7 +78,7 @@
               </tr>
               <tr>
                 <td>Meeting Platform</td>
-                <td>{{ event_data["_cr Meeting Platform"] }}</td>
+                <td>{{ event_data["Meeting Platform"] }}</td>
                 <td>Do the Meeting Platform in Cribs Match the Patform listed in the event request form?</td>
               </tr>
               <tr>
