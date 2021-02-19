@@ -48,7 +48,7 @@
               </tr>
               <tr>
                 <td>Number of Producers Required</td>
-                <td>{{ event_data["producer_count"] }}</td>
+                <td>{{ event_data["Number of Producers Required"] }}</td>
                 <td>Rich Collaboration = 2 producers <br/>
                     All other event type = 1 producer
                 </td>
@@ -56,23 +56,7 @@
               <tr>
                 <td>Number of Producers Assigned</td>
                 <td>
-                {{ event_data["Extra Remote Producer 1"] }} <br/>
-                {{ event_data["Extra Remote Producer 2"] }} <br/>
-                {{ event_data["Extra Remote Producer 3"] }} <br/>
-                {{ event_data["Extra Remote Producer 4"] }} <br/>
-                {{ event_data["Extra Onsite Producer 1"] }} <br/>
-                {{ event_data["Extra Onsite Producer 2"] }} <br/>
-                {{ event_data["Extra Onsite Producer 3"] }} <br/>
-                {{ event_data["Extra Onsite Producer 4"] }} <br/>
-                {{ event_data["Onsite Producer 1"] }} <br/>
-                {{ event_data["Onsite Producer 2"] }} <br/>
-                {{ event_data["Remote  Producer 1"] }} <br/>
-                {{ event_data["Remote  Producer 2"] }} <br/>
-                {{ event_data["Shadow Producer 1"] }} <br/>
-                {{ event_data["Shadow Producer 2"] }} <br/>
-                {{ event_data["Shadow Producer 3"] }} <br/>
-                {{ event_data["Shadow Producer 4"] }} <br/>
-                {{ event_data["Platform Producer"] }}
+                {{ event_data["Number of Producers Assigned"] }}
                 </td>
                 <td>Do the number of assigned producers Match the number for producers required?</td>
               </tr>
