@@ -54,6 +54,6 @@
     "webpack-bundle-analyzer": "^3.3.2"
   },
   "engines": {
-    "node": ">=12.x"
+    "node": "12.x"
   }
 }
