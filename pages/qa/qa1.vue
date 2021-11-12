@@ -52,7 +52,7 @@
                 <td>Does date and time match the event request form from the Account Management folder, client email or calendar invite for this event?</td>
               </tr>
               <tr>
-                <td>Meeting Link</td>
+                <td>Zoom Meeting Link</td>
                 <td>{{ event_data["cal_all Meeting Link"] }}</td>
                 <td>
                   - Check url and make sure it matches the one in client calendar
